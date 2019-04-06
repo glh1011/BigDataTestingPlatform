@@ -8,6 +8,10 @@ import Dashboard from './pages/Dashboard';
 import LoginPanel from './pages/LoginPage/components/LoginPanel';
 import MainLayout from './layouts/BasicLayout/MainLayout';
 import UserInfo from './pages/UserInfo';
+import AuthorityManage from './pages/AuthorityManage';
+
+import SelfAuthorities from './pages/SelfAuthorities';
+import AddAuthority from './pages/AddAuthority';
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
 
 const routerConfig = [
@@ -30,6 +34,21 @@ const routerConfig = [
     path: '/userInfo',
     layout: NormalLayout,
     component: UserInfo,
+  },
+  {
+    path: '/Authority/AuthorityManage',
+    layout: NormalLayout,
+    component: AuthorityManage,
+  },
+  {
+    path: '/Authority/SelfAuthorities',
+    layout: NormalLayout,
+    component: SelfAuthorities,
+  },
+  {
+    path: '/Authority/AddAuthority',
+    layout: NormalLayout,
+    component: AddAuthority,
   },
 ];
 

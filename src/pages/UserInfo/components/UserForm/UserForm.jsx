@@ -6,30 +6,20 @@ import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
-} from '@icedesign/form-binder';
+} from '@icedesign/form-binder/lib';
+import store from '../../store';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import { actionCreators } from '../../store/';
 
 const { Row, Col } = Grid;
-export default class UserForm extends Component {
+class UserForm extends Component {
   static displayName = 'UserForm';
 
   static propTypes = {};
 
   static defaultProps = {};
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: {
-        username: '用户一',
-        userRank: '1',
-        upperId: '001',
-        passwd: '123456',
-        displayName: 'hhh',
-        email: '7932887@163.com',
-        
-      },
-    };
-  }
 
   checkPasswd = (rule, values, callback) => {
     if (!values) {
@@ -52,11 +42,11 @@ export default class UserForm extends Component {
     }
   };
 
-  formChange = (value) => {
-    this.setState({
-      value,
-    });
-  };
+  // formChange = (value) => {
+  //   this.setState({
+  //     value,
+  //   });
+  // };
 
   validateAllFormField = () => {
     this.refs.form.validateAll((errors, values) => {
@@ -69,8 +59,9 @@ export default class UserForm extends Component {
       <div className="user-form">
         <IceContainer>
           <IceFormBinderWrapper
-            value={this.state.value}
-            onChange={this.formChange}
+            value={this.props.value}
+            onChange={this.props.handleInputChange}
+            // onChange={this.formChange}
             ref="form"
           >
             <div style={styles.formContent}>
@@ -85,7 +76,7 @@ export default class UserForm extends Component {
                     <Input
                       size="large"
                       style={{ width: '100%' }}
-                      disabled="true"
+                      disabled 
                     />
                   </IceFormBinder>
                   <IceFormError name="username" />
@@ -101,7 +92,7 @@ export default class UserForm extends Component {
                   <Input
                       size="large"
                       style={{ width: '100%' }}
-                      disabled="true"
+                      disabled 
                     />
                   </IceFormBinder>
                 </Col>
@@ -116,7 +107,7 @@ export default class UserForm extends Component {
                   <Input
                       size="large"
                       style={{ width: '100%' }}
-                      disabled="true"
+                      disabled 
                     />
                   </IceFormBinder>
                 </Col>
@@ -132,6 +123,7 @@ export default class UserForm extends Component {
                       size="large"
                       placeholder="请输入昵称"
                       style={{ width: '100%' }}
+                      
                     />
                   </IceFormBinder>
                   <IceFormError name="displayName" />
@@ -188,7 +180,8 @@ export default class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={this.validateAllFormField}
+                // onClick={this.validateAllFormField}
+                onClick={this.props.handleSubmitForm}
               >
                 确认修改
               </Button>
@@ -207,6 +200,50 @@ export default class UserForm extends Component {
         </IceContainer>
       </div>
     );
+  }
+  componentDidMount() {
+    axios.get('./mock/userInfo.json').then((res) => {
+      const result = res.data.data;
+      console.log(result);
+      const action = {
+        type: 'display_user_info',
+        data: result
+      }
+      console.log(action);
+      this.props.displayInfo(action);
+    })
+  }
+}
+
+const mapStateToProps = (state) => {
+  return {
+    // username: state.userForm.username
+    value: state.userForm.value
+  }
+}
+
+//store.dispatch
+const mapDispatchToProps = (dispatch) => {
+  return {
+    displayInfo(action) {
+      dispatch(action);
+    },
+    handleInputChange(e) {
+      //const action = constants.CHANGEINPUTVALUE;
+      // const action = {
+      //   type: constants.CHANGEINPUTVALUE,
+      //   // displayName: e.displayName,
+      //   // passwd: e.passwd,
+      //   // email: e.email
+      //   value: e
+      // }
+      dispatch(actionCreators.changeInputValue);
+    },
+    //提交表单
+    handleSubmitForm(e, value) {
+      e.persist();
+      dispatch(actionCreators.submitForm(value));
+    }
   }
 }
 
@@ -229,3 +266,5 @@ const styles = {
     borderBottom: '1px solid #eee',
   },
 };
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);

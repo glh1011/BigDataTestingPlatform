@@ -4,6 +4,8 @@
 
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
+import { reducer as userFormReducer } from './pages/UserInfo/store';
+import { reducer as authoritiesReducer } from './pages/AuthorityManage/store'
 
 // Initial routing state
 const routeInitialState = {
@@ -28,6 +30,8 @@ function routeReducer(state = routeInitialState, action) {
 export default function createReducer(injectedReducers) {
   return combineReducers({
     route: routeReducer,
+    userForm: userFormReducer,
+    authorities: authoritiesReducer,
     ...injectedReducers,
   });
 }

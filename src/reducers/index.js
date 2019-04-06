@@ -1,12 +1,8 @@
 import { combineReducers } from 'redux';
-import students from './student';
-import teachers from './teacher';
-import courseListses from './courseManagement';
-import courseContentListses from './courseSchedule';
+import { reducer as userFormReducer } from '../pages/UserInfo/store';
 
-export default combineReducers({
-  students,
-  teachers,
-  courseListses,
-  courseContentListses,
+const reducer = combineReducers({
+  userForm: userFormReducer
 });
+
+export default reducer;

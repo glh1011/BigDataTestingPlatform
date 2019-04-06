@@ -21,7 +21,7 @@ const headerMenuConfig = [
 
 const asideMenuConfig = [
   {
-    name: '权限管理',
+    name: '用户管理',
     path: '/dashboard',
     icon: 'home2',
     children: [
@@ -32,6 +32,21 @@ const asideMenuConfig = [
       {
         name: '二级用户',
         path: '/dashboard/secondaryUser',
+      },
+    ],
+  },
+  {
+    name: '权限管理',
+    path: '/Authority',
+    icon: 'home',
+    children: [
+      {
+        name: '权限管理',
+        path: '/Authority/AuthorityManage',
+      },
+      {
+        name: '个人权限',
+        path: '/Authority/SelfAuthorities',
       },
     ],
   },

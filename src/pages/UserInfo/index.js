@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserForm from './components/UserForm';
+//import { Provider } from 'react-redux';
 
 export default class UserInfo extends Component {
   constructor(props) {
@@ -9,9 +10,9 @@ export default class UserInfo extends Component {
 
   render() {
     return (
-      <div className="user-info-page">
-        <UserForm />
-      </div>
+        <div className="user-info-page">
+          <UserForm />
+        </div>
     );
   }
 }
