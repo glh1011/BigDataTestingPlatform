@@ -12,6 +12,7 @@ import AuthorityManage from './pages/AuthorityManage';
 
 import SelfAuthorities from './pages/SelfAuthorities';
 import AddAuthority from './pages/AddAuthority';
+import EditAuthority from './pages/EditAuthority';
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
 
 const routerConfig = [
@@ -49,6 +50,11 @@ const routerConfig = [
     path: '/Authority/AddAuthority',
     layout: NormalLayout,
     component: AddAuthority,
+  },
+  {
+    path: '/Authority/EditAuthority',
+    layout: NormalLayout,
+    component: EditAuthority,
   },
 ];
 

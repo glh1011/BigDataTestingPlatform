@@ -1,7 +1,7 @@
 /* eslint  react/no-string-refs: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Radio, Select, Upload, Grid } from '@icedesign/base';
+import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -78,7 +78,7 @@ export default class SettingsForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>新增权限</h2>
+              <h2 style={styles.formTitle}>编辑权限</h2>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.label}>

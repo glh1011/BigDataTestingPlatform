@@ -5,7 +5,7 @@
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as userFormReducer } from './pages/UserInfo/store';
-import { reducer as authoritiesReducer } from './pages/AuthorityManage/store'
+import { reducer as selfAuthoritiesReducer } from './pages/SelfAuthorities/store'
 
 // Initial routing state
 const routeInitialState = {
@@ -31,7 +31,7 @@ export default function createReducer(injectedReducers) {
   return combineReducers({
     route: routeReducer,
     userForm: userFormReducer,
-    authorities: authoritiesReducer,
+    selfAuthorities: selfAuthoritiesReducer,
     ...injectedReducers,
   });
 }

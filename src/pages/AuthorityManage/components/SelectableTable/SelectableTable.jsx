@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Pagination } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 const getMockData = () => {
   const result = [];
@@ -58,6 +57,14 @@ class SelectableTable extends Component {
     };
   }
 
+  // componentDidMount() {
+  //   axios.get('/mock/authorities.json')
+  //     .then((res)=>{
+  //       console.log(res.data.data);
+  //     })
+  //     .catch(e => console.log("Oops, error", e))
+  // }
+
   clearSelectedKeys = () => {
     this.setState({
       selectedRowKeys: [],
@@ -77,7 +84,9 @@ class SelectableTable extends Component {
   renderOperator = (value, index, record) => {
     return (
       <div>
-        <a>编辑</a>
+        <Link to='/EditAuthority'>
+          编辑
+        </Link>
         <a
           style={styles.removeBtn}
           onClick={this.deleteItem.bind(this, record)}
