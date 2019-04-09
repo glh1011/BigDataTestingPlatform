@@ -12,8 +12,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { actionCreators } from '../../store/';
+import { withRouter } from 'react-router';
 
 const { Row, Col } = Grid;
+
+@withRouter
 class UserForm extends Component {
   static displayName = 'UserForm';
 
@@ -42,26 +45,14 @@ class UserForm extends Component {
     }
   };
 
-  // formChange = (value) => {
-  //   this.setState({
-  //     value,
-  //   });
-  // };
-
-  validateAllFormField = () => {
-    this.refs.form.validateAll((errors, values) => {
-      console.log('values', values);
-    });
-  };
-
   render() {
+    const { value, handleSubmitForm, history } = this.props;
     return (
       <div className="user-form">
         <IceContainer>
           <IceFormBinderWrapper
-            value={this.props.value}
+            value={value}
             onChange={this.props.handleInputChange}
-            // onChange={this.formChange}
             ref="form"
           >
             <div style={styles.formContent}>
@@ -72,7 +63,7 @@ class UserForm extends Component {
                   登录名：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="username" required message="必填">
+                  <IceFormBinder name="userName" required message="必填">
                     <Input
                       size="large"
                       style={{ width: '100%' }}
@@ -88,7 +79,7 @@ class UserForm extends Component {
                   用户等级：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="userRank">
+                  <IceFormBinder name="userLevel">
                   <Input
                       size="large"
                       style={{ width: '100%' }}
@@ -103,7 +94,7 @@ class UserForm extends Component {
                   上级id：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="upperId">
+                  <IceFormBinder name="superiorUserId">
                   <Input
                       size="large"
                       style={{ width: '100%' }}
@@ -118,7 +109,7 @@ class UserForm extends Component {
                   姓名：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="displayName">
+                  <IceFormBinder name="name">
                     <Input
                       size="large"
                       placeholder="请输入昵称"
@@ -151,13 +142,13 @@ class UserForm extends Component {
                 </Col>
               </Row>
 
-              <Row style={styles.formItem}>
+              {/* <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
                   密码：
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder
-                    name="passwd"
+                    name="password"
                     required
                     validator={this.checkPasswd}
                   >
@@ -170,7 +161,7 @@ class UserForm extends Component {
                   </IceFormBinder>
                   <IceFormError name="passwd" />
                 </Col>
-              </Row>
+              </Row> */}
 
             </div>
           </IceFormBinderWrapper>
@@ -180,8 +171,7 @@ class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                // onClick={this.validateAllFormField}
-                onClick={this.props.handleSubmitForm}
+                onClick={()=>handleSubmitForm(value, history)}
               >
                 确认修改
               </Button>
@@ -191,7 +181,7 @@ class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={this.validateAllFormField}
+                onClick={()=>{this.props.history.goBack()}}
               >
                 取消
               </Button>
@@ -202,50 +192,35 @@ class UserForm extends Component {
     );
   }
   componentDidMount() {
-    axios.get('./mock/userInfo.json').then((res) => {
-      const result = res.data.data;
-      console.log(result);
-      const action = {
-        type: 'display_user_info',
-        data: result
-      }
-      console.log(action);
-      this.props.displayInfo(action);
-    })
+    this.props.getSelfInfo();
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    // username: state.userForm.username
-    value: state.userForm.value
+    value: state.userForm.value.data
   }
 }
 
-//store.dispatch
-const mapDispatchToProps = (dispatch) => {
-  return {
-    displayInfo(action) {
-      dispatch(action);
-    },
-    handleInputChange(e) {
-      //const action = constants.CHANGEINPUTVALUE;
-      // const action = {
-      //   type: constants.CHANGEINPUTVALUE,
-      //   // displayName: e.displayName,
-      //   // passwd: e.passwd,
-      //   // email: e.email
-      //   value: e
-      // }
-      dispatch(actionCreators.changeInputValue);
-    },
-    //提交表单
-    handleSubmitForm(e, value) {
-      e.persist();
-      dispatch(actionCreators.submitForm(value));
-    }
+const mapDispatchToProps = (dispatch) => ({
+  getSelfInfo() {
+    dispatch(actionCreators.getInfo());
+  },
+  handleInputChange(e) {
+    console.log(e);
+    dispatch(actionCreators.changeSelfInputValue(e.name, e.email));
+  },
+  //提交表单
+  handleSubmitForm(value, history) {
+    console.log("===============");
+    console.log(value);
+    //console.log(this.props.value);
+    //e.persist();
+    dispatch(actionCreators.submitForm(value.name, value.email, history));
   }
-}
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
 
 const styles = {
   formContent: {
@@ -267,4 +242,3 @@ const styles = {
   },
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserForm);

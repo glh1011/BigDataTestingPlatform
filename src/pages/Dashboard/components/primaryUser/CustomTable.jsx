@@ -1,33 +1,21 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Balloon, Icon } from '@icedesign/base';
+import { Table, Pagination, Balloon, Icon, Button } from '@icedesign/base';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { actionCreators } from './store';
+import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
 
-const getData = () => {
-  return Array.from({ length: 10 }).map((item, index) => {
-    return {
-      id: index + 1,
-      orderID: `12022123${index}`,
-      name: '张一峰',
-      title: '主治医师',
-      date: `2018-06-${index + 1}`,
-      endDate: `2018-06-${index + 1}`,
-      validData: `2018-06-${index + 1}`,
-      category: '皮肤科',
-      state: '已审核',
-      approver: '刘建明',
-      approvalData: `2018-06-${index + 1}`,
-    };
-  });
-};
-
-export default class Home extends Component {
+@withRouter
+class Home extends Component {
   static displayName = 'Home';
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      current: 1,
-      dataSource: getData(),
-    };
+  onRowClick = (record, index, e) => {
+    localStorage.setItem('subUserId',record.userId);
+    //this.props.history.push('/SubUserDetail');
+    var id = record.id;
+    this.props.history.push({ pathname: "/SubUserDetail", state: { id } });
+    //this.props.history.goBack();
   }
 
   handlePagination = (current) => {
@@ -50,20 +38,6 @@ export default class Home extends Component {
     });
   };
 
-  renderCatrgory = (value) => {
-    return (
-      <Balloon
-        align="lt"
-        trigger={<div style={{ margin: '5px' }}>{value}</div>}
-        closable={false}
-        style={{ lineHeight: '24px' }}
-      >
-        皮肤科属于外科，主要治疗各种皮肤病，常见皮肤病有牛皮癣 、 疱疹
-        、酒渣鼻等
-      </Balloon>
-    );
-  };
-
   renderState = (value) => {
     return (
       <div style={styles.state}>
@@ -73,56 +47,67 @@ export default class Home extends Component {
     );
   };
 
-  renderOper = () => {
+  renderOper = (value, index, record) => {
     return (
       <div style={styles.oper}>
-        <Icon type="edit" size="small" style={styles.editIcon} />
+        <Link 
+        // to={{pathname:`/EditSubUser`,state:{id}}}
+        to={{pathname:`/EditSubUser`}} 
+        onClick={(e)=>{localStorage.setItem('subUserId',record.userId); e.stopPropagation();}} 
+        style={{display:'inline-block',marginRight:'10px'}}
+        >编辑</Link>
+        <a>权限</a>
       </div>
     );
   };
 
+  componentDidMount() {
+    this.props.getSubUsers();
+  }
+
+  renderAddBtn = () => {
+    if(parseInt(localStorage.getItem('userLevel'))==0||parseInt(localStorage.getItem('userLevel'))==1) {
+      return (
+        <div style={styles.btnContainer}>
+        <Link to="/addSubUser">
+          <Button size="small" style={styles.batchBtn}>
+            <Icon type="add" />增加人员
+          </Button>
+        </Link>
+      </div>
+      )
+    }
+  }
+
   render() {
-    const { dataSource } = this.state;
+    const { dataSource } = this.props;
     return (
-      <div style={styles.tableContainer}>
+      <div>
+        <div style={styles.IceContainer}>
+          <a style={styles.formTitle}>下级用户</a>
+          { this.renderAddBtn() }
+        </div>
+        <div style={styles.tableContainer}>
         <Table
           dataSource={dataSource}
           onSort={this.handleSort}
           hasBorder={false}
           className="custom-table"
+          onRowClick={this.onRowClick}
         >
           <Table.Column
             width={100}
             lock="left"
             title="序列号"
-            dataIndex="id"
+            dataIndex="userId"
+            // cell={this.renderCatrgory}
             sortable
             align="center"
           />
-          <Table.Column width={100} title="单号" dataIndex="orderID" sortable />
-          <Table.Column width={100} title="名称" dataIndex="name" />
-          <Table.Column width={100} title="职称" dataIndex="title" />
-          <Table.Column width={200} title="入职日期" dataIndex="date" />
-          <Table.Column width={200} title="实习结束日期" dataIndex="endDate" />
-          <Table.Column
-            width={200}
-            title="转正生效日期"
-            dataIndex="validData"
-          />
-          <Table.Column
-            width={200}
-            title="科室"
-            dataIndex="category"
-            cell={this.renderCatrgory}
-          />
-          <Table.Column
-            width={200}
-            title="状态"
-            dataIndex="state"
-            cell={this.renderState}
-          />
-          <Table.Column width={200} title="审核人" dataIndex="approver" />
-          <Table.Column width={200} title="审核日期" dataIndex="approvalData" />
+          <Table.Column width={100} title="登录名" dataIndex="userName" sortable />
+          <Table.Column width={100} title="姓名" dataIndex="name" />
+          <Table.Column width={100} title="上级id" dataIndex="superiorUserId" />
+          <Table.Column width={200} title="邮箱" dataIndex="email" />
           <Table.Column
             width={100}
             title="操作"
@@ -133,15 +118,52 @@ export default class Home extends Component {
         </Table>
         <Pagination
           style={styles.pagination}
-          current={this.state.current}
+          current={this.props.current}
           onChange={this.handlePagination}
         />
       </div>
+      </div>
+
     );
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    dataSource: state.subUsers.subUsers,
+    current: state.subUsers.current
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  getSubUsers() {
+    dispatch(actionCreators.getSubUserList());
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+
 const styles = {
+  formTitle: {
+    display: 'inline-block',
+    fontSize: '18px',
+    fontWeight: '500',
+    lineHeight: '24px',
+  },
+  btnContainer: {
+    float: 'right',
+  },
+  batchBtn: {
+    marginRight: '10px',
+  },
+  IceContainer: {
+    background: 'rgb(255, 255, 255)',
+    borderRadius: '6px',
+    padding: '20px',
+    marginBottom: '20px',
+    minHeight: 'auto',
+    justifyContent: 'space-between',
+  },
   tableContainer: {
     background: '#fff',
     paddingBottom: '10px',
@@ -165,4 +187,37 @@ const styles = {
   stateText: {
     color: '#28a745',
   },
+
+  //个人信息卡片
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    head: {
+      display: 'flex',
+      paddingBottom: '10px',
+      borderBottom: '1px dotted #eee',
+    },
+    name: {
+      padding: '0 10px',
+      margin: 0,
+    },
+    deptName: {
+      padding: '0 10px',
+      margin: 0,
+      fontSize: '12px',
+    },
+    body: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      paddingTop: '10px',
+    },
+    profileItem: {
+      width: '50%',
+      lineHeight: '26px',
+    },
+    itemIcon: {
+      color: '#8a9099',
+      marginRight: '5px',
+    }
 };

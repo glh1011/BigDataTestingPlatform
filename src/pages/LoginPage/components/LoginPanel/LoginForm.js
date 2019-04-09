@@ -37,7 +37,11 @@ export default class LoginFrom extends Component {
   }) => {
     return new Promise((resolve, reject) => {
       loginByusername(username, password).then(data => {
+        console.log("是登录传出的参数吗?");
+        console.log(data);
         if (data) {
+          localStorage.setItem('userLevel',data.userLevel);
+          localStorage.setItem('userId',data.userId);
           const USER = {
             username,
             password,

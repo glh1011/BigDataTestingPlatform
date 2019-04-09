@@ -24,29 +24,35 @@ const asideMenuConfig = [
     name: '用户管理',
     path: '/dashboard',
     icon: 'home2',
+    isVisible: true,
     children: [
       {
-        name: '一级用户',
+        name: '下级用户',
         path: '/dashboard/primaryUser',
+        isVisible: true,
       },
-      {
-        name: '二级用户',
-        path: '/dashboard/secondaryUser',
-      },
+      // {
+      //   name: '二级用户',
+      //   path: '/dashboard/secondaryUser',
+      //   isVisible: false,
+      // },
     ],
   },
   {
     name: '权限管理',
     path: '/Authority',
     icon: 'home',
+    isVisible: true,
     children: [
       {
         name: '权限管理',
         path: '/Authority/AuthorityManage',
+        isVisible: false,
       },
       {
         name: '个人权限',
         path: '/Authority/SelfAuthorities',
+        isVisible: true,
       },
     ],
   },

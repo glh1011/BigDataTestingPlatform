@@ -2,68 +2,40 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Pagination } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { isDeepStrictEqual } from 'util';
 
-const getMockData = () => {
-  const result = [];
-  for (let i = 0; i < 10; i++) {
-    result.push({
-      id: 100306660940 + i,
-      // name: `Quotation for 1PCS Nano ${3 + i}.0 controller compatible`,
-      name: '查看下级人员列表',
-      description: '所有用户都具有的权限所有用户都具有的权限',
-      type: '所有用户拥有',
-      time: 2000 + i,
-    });
-  }
-  return result;
-};
+export default class SelectableTable extends Component {
 
-class SelectableTable extends Component {
   static displayName = 'SelectableTable';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   constructor(props) {
     super(props);
-
     // 表格可以勾选配置项
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
-      onChange: (ids) => {
+      onChange: (ids, records) => {
+        console.log(records);
         console.log('ids', ids);
         this.setState({
-          selectedRowKeys: ids,
+          selectedRowKeys: ids
         });
+      },
+      onSelect: (selected, record, records) => {
+        console.log('onSelect', selected, record, records);
       },
       // 全选表格时触发的回调
       onSelectAll: (selected, records) => {
         console.log('onSelectAll', selected, records);
       },
-      
-      // // 支持针对特殊行进行定制，使某一行禁用
-      // getProps: (record) => {
-      //   return {
-      //     disabled: record.id === 100306660941,
-      //   };
-      // },
-
     };
 
     this.state = {
       selectedRowKeys: [],
-      dataSource: getMockData(),
+      // dataSource: getMockData(),
+      dataSource: [],
     };
-  }
-
-  // componentDidMount() {
-  //   axios.get('/mock/authorities.json')
-  //     .then((res)=>{
-  //       console.log(res.data.data);
-  //     })
-  //     .catch(e => console.log("Oops, error", e))
-  // }
+   }
 
   clearSelectedKeys = () => {
     this.setState({
@@ -84,7 +56,9 @@ class SelectableTable extends Component {
   renderOperator = (value, index, record) => {
     return (
       <div>
-        <Link to='/EditAuthority'>
+        <Link to='/Authority/EditAuthority'
+        onClick={(e)=>{localStorage.setItem('permissionId',record.permissionId); e.stopPropagation();}}
+        >
           编辑
         </Link>
         <a
@@ -97,11 +71,25 @@ class SelectableTable extends Component {
     );
   };
 
+  componentDidMount() {
+    axios.get('http://192.168.0.216:8080/permission/findAllPermisson?pageNum=1&pageSize=10').then((res) => {
+    //axios.get('/mock/authorities.json').then((res) => {
+      // const data = res.data.data.authorities;
+      const data = res.data.data;
+      console.log(res);
+      this.setState({
+        dataSource: data,
+      });
+    }).catch(() => {
+      console.log('error');
+    })
+  }
+
   render() {
     return (
       <div className="selectable-table" style={styles.selectableTable}>
         <IceContainer style={styles.IceContainer}>
-          <a style={styles.formTitle}>个人权限</a>
+          <a style={styles.formTitle}>系统权限</a>
           <div style={styles.btnContainer}>
             <Link to="/Authority/AddAuthority">
               <Button size="small" style={styles.batchBtn}>
@@ -131,14 +119,19 @@ class SelectableTable extends Component {
             isLoading={this.state.isLoading}
             rowSelection={{
               ...this.rowSelection,
-              selectedRowKeys: this.state.selectedRowKeys,
+               selectedRowKeys: this.state.selectedRowKeys
             }}
           >
-            <Table.Column title="编号" dataIndex="id" width={120} />
+            {/* <Table.Column title="编号" dataIndex="id" width={120} />
             <Table.Column title="名称" dataIndex="name" width={160} />
             <Table.Column title="描述" dataIndex="description" width={350} />
             <Table.Column title="类型" dataIndex="type" width={160} />
-            <Table.Column title="创建时间" dataIndex="time" width={120} />
+            <Table.Column title="创建时间" dataIndex="time" width={120} /> */}
+            <Table.Column title="编号" dataIndex="permissionId" width={50} />
+            <Table.Column title="名称" dataIndex="opName" width={230} />
+            <Table.Column title="级别" dataIndex="opLevel" width={50} />
+            <Table.Column title="创建者" dataIndex="creator" width={100} />
+            <Table.Column title="创建时间" dataIndex="createTime" width={280} />
             <Table.Column
               title="操作"
               cell={this.renderOperator}
@@ -153,24 +146,8 @@ class SelectableTable extends Component {
       </div>
     );
   }
+
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     //有两级
-//     dataSource: state.authorities.authorities,
-//     selectedRowKeys: state.authorities.selectedRowKeys
-//   }
-// }
-
-// //store.dispatch
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//   }
-// }
-
-//export default connect(mapStateToProps, null)(SelectableTable);
-export default SelectableTable;
 
 const styles = {
   formTitle: {

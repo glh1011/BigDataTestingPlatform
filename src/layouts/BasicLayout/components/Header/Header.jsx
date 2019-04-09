@@ -93,13 +93,13 @@ class Header extends PureComponent {
               <li className="user-profile-menu-item">
                 <Link to="/UserInfo">
                   <FoundationSymbol type="person" size="small" />
-                  我的主页
+                  个人信息
                 </Link>
               </li>
               <li className="user-profile-menu-item">
-                <Link to="/">
+                <Link to="/ChangeSelfPwd">
                   <FoundationSymbol type="repair" size="small" />
-                  设置
+                  重设密码
                 </Link>
               </li>
               <li className="user-profile-menu-item">

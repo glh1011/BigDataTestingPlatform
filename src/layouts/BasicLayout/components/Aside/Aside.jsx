@@ -11,6 +11,7 @@ import { asideMenuConfig } from '../../../../menuConfig';
 
 import './scss/dark.scss';
 import './scss/light.scss';
+
 @withRouter
 export default class Aside extends Component {
   static propTypes = {};
@@ -135,12 +136,30 @@ export default class Aside extends Component {
     if (!menusData) {
       return [];
     }
-
-    return menusData
+    console.log("当前用户等级是");
+    console.log(localStorage.getItem('userLevel'));
+    if (parseInt(localStorage.getItem('userLevel')) == 0){
+      return menusData
       .filter((item) => item.name && !item.hideInMenu)
       .map((item, index) => {
         return this.getSubMenuOrItem(item, index);
       });
+    }else {
+      return menusData
+      .filter((item) => {
+        return item.name && !item.hideInMenu && item.isVisible
+      })
+      .map((item, index) => {
+        return this.getSubMenuOrItem(item, index);
+      });
+    }
+    // return menusData
+    //   .filter((item) => {
+    //     return item.name && !item.hideInMenu && item.isVisible
+    //   })
+    //   .map((item, index) => {
+    //     return this.getSubMenuOrItem(item, index);
+    //   });
   };
 
   /**

@@ -17,7 +17,7 @@ export default class PrimaryUser extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <TableFilter />
+        {/* <TableFilter /> */}
         <CustomTable />
       </div>
     );

@@ -29,6 +29,7 @@ export default function checkStore(store) {
    timestamp
  */
 const EXPIRES_TIME = 3600 * 24; // 超过一天即为失效
+//const EXPIRES_TIME = 120;
 export function checkAuthState() {
   const nowStamp = Math.floor(new Date().getTime() / 1000);
 

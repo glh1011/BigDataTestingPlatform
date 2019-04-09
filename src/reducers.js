@@ -5,7 +5,15 @@
 import { combineReducers } from 'redux';
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { reducer as userFormReducer } from './pages/UserInfo/store';
-import { reducer as selfAuthoritiesReducer } from './pages/SelfAuthorities/store'
+import { reducer as selfAuthoritiesReducer } from './pages/SelfAuthorities/store';
+import { reducer as allAuthoritiesReducer } from './pages/AuthorityManage/store';
+import { reducer as editAuthorityReducer } from './pages/EditAuthority/store';
+import { reducer as subUsersReducer } from './pages/Dashboard/components/primaryUser/store';
+import { reducer as subUserDetailReducer } from './pages/SubUserDetail/store';
+import { reducer as addAuthorityReducer } from './pages/AddAuthority/store';
+import { reducer as resetPasswordReducer } from './pages/ChangeSelfPwd/store';
+import { reducer as addSubUserReducer } from './pages/AddSubUser/store';
+import { reducer as editSubUserReducer } from './pages/EditSubUser/store';
 
 // Initial routing state
 const routeInitialState = {
@@ -32,6 +40,14 @@ export default function createReducer(injectedReducers) {
     route: routeReducer,
     userForm: userFormReducer,
     selfAuthorities: selfAuthoritiesReducer,
+    allAuthorities: allAuthoritiesReducer,
+    subUsers: subUsersReducer,
+    editAuthority: editAuthorityReducer,
+    subUserDetail: subUserDetailReducer,
+    addAuthority: addAuthorityReducer,
+    resetPassword: resetPasswordReducer,
+    addSubUser: addSubUserReducer,
+    editSubUser: editSubUserReducer,
     ...injectedReducers,
   });
 }

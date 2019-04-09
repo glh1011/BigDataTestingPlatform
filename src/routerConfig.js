@@ -13,6 +13,11 @@ import AuthorityManage from './pages/AuthorityManage';
 import SelfAuthorities from './pages/SelfAuthorities';
 import AddAuthority from './pages/AddAuthority';
 import EditAuthority from './pages/EditAuthority';
+import AddSubUser from './pages/AddSubUser';
+import SubUserDetail from './pages/SubUserDetail';
+import ChangeSelfPwd from './pages/ChangeSelfPwd';
+
+import EditSubUser from './pages/EditSubUser';
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
 
 const routerConfig = [
@@ -22,9 +27,9 @@ const routerConfig = [
     component: Dashboard,
   },
   {
-    path: '/dashboard/secondaryUser',
+    path: '/Authority/AddAuthority',
     layout: NormalLayout,
-    component: Dashboard,
+    component: AddAuthority,
   },
   {
     path: '/login',
@@ -42,19 +47,39 @@ const routerConfig = [
     component: AuthorityManage,
   },
   {
+    path: '/dashboard/secondaryUser',
+    layout: NormalLayout,
+    component: Dashboard,
+  },
+  {
     path: '/Authority/SelfAuthorities',
     layout: NormalLayout,
     component: SelfAuthorities,
   },
   {
-    path: '/Authority/AddAuthority',
-    layout: NormalLayout,
-    component: AddAuthority,
-  },
-  {
     path: '/Authority/EditAuthority',
     layout: NormalLayout,
     component: EditAuthority,
+  },
+  {
+    path: '/AddSubUser',
+    layout: NormalLayout,
+    component: AddSubUser,
+  },
+  {
+    path: '/SubUserDetail',
+    layout: NormalLayout,
+    component: SubUserDetail,
+  },
+  {
+    path: '/ChangeSelfPwd',
+    layout: NormalLayout,
+    component: ChangeSelfPwd,
+  },
+  {
+    path: '/EditSubUser',
+    layout: NormalLayout,
+    component: EditSubUser,
   },
 ];
 

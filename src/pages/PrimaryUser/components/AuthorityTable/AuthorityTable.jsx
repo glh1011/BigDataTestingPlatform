@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TableFilter from './TableFilter';
+// import TableFilter from './TableFilter';
 import CustomTable from './CustomTable';
 
 export default class AuthorityTable extends Component {
@@ -17,7 +17,6 @@ export default class AuthorityTable extends Component {
   render() {
     return (
       <div style={styles.container}>
-        <TableFilter />
         <CustomTable />
       </div>
     );
