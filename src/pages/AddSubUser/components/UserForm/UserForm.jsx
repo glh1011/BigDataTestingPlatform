@@ -1,16 +1,13 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button, Select } from '@icedesign/base';
+import { Input, Grid, Button, Select } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder/lib';
-// import store from '../../store';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import axios from 'axios';
 import { actionCreators } from '../../store/';
 import { withRouter } from 'react-router';
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as constants from './constants';
-import userForm from '../../../reducers.js'
+import userForm from '../../../reducers.js';
+import { Feedback } from '@icedesign/base';
 
 const changeSelfInfo = (data) => ({
   type: constants.SETSELFINFO,
@@ -38,9 +39,12 @@ export const submitForm = (name, email, history) => {
     .then(function (response) {
     console.log(response);
     if(response.data.meta.success){
+      Feedback.toast.success("个人信息修改成功");
       //跳转回上一页
       console.log(history);
       history.goBack();
+    }else{
+      Feedback.toast.error("个人信息修改成功");
     }
     })
     .catch(function (error) {

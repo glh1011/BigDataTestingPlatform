@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as constants from './constants';
+import { Feedback } from '@icedesign/base';
 
 export const changeFormValue = (value) => ({
   type: constants.ADDSUBUSERFORMCHANGE,
@@ -24,8 +25,11 @@ export const addSubUser = (value, history) => {
     })
     .then(function (response) {
     if(response.data.meta.success){
+      Feedback.toast.success('添加人员成功！');
       history.goBack();
       dispatch(resetAddSubUser());
+    }else{
+      Feedback.toast.error('添加人员失败！');
     }
     })
     .catch(function (error) {

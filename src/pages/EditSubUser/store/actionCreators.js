@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as constants from './constants';
 import userForm from '../../../reducers.js'
+import { Feedback } from '@icedesign/base';
 
 const changeSelfInfo = (data) => ({
   type: constants.SETSELFINFO,
@@ -37,12 +38,14 @@ export const submitForm = (name, email, history) => {
     axios.post(url)
     .then(function (response) {
       if(response.data.meta.success){
+        Feedback.toast.success("下级人员信息修改成功");
         history.goBack();
+      }else{
+        Feedback.toast.error("下级人员信息修改失败");
       }
     })
     .catch(function (error) {
       alert("Oops!"+error);
     });
   }
-   
 };

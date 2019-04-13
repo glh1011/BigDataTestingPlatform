@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Balloon, Icon, Button } from '@icedesign/base';
+import { Table, Icon, Button, Pagination } from '@alifd/next';
+// import { Pagination } from '@alifd/next';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
@@ -17,12 +18,6 @@ class Home extends Component {
     this.props.history.push({ pathname: "/SubUserDetail", state: { id } });
     //this.props.history.goBack();
   }
-
-  handlePagination = (current) => {
-    this.setState({
-      current,
-    });
-  };
 
   handleSort = (dataIndex, order) => {
     const dataSource = this.state.dataSource.sort((a, b) => {
@@ -50,13 +45,16 @@ class Home extends Component {
   renderOper = (value, index, record) => {
     return (
       <div style={styles.oper}>
-        <Link 
-        // to={{pathname:`/EditSubUser`,state:{id}}}
+        <Link
         to={{pathname:`/EditSubUser`}} 
         onClick={(e)=>{localStorage.setItem('subUserId',record.userId); e.stopPropagation();}} 
         style={{display:'inline-block',marginRight:'10px'}}
         >编辑</Link>
-        <a>权限</a>
+        <Link 
+        to={{pathname:`/EditSubUserPermission`}} 
+        onClick={(e)=>{localStorage.setItem('subUserId',record.userId); e.stopPropagation();}} 
+        style={{display:'inline-block',marginRight:'10px'}}
+        >权限</Link>
       </div>
     );
   };
@@ -118,8 +116,8 @@ class Home extends Component {
         </Table>
         <Pagination
           style={styles.pagination}
-          current={this.props.current}
-          onChange={this.handlePagination}
+          onChange={this.props.onChange}
+          total={this.props.total}
         />
       </div>
       </div>
@@ -131,13 +129,22 @@ class Home extends Component {
 const mapStateToProps = (state) => {
   return {
     dataSource: state.subUsers.subUsers,
-    current: state.subUsers.current
+    current: state.subUsers.current,
+    total: state.subUsers.total
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   getSubUsers() {
-    dispatch(actionCreators.getSubUserList());
+    var current = 1;
+    dispatch(actionCreators.getSubUserList(current));
+  },
+
+  //分页
+  onChange(current) {
+    console.log("分页被点击");
+    console.log(current);
+    dispatch(actionCreators.getSubUserList(current));
   }
 })
 

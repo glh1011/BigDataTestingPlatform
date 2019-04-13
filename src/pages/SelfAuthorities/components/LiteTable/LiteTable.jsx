@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Table } from '@icedesign/base';
+import { Table } from '@alifd/next';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
@@ -43,7 +43,7 @@ class LiteTable extends Component {
     .then((res)=>{
       const action = {
         type: 'dispaly_self_authorities',
-        tableData: res.data.data
+        tableData: res.data.data.list
       }
       this.props.displaySelfAuthorities(action);
     })

@@ -1,7 +1,7 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button, Select } from '@icedesign/base';
+import { Input, Grid, Button, Select, Icon } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -13,6 +13,7 @@ import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import { actionCreators } from '../../store/';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const { Row, Col } = Grid;
 @withRouter
@@ -55,7 +56,16 @@ class UserForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
+            <div style={styles.titleContainer}>
               <h2 style={styles.formTitle}>个人信息</h2>
+              <div style={styles.btnContainer}>
+                <Link to="/ChangeSubUserPwd">
+                  <Button size="small" style={styles.batchBtn}>
+                    <Icon type="add" />修改人员密码
+                  </Button>
+                  </Link>
+              </div>
+            </div>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
@@ -228,6 +238,13 @@ const styles = {
     width: '100%',
     position: 'relative',
   },
+  btnContainer: {
+    float: 'right',
+  },
+  batchBtn: {
+    marginRight: '10px',
+    marginTop: '20px',
+  },
   formItem: {
     marginBottom: 25,
   },
@@ -237,9 +254,12 @@ const styles = {
     textAlign: 'right',
   },
   formTitle: {
-    margin: '0 0 20px',
     paddingBottom: '10px',
-    borderBottom: '1px solid #eee',
+    display: 'inline-block',
   },
+  titleContainer: {
+    borderBottom: '1px solid #eee',
+    margin: '0 0 20px',
+  }
 };
 

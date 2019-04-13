@@ -83,11 +83,11 @@ export default class MainLayout extends Component {
     const Middle = this.props.cp;
 
     const layout = (
-      <Layout fixable>
-        <Layout.Main>
+      // <Layout fixable>
+      //   <Layout.Main>
           <Middle />
-        </Layout.Main>
-      </Layout>
+      //   </Layout.Main>
+      // </Layout>
     );
 
     return <div className={layoutClassName}>{layout}</div>;

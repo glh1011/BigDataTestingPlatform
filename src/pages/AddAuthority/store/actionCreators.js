@@ -1,10 +1,16 @@
 import axios from 'axios';
 import * as constants from './constants';
+// import { Message } from '@alifd/next';
+import { Feedback } from '@icedesign/base';
 
 export const changeInputValue = (value) => ({
   type: constants.CHANGEINPUTVALUE,
   value
 });
+
+export const resetAddForm = () => ({
+  type: constants.RESETADDFORM
+})
 
 export const addAuthority = (value, history) => {
   console.log('\\\\\\\\\\\\\\\\\\\\\\\\\\');
@@ -17,7 +23,11 @@ export const addAuthority = (value, history) => {
     })
     .then(function (response) {
       if(response.data.meta.success){
+        Feedback.toast.success("success");
         history.goBack();
+        dispatch(resetAddForm());
+      }else{
+        Feedback.toast.error("failed");
       }
     })
     .catch(function (error) {

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Button, Icon, Pagination } from '@icedesign/base';
+import { Table, Button, Icon, Pagination, Dialog } from '@alifd/next';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isDeepStrictEqual } from 'util';
+import { Feedback } from '@icedesign/base';
+import { withRouter } from 'react-router';
 
+@withRouter
 export default class SelectableTable extends Component {
 
   static displayName = 'SelectableTable';
@@ -34,6 +37,10 @@ export default class SelectableTable extends Component {
       selectedRowKeys: [],
       // dataSource: getMockData(),
       dataSource: [],
+      show: false,
+      idWillDelete: '',
+      total: 0,
+      current: 1
     };
    }
 
@@ -49,9 +56,65 @@ export default class SelectableTable extends Component {
   };
 
   deleteItem = (record) => {
-    const { id } = record;
-    console.log('delete item', id);
+    const { permissionId } = record;
+    console.log('delete item', permissionId);
+    this.setState({
+      show: true,
+      idWillDelete: permissionId
+    })
   };
+
+  //弹窗的相关方法
+  onOpen = () => {
+    this.setState({
+        show: true
+    });
+};
+
+onClose = reason => {
+    console.log(reason);
+    this.setState({
+      show: false
+    });
+};
+
+deleteSubmit = () => {
+  var current = this.state.current;
+  var that = this;
+  var url = 'http://192.168.0.216:8080/permission/deletePermissionById?id='+this.state.idWillDelete;
+  axios
+    .post(url)
+    .then(function(response) {
+      console.log(response);
+      if(response.data.meta.success){
+        Feedback.toast.success('删除权限成功');
+        that.listRender(current);
+      }else{
+        Feedback.toast.error('删除权限失败');
+      }
+    })
+    .catch(function (error) {
+      alert("Oops!"+error);
+    });
+  }
+
+onChange = (current) => {
+  var url = 'http://192.168.0.216:8080/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
+  axios.get(url).then((res) => {
+      const data = res.data.data.list;
+      const total = res.data.data.total;
+      console.log("页码改变后的"+current);
+      console.log(res);
+      this.setState({
+        dataSource: data,
+        total: total,
+        current: current
+      });
+      console.log(this.state.dataSource);
+    }).catch(() => {
+      console.log('error');
+    })
+  }
 
   renderOperator = (value, index, record) => {
     return (
@@ -71,22 +134,37 @@ export default class SelectableTable extends Component {
     );
   };
 
-  componentDidMount() {
-    axios.get('http://192.168.0.216:8080/permission/findAllPermisson?pageNum=1&pageSize=10').then((res) => {
-    //axios.get('/mock/authorities.json').then((res) => {
-      // const data = res.data.data.authorities;
-      const data = res.data.data;
+  listRender(currentPage) {
+    var url = 'http://192.168.0.216:8080/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
+    axios.get(url).then((res) => {
+      const data = res.data.data.list;
+      const total = res.data.data.total;
+      console.log("listrender中");
       console.log(res);
       this.setState({
         dataSource: data,
+        total: total
       });
     }).catch(() => {
       console.log('error');
     })
   }
 
+  componentDidMount() {
+    this.listRender(1);
+  }
+
   render() {
     return (
+      <div>
+        <Dialog
+          title="删除权限？"
+          visible={this.state.show}
+          onOk={()=>{this.deleteSubmit();this.setState({show:false}); this.onClose.bind(this, 'okClick')}}
+          onCancel={this.onClose.bind(this, 'cancelClick')}
+          onClose={this.onClose}>
+          Are you sure to delete this permission?
+      </Dialog>
       <div className="selectable-table" style={styles.selectableTable}>
         <IceContainer style={styles.IceContainer}>
           <a style={styles.formTitle}>系统权限</a>
@@ -116,17 +194,12 @@ export default class SelectableTable extends Component {
         <IceContainer>
           <Table
             dataSource={this.state.dataSource}
-            isLoading={this.state.isLoading}
+            loading={this.state.loading}
             rowSelection={{
               ...this.rowSelection,
                selectedRowKeys: this.state.selectedRowKeys
             }}
           >
-            {/* <Table.Column title="编号" dataIndex="id" width={120} />
-            <Table.Column title="名称" dataIndex="name" width={160} />
-            <Table.Column title="描述" dataIndex="description" width={350} />
-            <Table.Column title="类型" dataIndex="type" width={160} />
-            <Table.Column title="创建时间" dataIndex="time" width={120} /> */}
             <Table.Column title="编号" dataIndex="permissionId" width={50} />
             <Table.Column title="名称" dataIndex="opName" width={230} />
             <Table.Column title="级别" dataIndex="opLevel" width={50} />
@@ -140,9 +213,10 @@ export default class SelectableTable extends Component {
             />
           </Table>
           <div style={styles.pagination}>
-            <Pagination onChange={this.change} />
+            <Pagination onChange={this.onChange} total={this.state.total} style={styles.pagination}/>
           </div>
         </IceContainer>
+      </div>
       </div>
     );
   }
@@ -172,7 +246,23 @@ const styles = {
     marginLeft: 10,
   },
   pagination: {
-    textAlign: 'right',
+    textAlign: 'center',
     paddingTop: '26px',
   },
+  dialog: {
+    width:'400px', 
+    height:'250px',
+    background: '#fff',
+    border: '1px #bfbfbf solid',
+    borderRadius: '10px',
+    position:'absolute',
+    top:'50%',
+    left:'50%',
+    marginLeft:'-200px',
+    marginTop:'-125px',
+    zIndex:'10'
+  },
+  dialogText: {
+    padding: '30px',
+  }
 };

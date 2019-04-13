@@ -3,27 +3,21 @@ import * as constants from './constants';
 
 const defaultState = {
    value: {
-    // username: '用户一',
-    // userRank: '',
-    // upperId: '',
-    // passwd: '',
-    // displayName: '',
-    // email: '',
-   },
+   }
 };
 //输入框中改变state改变
 export default (state = defaultState, action) => {
   if(action.type == constants.CHANGEINPUTVALUE){
+    console.log("1111")
     const newState = JSON.parse(JSON.stringify(state));
-    newState.value.name = action.name;
-    newState.value.email = action.email;
+    console.log(newState)
     return newState;
   }
   //获取到接口数据并设置state
-  if(action.type == constants.SETSELFINFO) {
+  if(action.type == constants.GETPERMISSIONS) {
     const newState = JSON.parse(JSON.stringify(state));
-    newState.value = action.data;
+    newState.permissions = action.permissions;
     return newState;
-  }  
+  }
   return state;
 }

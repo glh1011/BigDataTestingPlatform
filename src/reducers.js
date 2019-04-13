@@ -14,6 +14,8 @@ import { reducer as addAuthorityReducer } from './pages/AddAuthority/store';
 import { reducer as resetPasswordReducer } from './pages/ChangeSelfPwd/store';
 import { reducer as addSubUserReducer } from './pages/AddSubUser/store';
 import { reducer as editSubUserReducer } from './pages/EditSubUser/store';
+import { reducer as PermissionFormReducer } from './pages/EditSubUserPermission/store';
+import { reducer as resetSubUserPasswordReducer } from './pages/ChangeSubUserPwd/store'
 
 // Initial routing state
 const routeInitialState = {
@@ -48,6 +50,8 @@ export default function createReducer(injectedReducers) {
     resetPassword: resetPasswordReducer,
     addSubUser: addSubUserReducer,
     editSubUser: editSubUserReducer,
+    PermissionForm: PermissionFormReducer,
+    resetSubUserPassword: resetSubUserPasswordReducer,
     ...injectedReducers,
   });
 }

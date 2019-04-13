@@ -1,7 +1,7 @@
 /* eslint  react/no-string-refs: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@icedesign/base';
+import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -46,7 +46,7 @@ class SettingsForm extends Component {
                   <IceFormBinder name="opName" required max={10} message="必填">
                     <Input size="large" placeholder="请输入权限名称" />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="opName" />
                 </Col>
               </Row>
 
@@ -70,17 +70,6 @@ class SettingsForm extends Component {
                 </Col>
               </Row>
 
-              {/* <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
-                  修改人：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder name="modifier">
-                    <Input size="large" multiple placeholder="请输入描述..." />
-                  </IceFormBinder>
-                  <IceFormError />
-                </Col>
-              </Row> */}
             </div>
           </IceFormBinderWrapper>
 
@@ -104,7 +93,7 @@ class SettingsForm extends Component {
 
 const mapState = (state) => {
   return {
-    value: state.editAuthority.value
+    value: state.addAuthority.value
   }
 }
 

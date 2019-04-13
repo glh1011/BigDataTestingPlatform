@@ -1,7 +1,7 @@
 /* eslint  react/no-string-refs: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@icedesign/base';
+import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@alifd/next';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -11,11 +11,13 @@ import './SettingsForm.scss';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
+import { withRouter } from 'react-router';
 
 const { Row, Col } = Grid;
 const { Group: RadioGroup } = Radio;
 const { ImageUpload } = Upload;
 
+@withRouter
 class SettingsForm extends Component {
   static displayName = 'SettingsForm';
 
@@ -24,7 +26,7 @@ class SettingsForm extends Component {
   static defaultProps = {};
 
   render() {
-    const { value, formChange, submitModify } = this.props;
+    const { value, formChange, submitModify, history } = this.props;
     return (
       <div className="settings-form">
         <IceContainer>
@@ -68,17 +70,6 @@ class SettingsForm extends Component {
                 </Col>
               </Row>
 
-              {/* <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.label}>
-                  修改人：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder name="modifier">
-                    <Input size="large" multiple placeholder="请输入描述..." />
-                  </IceFormBinder>
-                  <IceFormError />
-                </Col>
-              </Row> */}
             </div>
           </IceFormBinderWrapper>
 
@@ -88,7 +79,7 @@ class SettingsForm extends Component {
                 size="large"
                 type="primary"
                 style={{ width: 100 }}
-                onClick={()=>submitModify(value)}
+                onClick={()=>submitModify(value, history)}
               >
                 提 交
               </Button>
@@ -99,9 +90,9 @@ class SettingsForm extends Component {
     );
   }
 
-componentDidMount() {
-  this.props.displayAuthorityInfo();
-}
+  componentDidMount() {
+    this.props.displayAuthorityInfo();
+  }
 
 }
 
@@ -117,9 +108,9 @@ const mapDispatch = (dispatch) => {
     displayAuthorityInfo() {
       dispatch(actionCreators.getAuthorityDetail());
     },
-    submitModify(value) {
+    submitModify(value, history) {
       console.log(value);
-      dispatch(actionCreators.modifyAuthority(value));
+      dispatch(actionCreators.modifyAuthority(value, history));
     },
     formChange(e) {
       //console.log(e);

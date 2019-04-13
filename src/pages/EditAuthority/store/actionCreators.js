@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as constants from './constants';
+import { Feedback } from '@icedesign/base';
 
 const changeAuthorityInfo = (value) => ({
   type: constants.DISPLAYAUTHORITYINFO,
@@ -24,7 +25,7 @@ export const changeInputValue = (value) => ({
   value
 });
 
-export const modifyAuthority = (value) => {
+export const modifyAuthority = (value, history) => {
   console.log('\\\\\\\\\\\\\\\\\\\\\\\\\\');
   console.log(value);
   return (dispatch) => {
@@ -32,13 +33,19 @@ export const modifyAuthority = (value) => {
       deleted: 0,
       opLevel: parseInt(value.opLevel),
       opName: value.opName,
-      permissionId: parseInt(localStorage.getItem('userId'))
+      permissionId: parseInt(localStorage.getItem('permissionId'))
     })
     .then(function (response) {
       console.log(response.data);
+      if(response.data.meta.success){
+        Feedback.toast.success("权限修改成功");
+        history.goBack();
+      }else{
+        Feedback.toast.error("权限修改失败");
+      }
     })
     .catch(function (error) {
-      console.log(error);
+      alert("Oops"+error);
     });
   }
 }

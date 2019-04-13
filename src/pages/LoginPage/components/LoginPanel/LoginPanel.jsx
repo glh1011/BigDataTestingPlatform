@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from '@icedesign/base';
+import { Grid } from '@alifd/next';
 import LoginIntro from './LoginIntro';
 import LoginForm from './LoginForm';
 
@@ -16,7 +16,7 @@ export default class LoginPanel extends Component {
 
   render() {
     return (
-      <div style={styles.container}>
+      // <div style={styles.container}>
         <Row wrap style={styles.row}>
           <Col l="16" style={styles.col}>
             <LoginIntro />
@@ -27,7 +27,7 @@ export default class LoginPanel extends Component {
             </div>
           </Col>
         </Row>
-      </div>
+      // </div>
     );
   }
 }

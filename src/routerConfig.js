@@ -18,7 +18,9 @@ import SubUserDetail from './pages/SubUserDetail';
 import ChangeSelfPwd from './pages/ChangeSelfPwd';
 
 import EditSubUser from './pages/EditSubUser';
+import ChangeSubUserPwd from './pages/ChangeSubUserPwd'
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
+import EditSubUserPermission from './pages/EditSubUserPermission';
 
 const routerConfig = [
   {
@@ -80,6 +82,16 @@ const routerConfig = [
     path: '/EditSubUser',
     layout: NormalLayout,
     component: EditSubUser,
+  },
+  {
+    path: '/ChangeSubUserPwd',
+    layout: NormalLayout,
+    component: ChangeSubUserPwd,
+  },
+  {
+    path: '/EditSubUserPermission',
+    layout: NormalLayout,
+    component: EditSubUserPermission,
   },
 ];
 

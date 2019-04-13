@@ -2,6 +2,7 @@ import * as constants from './constants';
 
 const defaultState = {
    current: 1,
+   total: 0,
    subUsers: []
   // current: 1,
   // subUsers: [{
@@ -25,6 +26,7 @@ export default(state=defaultState, action) => {
       const newState = JSON.parse(JSON.stringify(state));
       //newState.current = action.current;
       newState.subUsers = action.subUsers;
+      newState.total = action.total;
       console.log(newState);
       return newState;
     default:

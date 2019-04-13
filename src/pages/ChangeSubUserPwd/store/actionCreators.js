@@ -15,22 +15,23 @@ export const modifyPwd = (value, history) => {
   console.log("修改密码");
   console.log(value.passwd, value.rePasswd);
   return (dispatch) => {
-    axios.post('http://192.168.0.216:8080/user/changePassword', {
+    axios.post('http://192.168.0.216:8080/user/changeSubPassword', {
       newPassword: value.passwd,
       confirmPassword: value.rePasswd,
-      id: parseInt(localStorage.getItem('userId')),
+      id: parseInt(localStorage.getItem('subUserId')),
       oldPassword: value.oldPasswd
     })
     .then(function (response) {
       console.log(response.data.meta.success);
       if(response.data.meta.success){
         //跳转回上一页
-        Feedback.toast.success('修改密码成功');
+        Feedback.toast.success('重置下级人员密码成功');
         console.log(history);
         history.goBack();
         dispatch(resetPwdForm());
       }else{
-        Feedback.toast.error('修改密码成功');
+        Feedback.toast.error("重置下级人员密码失败");
+        dispatch(resetPwdForm());
       }
     })
     .catch(function (error) {

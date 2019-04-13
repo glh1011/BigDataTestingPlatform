@@ -67,7 +67,7 @@ class ChangePasswordForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>修改密码</h2>
+              <h2 style={styles.formTitle}>重置下级用户密码</h2>
 
               <Row wrap style={styles.formItem}>
                 <Col xxs="7" s="4" l="3" style={styles.formLabel}>
@@ -157,7 +157,7 @@ class ChangePasswordForm extends Component {
 
 const mapState = (state) => {
   return {
-    value: state.resetPassword.value
+    value: state.resetSubUserPassword.value
   }
 }
 
