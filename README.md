@@ -6,7 +6,7 @@ big data testing platform
 - 启动服务 npm/yarn run start
 - 构件项目 npm run build
 
-### Dependencies
+ Dependencies
 - Visual Studio Code
 - Iceworks
 - Git
