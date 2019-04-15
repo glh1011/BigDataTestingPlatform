@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Icon, Pagination, Dialog } from '@alifd/next';
+import { Table, Button, Icon, Pagination, Dialog } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -194,7 +194,7 @@ onChange = (current) => {
         <IceContainer>
           <Table
             dataSource={this.state.dataSource}
-            loading={this.state.loading}
+            isLoading={this.state.isLoading}
             rowSelection={{
               ...this.rowSelection,
                selectedRowKeys: this.state.selectedRowKeys

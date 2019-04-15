@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Table } from '@alifd/next';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
@@ -19,12 +18,21 @@ class LiteTable extends Component {
     return (
       <div className="lite-table">
         <IceContainer>
-        {(this.props.tableData || []).map((item, index) => {
+        <h3 style={styles.header}>个人权限</h3>
+        <div>
+          {(this.props.tableData || []).map((item, index) => {
             return (
-              <div key={index}>{item}</div>
+              // <div key={index}>{item}</div>
+              <div key={index} style={styles.permissionItem}>
+                <div>
+                  <span style={styles.permissionName}>{item}</span>
+                </div>
+              </div>
             )
           })
-        }
+          }
+        </div>
+        
           {/* 对象转数组Array.from() */}
           {/* <Table dataSource={Array.from(this.props.tableData)} hasBorder={false}>
             <Table.Column title="权限名称" dataIndex="0" width={100} />
@@ -64,3 +72,25 @@ const mapDispatch = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatch)(LiteTable)
+
+const styles = {
+  header: {
+    fontSize: 16,
+    lineHeight: '16px',
+    paddingBottom: 15,
+    fontWeight: 700,
+  },
+  permissionItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderBottom: '1px solid #fafafa',
+    lineHeight: '45px',
+    height: 45,
+    paddingLeft: '20px',
+    textDecoration: 'none',
+  },
+  permissionName: {
+    color: '#333',
+  }
+}

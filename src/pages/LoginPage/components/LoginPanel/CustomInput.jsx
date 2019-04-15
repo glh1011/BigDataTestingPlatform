@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@alifd/next';
+import { Input } from '@icedesign/base';
 
 const CustomInput = (props) => {
   return <Input {...props} style={styles.input} />;

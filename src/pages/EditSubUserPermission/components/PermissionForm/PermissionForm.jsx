@@ -1,8 +1,8 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Grid, Button, Checkbox } from '@alifd/next';
-// import { Checkbox } from '@alifd/next';
+import { Grid, Button, Checkbox } from '@icedesign/base';
+// import { Checkbox } from '@icedesign/base';
 import { withRouter } from 'react-router';
 import {
   FormBinderWrapper as IceFormBinderWrapper,

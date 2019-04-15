@@ -1,7 +1,7 @@
 /* eslint  react/no-string-refs: 0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@alifd/next';
+import { Input, Button, Radio, Switch, Upload, Grid, Select } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,

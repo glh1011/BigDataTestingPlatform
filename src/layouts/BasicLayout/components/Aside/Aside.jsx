@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import Menu, { SubMenu, Item as MenuItem } from '@icedesign/menu';
 import cx from 'classnames';
 import FoundationSymbol from 'foundation-symbol';
-import { Icon } from '@alifd/next';
+import { Icon } from '@icedesign/base';
 import Logo from '../Logo';
 import { asideMenuConfig } from '../../../../menuConfig';
 

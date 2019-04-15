@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Pagination } from '@alifd/next';
-// import { Pagination } from '@alifd/next';
+import { Table, Icon, Button, Pagination } from '@icedesign/base';
+// import { Pagination } from '@icedesign/base';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
