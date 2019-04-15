@@ -7,6 +7,7 @@ big data testing platform
 - 构件项目 npm run build
 
  Dependencies
+```
 - Visual Studio Code
 - Iceworks
 - Git
