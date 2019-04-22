@@ -2,8 +2,12 @@
 // 你可以调整 routerConfig 里的内容
 // 变量名 routerConfig 为 iceworks 检测关键字，请不要修改名称
 
-import { getRouterData } from './utils/formatter';
-import { asideMenuConfig } from './menuConfig';
+import {
+  getRouterData
+} from './utils/formatter';
+import {
+  asideMenuConfig
+} from './menuConfig';
 import Dashboard from './pages/Dashboard';
 import LoginPanel from './pages/LoginPage/components/LoginPanel';
 import MainLayout from './layouts/BasicLayout/MainLayout';
@@ -18,20 +22,20 @@ import SubUserDetail from './pages/SubUserDetail';
 import ChangeSelfPwd from './pages/ChangeSelfPwd';
 
 import EditSubUser from './pages/EditSubUser';
-import ChangeSubUserPwd from './pages/ChangeSubUserPwd'
+import ChangeSubUserPwd from './pages/ChangeSubUserPwd';
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
+import VisInstall from './pages/VisInstall';
 import EditSubUserPermission from './pages/EditSubUserPermission';
 
-const routerConfig = [
+const routerConfig = [{
+    path: '/Authority/EditAuthority',
+    layout: NormalLayout,
+    component: EditAuthority,
+  },
   {
     path: '/dashboard/primaryUser',
     layout: NormalLayout,
     component: Dashboard,
-  },
-  {
-    path: '/Authority/AddAuthority',
-    layout: NormalLayout,
-    component: AddAuthority,
   },
   {
     path: '/login',
@@ -59,9 +63,9 @@ const routerConfig = [
     component: SelfAuthorities,
   },
   {
-    path: '/Authority/EditAuthority',
+    path: '/Authority/AddAuthority',
     layout: NormalLayout,
-    component: EditAuthority,
+    component: AddAuthority,
   },
   {
     path: '/AddSubUser',
@@ -93,8 +97,15 @@ const routerConfig = [
     layout: NormalLayout,
     component: EditSubUserPermission,
   },
+  {
+    path: '/VisInstall/createMV',
+    layout: NormalLayout,
+    component: VisInstall,
+  },
 ];
 
 const routerData = getRouterData(routerConfig, asideMenuConfig);
 
-export { routerData };
+export {
+  routerData
+};
