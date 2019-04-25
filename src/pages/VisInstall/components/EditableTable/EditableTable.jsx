@@ -1,11 +1,34 @@
 import React, { Component } from "react";
 import IceContainer from "@icedesign/container";
 import { Table, Button, Input } from "@icedesign/base";
-import { Dialog } from "@alifd/next";
+import { Dialog, Slider, Progress } from "@alifd/next";
 import CellEditor from "./CellEditor";
 import "./EditableTable.scss";
 import { Notice } from "@icedesign/base";
 import axios from "axios";
+const slides = [
+  {
+    url: "https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg",
+    text: "Tape Player Skin Design Competition"
+  },
+  {
+    url: "https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg",
+    text: "Mobile Phone Taobao Skin Call"
+  },
+  {
+    url: "https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg",
+    text: "Design Enabling Public Welfare"
+  },
+  {
+    url: "https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg",
+    text: "Amoy Doll Design Competition"
+  }
+];
+const itemNodes = slides.map((item, index) => (
+  <div key={index} className="slider-img-wrapper">
+    <img src={item.url} alt={item.text} />
+  </div>
+));
 export default class EditableTable extends Component {
   static displayName = "EditableTable";
 
@@ -38,7 +61,9 @@ export default class EditableTable extends Component {
       clusterName: "",
       visible: false,
       dialogContent: "正在创建集群，请耐心等候....",
-      dialog: false
+      dialog: false,
+      percent: 0,
+      message: ""
     };
   }
 
@@ -330,42 +355,70 @@ export default class EditableTable extends Component {
     });
   };
   createcluster = () => {
+    this.setState({
+      dialog: false,
+      dialogContent: "正在创建集群，请耐心等候...."
+    });
     axios
       .post("http://192.168.0.237:8080/cluster/install", {
         clusterName: this.state.clusterName,
         virtualMachineRequests: this.state.dataSource
       })
       .then(response => {
-        if (!response.data.meta.success) {
-          this.setState({
-            dialogContent: response.data.meta.message,
-            dialog: true
-          });
-        } else {
-          var form = document.createElement("form");
-          form.method = "post";
+        const id = response.data.data;
 
-          form.action = response.data.data.url;
-          var username = document.createElement("input");
-          username.type = "hidden";
-          username.name = "j_username";
-          username.value = response.data.data.param.j_username;
-          var password = document.createElement("input");
-          password.type = "hidden";
-          password.name = "j_password";
-          password.value = response.data.data.param.j_password;
-          form.appendChild(username);
-          form.appendChild(password);
-          document.getElementsByTagName("body")[0].append(form);
-          form.submit();
-        }
+        let intervalid = setInterval(() => {
+          axios
+            .get("http://192.168.0.237:8080/cluster/status", {
+              params: { id: id }
+            })
+            .then(response => {
+              if (response.data.data.status == "FAILED") {
+                this.setState({
+                  visible: true,
+                  dialogContent: response.data.data.message,
+                  dialog: true
+                });
+                clearInterval(intervalid);
+              } else {
+                this.setState({
+                  visible: true
+                });
+                if (
+                  response.data.data.percent == "100" &&
+                  response.data.data.status == "REDIRECT"
+                ) {
+                  clearInterval(intervalid);
+                  var form = document.createElement("form");
+                  form.method = "post";
+
+                  form.action = response.data.data.message.url;
+                  var username = document.createElement("input");
+                  username.type = "hidden";
+                  username.name = "j_username";
+                  username.value = response.data.data.message.param.j_username;
+                  var password = document.createElement("input");
+                  password.type = "hidden";
+                  password.name = "j_password";
+                  password.value = response.data.data.message.param.j_password;
+                  form.appendChild(username);
+                  form.appendChild(password);
+                  document.getElementsByTagName("body")[0].append(form);
+                  form.submit();
+                } else {
+                  this.setState((prevState, props) => ({
+                    percent: response.data.data.percent,
+                    message: response.data.data.message
+                  }));
+                }
+              }
+            })
+            .catch(function(error) {});
+        }, 1000);
       })
       .catch(error => {
         console.log(error);
       });
-    this.setState({
-      visible: true
-    });
   };
   onChange = value => {
     this.setState({ clusterName: value });
@@ -376,11 +429,9 @@ export default class EditableTable extends Component {
     });
   };
 
-  onClose = reason => {
+  onClose = () => {
     this.setState({
-      visible: false,
-      dialog: false,
-      dialogContent: "正在创建集群，请耐心等候...."
+      visible: false
     });
   };
   render() {
@@ -481,16 +532,53 @@ export default class EditableTable extends Component {
             </button>
             <Dialog
               style={{
-                width: "300px"
+                width: "70%",
+                height: "63%"
               }}
               title="创建集群"
               visible={this.state.visible}
               onOk={this.onClose.bind(this, "okClick")}
               footerActions={this.state.dialog ? ["ok"] : []}
+              align="cc cc"
             >
+              <div style={{ display: this.state.dialog ? "block" : "none" }}>
+                <img
+                  src={require("./images/test1.jpg")}
+                  style={{ width: "1000px", height: "300px" }}
+                />
+              </div>
               <span style={{ color: this.state.dialog ? "red" : "black" }}>
                 {this.state.dialogContent}
               </span>
+              <div style={{ display: this.state.dialog ? "none" : "block" }}>
+                <Slider speed={1000} autoplay autoplaySpeed={2000}>
+                  {itemNodes}
+                </Slider>
+              </div>
+              <div
+                style={{
+                  display: this.state.dialog ? "none" : "block",
+                  marginTop: "10px"
+                }}
+              >
+                {this.state.message}...
+              </div>
+              <div
+                style={{
+                  display: this.state.dialog ? "none" : "block",
+                  marginTop: "10px"
+                }}
+              >
+                <div className="progress-outer">
+                  <div className="progress-enter">
+                    <div
+                      className="progress-bg"
+                      style={{ width: this.state.percent + "%" }}
+                    />
+                  </div>
+                </div>
+                <div className="percent">{this.state.percent}%</div>
+              </div>
             </Dialog>
           </div>
         </IceContainer>
@@ -506,6 +594,15 @@ const styles = {
     fontSize: "14px",
     borderBottom: "1px solid #eee"
   },
+  h4: {
+    margin: "0 5px",
+    background: "#4F74B3",
+    color: "#fff",
+    lineHeight: "150px",
+    textAlign: "center",
+    marginTop: 0,
+    marginBottom: 0
+  },
   addNewItem: {
     background: "#c7a47b",
     height: 32,
@@ -517,7 +614,7 @@ const styles = {
     color: "#fff",
     borderRadius: "50px",
     marginRight: "30px",
-    display: "inline-block",
+    display: "inline-block", 
     border: "1px solid transparent",
     outline: "none"
   },
