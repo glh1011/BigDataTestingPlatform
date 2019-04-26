@@ -1,0 +1,19 @@
+{
+  "status": "SUCCESS",
+  "data": {
+    "current": 1,
+    "subUsers": [{
+      "name": "用户一",
+      "id": 1,
+      "upperID": "001",
+      "nickName": "fdghg",
+      "email": "2101317923@qq.com"
+    },{
+      "name": "用户二",
+      "id": 2,
+      "upperID": "001",
+      "nickName": "dsfvgh",
+      "email": "2101317923@qq.com"
+    }]
+  }
+}
