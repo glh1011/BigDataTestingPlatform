@@ -19,7 +19,7 @@ export default class VisInstall extends Component {
   }
   componentDidMount() {
     const _this = this; //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
-    axios.get('http://192.168.0.237:8080/cluster/default')
+    axios.get('http://192.168.0.129:8080/cluster/default')
       .then(function (response) {
         _this.setState({
           generatorData: response.data.data,
@@ -33,7 +33,7 @@ export default class VisInstall extends Component {
           error: error
         })
       })
-    axios.get('http://192.168.0.237:8080/info/current')
+    axios.get('http://192.168.0.129:8080/info/current')
       .then(function (response) {
         _this.setState({
           cpu: response.data.data.cpu,

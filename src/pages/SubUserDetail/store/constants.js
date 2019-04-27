@@ -1,1 +1,0 @@
-export const SETSUBUSERINFO = 'set_subuser_info';

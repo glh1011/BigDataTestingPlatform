@@ -29,6 +29,8 @@ import AssignClusterUser from './pages/Resource/AssignClusterUser';
 import UnassignClusterUser from './pages/Resource/UnassignClusterUser';
 import ClusterResourceManage from './pages/Resource/ClusterResourceManage';
 
+import VisInstall from './pages/VisInstall';
+
 const routerConfig = [
   {
     path: '/userManagement/dashboard',
@@ -124,6 +126,11 @@ const routerConfig = [
     path: '/Resource/ClusterResourceManage',
     layout: NormalLayout,
     component: ClusterResourceManage,
+  },
+  {
+    path: '/VisInstall/createMV',
+    layout: NormalLayout,
+    component: VisInstall,
   },
 ];
 

@@ -41,7 +41,7 @@ export default class CellEditor extends Component {
     if (
       (this.props.valueKey == "disk" && this.state.value >= 50) ||
       (this.props.valueKey == "cpu" && this.state.value > 0) ||
-      (this.props.valueKey == "mem" && this.state.value >= 4)
+      (this.props.valueKey == "mem" && this.state.value >= 4) ||  (this.props.valueKey == "num" && this.state.value > 0) 
     ) {
       this.setState({
         editMode: false

@@ -1,1 +1,0 @@
-export const CHANGESUBUSERLIST = 'change_subUser_list';

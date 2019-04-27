@@ -91,6 +91,23 @@ const asideMenuConfig = [
       },
     ],
   },
+  {
+    name: '可视化安装',
+    path: '/VisInstall',
+    icon: 'home',
+    zeroVisible: true,
+        firstVisible: true,
+        secondVisible: true,
+    children: [{
+        name: '创建集群',
+        path: '/VisInstall/createMV',
+        zeroVisible: true,
+        firstVisible: true,
+        secondVisible: true,
+      },
+
+    ],
+  },
 ];
 
 export { headerMenuConfig, asideMenuConfig };

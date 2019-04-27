@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import IceContainer from "@icedesign/container";
-import { Table, Button, Input } from "@icedesign/base";
-import { Dialog, Slider, Progress } from "@alifd/next";
+import { Table, Button, Input, Dialog, Slider } from "@icedesign/base";
+// import { Dialog, Slider } from "@alifd/next";
 import CellEditor from "./CellEditor";
 import "./EditableTable.scss";
 import { Notice } from "@icedesign/base";
@@ -355,12 +355,13 @@ export default class EditableTable extends Component {
     });
   };
   createcluster = () => {
+    console.log('createcluster...');
     this.setState({
       dialog: false,
       dialogContent: "正在创建集群，请耐心等候...."
     });
     axios
-      .post("http://192.168.0.237:8080/cluster/install", {
+      .post("http://192.168.0.129:8080/cluster/install", {
         clusterName: this.state.clusterName,
         virtualMachineRequests: this.state.dataSource
       })
@@ -369,7 +370,7 @@ export default class EditableTable extends Component {
 
         let intervalid = setInterval(() => {
           axios
-            .get("http://192.168.0.237:8080/cluster/status", {
+            .get("http://192.168.0.129:8080/cluster/status", {
               params: { id: id }
             })
             .then(response => {
