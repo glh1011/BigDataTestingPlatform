@@ -1,7 +1,3 @@
-
-# 自定义模板
-### 大数据测试平台
-
 # 大数据测试平台
 
 big data testing platform
