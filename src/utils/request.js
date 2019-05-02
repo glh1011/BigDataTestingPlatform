@@ -20,10 +20,9 @@ service.interceptors.request.use(config => {
   Feedback.toast.loading('加载中...');
   if (config.method === 'post') {
     if (config.header) {
-      config.data = qs.stringify({ ...config.data });
+      config.data = JSON.stringify({ ...config.data });
       config.headers['Content-Type'] = config.header['Content-Type'];
-    }
-    else{
+    } else {
       config.data = qs.stringify({ ...config.data });
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }

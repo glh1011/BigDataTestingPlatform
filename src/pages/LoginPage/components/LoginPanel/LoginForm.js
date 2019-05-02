@@ -42,7 +42,6 @@ export default class LoginFrom extends Component {
           localStorage.clear();
           localStorage.setItem('userLevel',data.userLevel);
           localStorage.setItem('userId',data.userId);
-          console.log(localStorage.getItem('userId'));
           localStorage.setItem('userName',data.userName);
           const USER = {
             username,
