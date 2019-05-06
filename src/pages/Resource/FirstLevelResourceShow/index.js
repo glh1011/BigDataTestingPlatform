@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CustomPieChart from '../components/CustomPieChart';
-import OverviewInfoWithoutBackup from '../components/OverviewInfoWithoutBackup';
+import OverviewInfo from '../components/OverviewInfo';
 import ClusterTable from '../components/ClusterTable';
 import { Button, Icon } from '@icedesign/base';
 import { Link } from 'react-router-dom';
@@ -17,7 +17,7 @@ class FirstLevelResourceShow extends Component {
   renderAddBtn = () => {
     return (
       <div style={styles.btnContainer}>
-      <Link to="/Resource/install">
+      <Link to="/VisInstall/createMV">
         <Button size="small" style={styles.batchBtn}>
           <Icon type="add" />新建集群
         </Button>
@@ -48,9 +48,9 @@ class FirstLevelResourceShow extends Component {
           <CustomPieChart name="disk" />
         </div>
         <div className="overview-info-container" style={styles.overviewInfoContainer} >
-          <OverviewInfoWithoutBackup name="CPU" />
-          <OverviewInfoWithoutBackup name="memory" />
-          <OverviewInfoWithoutBackup name="disk" />
+          <OverviewInfo name="CPU" />
+          <OverviewInfo name="memory" />
+          <OverviewInfo name="disk" />
         </div>
         <ClusterTable />
       </div>

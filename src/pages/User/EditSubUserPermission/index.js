@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PermissionForm from './components/PermissionForm';
+import PermissionForm from './components';
 
 export default class EditSubUserPermission extends Component {
   constructor(props) {

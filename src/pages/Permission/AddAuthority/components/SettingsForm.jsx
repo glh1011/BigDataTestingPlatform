@@ -9,18 +9,26 @@ import {
 } from '@icedesign/form-binder';
 import './SettingsForm.scss';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store';
+import { actionCreators } from '../store';
 import { withRouter } from 'react-router';
 
 const { Row, Col } = Grid;
 
 @withRouter
 class SettingsForm extends Component {
-  static displayName = 'SettingsForm';
 
-  static propTypes = {};
+  componentWillUnmount() {
+    this.props.resetForm();
+  }
 
-  static defaultProps = {};
+  handleSubmit = () => {
+    this.formRef.validateAll((error, value) => {
+      console.log(value);
+      if (!error || error.length === 0) {
+        this.props.submitAdd(value, this.props.history);
+      }
+    });
+  }
 
   render() {
     const { value, formChange, submitAdd, history } = this.props;
@@ -30,7 +38,9 @@ class SettingsForm extends Component {
           <IceFormBinderWrapper
             value={value}
             onChange={formChange}
-            ref="form"
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
           >
             <div style={styles.formContent}>
               <h2 style={styles.formTitle}>增加权限</h2>
@@ -40,7 +50,7 @@ class SettingsForm extends Component {
                   名称：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="opName" required max={10} message="必填">
+                  <IceFormBinder name="opName" required message="必填" max={64}>
                     <Input size="large" placeholder="请输入权限名称" />
                   </IceFormBinder>
                   <IceFormError name="opName" />
@@ -52,7 +62,11 @@ class SettingsForm extends Component {
                   类别：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="opLevel">
+                  <IceFormBinder 
+                    name="opLevel" 
+                    required 
+                    message="必填"
+                  >
                     <Select
                       style={{ width: '100%' }}
                       size="large"
@@ -64,6 +78,7 @@ class SettingsForm extends Component {
                       ]}
                     />
                   </IceFormBinder>
+                  <IceFormError name="opLevel" />
                 </Col>
               </Row>
 
@@ -76,7 +91,7 @@ class SettingsForm extends Component {
                 size="large"
                 type="primary"
                 style={{ width: 100 }}
-                onClick={()=>submitAdd(value, history)}
+                onClick={()=>this.handleSubmit()}
               >
                 提 交
               </Button>
@@ -97,12 +112,14 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     submitAdd(value, history) {
-      console.log(value);
-      dispatch(actionCreators.addAuthority(value, history));
+      dispatch(actionCreators.addAuthority(value.opName, value.opLevel, history));
     },
     formChange(e) {
       dispatch(actionCreators.changeInputValue(e));
     },
+    resetForm() {
+      dispatch(actionCreators.resetAddForm());
+    }
   }
 }
 

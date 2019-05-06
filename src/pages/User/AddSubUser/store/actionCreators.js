@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,7 +13,7 @@ export const resetAddSubUser = () => ({
 
 export const addSubUser = (value, history) => {
   return (dispatch) => {
-    axios.post('http://192.168.0.129:8080/user/addUser', {
+    axios.post('/user/addUser', {
       userName: value.userName,
       name: value.name,
       email: value.email,
@@ -23,10 +23,9 @@ export const addSubUser = (value, history) => {
       deleted: 0
     })
     .then(function (response) {
-    if(response.data.meta.success){
+    if(response.meta.success){
       Feedback.toast.success('添加人员成功！');
       history.goBack();
-      dispatch(resetAddSubUser());
     }else{
       Feedback.toast.error('添加人员失败！');
     }

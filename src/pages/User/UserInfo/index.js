@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import UserForm from './components/UserForm';
-//import { Provider } from 'react-redux';
+import UserForm from './components';
 
 export default class UserInfo extends Component {
   constructor(props) {

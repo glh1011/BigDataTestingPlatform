@@ -18,12 +18,28 @@ const { Row, Col } = Grid;
 class AllocateResourcePool extends Component {
   static displayName = 'SettingsForm';
 
-  static propTypes = {};
-
-  static defaultProps = {};
+  handleSubmit = () => {
+    this.formRef.validateAll((error, value) => {
+      console.log(value);
+      if (!error || error.length === 0) {
+        this.props.handleSubmitForm(value, this.props.history); 
+      }
+    });
+  }
+  // inputNumberValidator = (rule, value, callback) => {
+  //   console.log(value);
+  //   let reg = /^[0-9]*$/;
+  //   console.log(!reg.test(value));
+  //   if(!reg.test(value)){
+  //     callback('只能输入数字！')
+  //   }
+  //   else{
+  //     callback();
+  //   }
+  // }
 
   render() {
-    const { value, handleSubmitForm, firstLevelUser, history, handleInputChange } = this.props;
+    const { value, firstLevelUser, history, handleInputChange } = this.props;
     const SelectItem = [];
     firstLevelUser.map((item) => {
       SelectItem.push(<Select.Option value={item} key={item}>{item}</Select.Option>);
@@ -34,7 +50,9 @@ class AllocateResourcePool extends Component {
           <IceFormBinderWrapper
             value={value}
             onChange={handleInputChange}
-            ref="form"
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
           >
             <div style={styles.formContent}>
               <div style={styles.titleContainer}>
@@ -49,12 +67,11 @@ class AllocateResourcePool extends Component {
                     <Select
                         style={{ width: '100%' }}
                         size="large"
-                        placeholder="请选择..."
                     >
                     {SelectItem}
                     </Select>
                   </IceFormBinder>
-                  <IceFormError name="username" />
+                  <IceFormError name="userName" />
                 </Col>
               </Row>
 
@@ -63,13 +80,15 @@ class AllocateResourcePool extends Component {
                   CPU（个）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="cpu">
-                  <Input
-                      size="large"
-                      placeholder="请输入CPU数量"
-                      style={{ width: '100%' }}
-                    />
+                  <IceFormBinder name="cpu" required message="必填">
+                    <Input
+                        size="large"
+                        placeholder="请输入CPU数量"
+                        style={{ width: '100%' }}
+                        htmlType="number"
+                      />
                   </IceFormBinder>
+                  <IceFormError name="cpu" />
                 </Col>
               </Row>
 
@@ -78,13 +97,15 @@ class AllocateResourcePool extends Component {
                   内存（GB）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="memory">
-                  <Input
-                      size="large"
-                      placeholder="请输入内存数量"
-                      style={{ width: '100%' }}
-                    />
+                  <IceFormBinder name="memory" required message="必填">
+                    <Input
+                        size="large"
+                        placeholder="请输入内存数量"
+                        style={{ width: '100%' }}
+                        htmlType="number"
+                      />
                   </IceFormBinder>
+                  <IceFormError name="memory" />
                 </Col>
               </Row>
 
@@ -93,15 +114,15 @@ class AllocateResourcePool extends Component {
                   硬盘（GB）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="disk">
+                  <IceFormBinder name="disk" required message="必填">
                     <Input
                       size="large"
                       placeholder="请输入硬盘数量"
                       style={{ width: '100%' }}
-                      
+                      htmlType="number"
                     />
                   </IceFormBinder>
-                  <IceFormError name="displayName" />
+                  <IceFormError name="disk" />
                 </Col>
               </Row>
             </div>
@@ -113,7 +134,7 @@ class AllocateResourcePool extends Component {
                 size="large"
                 type="primary"
                 // onClick={this.validateAllFormField}
-                onClick={()=>handleSubmitForm(value, history)}
+                onClick={()=>this.handleSubmit()}
               >
                 提交
               </Button>
@@ -150,6 +171,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getFirstLevelUserWithoutResource());
   },
   handleInputChange(e) {
+
     dispatch(actionCreators.changeAllocateInputValue(e.userName, e.cpu, e.memory, e.disk));
   },
   //提交表单

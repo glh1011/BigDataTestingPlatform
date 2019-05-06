@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store/';
+import { actionCreators } from '../store';
 
 class DetailTable extends Component {
-  static displayName = 'DetailTable';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   componentDidMount() {
     this.props.getUserInfo();

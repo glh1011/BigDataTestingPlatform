@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Grid, Checkbox, Feedback} from '@icedesign/base';
+import { Input, Button, Grid, Checkbox, Feedback, Loading} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -25,8 +25,12 @@ class AssignClusterUser extends Component {
     };
     this.onChange = this.onChange.bind(this);
   }
-  handleSubmitForm = (value,history) => {
-    this.props.handleSubmitForm(value,history)
+  handleSubmit = (value, clusterName ,history) => {
+    this.formRef.validateAll((error) => {
+      if (!error || error.length === 0) {
+        this.props.handleSubmitForm(value, clusterName, history);
+      }
+    });
   }
   onChange(selectedItems) {
     this.setState({
@@ -41,60 +45,61 @@ class AssignClusterUser extends Component {
     const checkboxItem = [];
     if(unboundSecondUser){
       unboundSecondUser.map((item) => {
-        checkboxItem.push(<Checkbox value={item}>{item}</Checkbox>)
+        checkboxItem.push(<Checkbox value={item} key={item}>{item}</Checkbox>)
       })
     }
     return (
       <div className="user-form" style={styles.rightSection}>
         <IceContainer>
-          <IceFormBinderWrapper
-            ref="form"
-          >
-            <div style={styles.formContent}>
-              <div style={styles.titleContainer}>
-                <h2 style={styles.formTitle}>绑定集群</h2>
+            <IceFormBinderWrapper
+              ref={(formRef) => {
+                this.formRef = formRef;
+              }}
+            >
+              <div style={styles.formContent}>
+                <div style={styles.titleContainer}>
+                  <h2 style={styles.formTitle}>绑定集群</h2>
+                </div>
+                <Row style={styles.formItem}>
+                  <Col xxs="6" s="3" l="3" style={styles.formLabel}>
+                    集群名：
+                  </Col>
+                  <Col s="12" l="10">
+                    <IceFormBinder name="cpu">
+                    <Input
+                        size="large"
+                        value={clusterName}
+                        style={{ width: '100%' }}
+                        disabled
+                      />
+                    </IceFormBinder>
+                  </Col>
+                </Row>
+
+                <Row style={styles.formItem}>
+                  <Col xxs="6" s="3" l="3" style={styles.formLabel}>
+                    可绑定用户 ：
+                  </Col>
+                  <Col s="12" l="10" style={{marginTop:'5px'}}>
+                    <IceFormBinder name="userName" requried>
+                    <CheckboxGroup
+                      value={this.state.value}
+                      onChange={this.onChange}
+                    >
+                      {checkboxItem}
+                    </CheckboxGroup>
+                    </IceFormBinder>
+                    <IceFormError name="userName" />
+                  </Col>
+                </Row>
               </div>
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.formLabel}>
-                  集群名：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder name="cpu">
-                  <Input
-                      size="large"
-                      value={clusterName}
-                      style={{ width: '100%' }}
-                      disabled
-                    />
-                  </IceFormBinder>
-                </Col>
-              </Row>
-
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.formLabel}>
-                  可绑定用户 ：
-                </Col>
-                <Col s="12" l="10" style={{marginTop:'5px'}}>
-                  <IceFormBinder name="userName">
-                  <CheckboxGroup
-                    value={this.state.value}
-                    onChange={this.onChange}
-                  >
-                    {checkboxItem}
-                  </CheckboxGroup>
-                  </IceFormBinder>
-                  <IceFormError name="displayName" />
-                </Col>
-              </Row>
-            </div>
-          </IceFormBinderWrapper>
-
-          <Row style={{ marginTop: 150 }}>
+            </IceFormBinderWrapper>
+          <Row style={{ marginTop: 50 }}>
             <Col offset="3">
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>handleSubmitForm(that.state.value, clusterName, history)}
+                onClick={()=>this.handleSubmit(that.state.value, clusterName, history)}
               >
                 提交
               </Button>
@@ -135,6 +140,7 @@ const mapDispatchToProps = (dispatch) => ({
   // },
   //提交表单
   handleSubmitForm(value, clusterName, history) {
+    Feedback.toast.loading('加载中...');
     console.log("===============");
     console.log(value);
     if (value.length) {
@@ -179,5 +185,15 @@ const styles = {
   titleContainer: {
     borderBottom: '1px solid #eee',
     margin: '0 0 20px',
-  }
+  },
+  // loadingContainer: {
+  //   position: 'absolute',
+
+  // },
+  // loading: {
+  //   width: '500px',
+  //   textAlign: 'center',
+  //   padding:'50px',
+  //   marginBottom: '10px',
+  // }
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import ReactEcharts from 'echarts-for-react';
 import { connect } from 'react-redux';
+import { actionCreators } from '../../store';
 
 /**
  * 图表来源参考：http://gallery.echartsjs.com/editor.html?c=xBJSFJgFFf
@@ -18,7 +19,6 @@ class CustomPieChart extends Component {
           info.total = data.resourceUseData[0].totalCpu;
           info.used = data.resourceUseData[0].usedCpu;
           info.usable = data.resourceUseData[0].totalCpu-data.resourceUseData[0].usedCpu;
-          info.backup = 0;
         }
       break;
       case "memory":
@@ -27,7 +27,6 @@ class CustomPieChart extends Component {
           info.total = data.resourceUseData[0].totalMem;
           info.used = data.resourceUseData[0].usedMem;
           info.usable = data.resourceUseData[0].totalMem-data.resourceUseData[0].usedMem;
-          info.backup = 0;
         }
       break;
       case "disk":
@@ -36,7 +35,6 @@ class CustomPieChart extends Component {
           info.total = data.resourceUseData[0].totalDisk;
           info.used = data.resourceUseData[0].usedDisk;
           info.usable = data.resourceUseData[0].totalDisk-data.resourceUseData[0].usedDisk;
-          info.backup = 0;
         }
       break;
       default:
@@ -49,7 +47,6 @@ class CustomPieChart extends Component {
     console.log(info);
     const used = info.used;
     const usable = info.usable;
-    const backup = info.backup;
     console.log(used);
     const colorList = ['#FFDB5C', '#9FE6B8', '#37A2DA'];
     return {
@@ -78,10 +75,6 @@ class CustomPieChart extends Component {
             {
               value: usable,
               name: '可用',
-            },
-            {
-              value: backup,
-              name: '预留',
             },
           ],
           itemStyle: {
@@ -178,16 +171,6 @@ class CustomPieChart extends Component {
                 },
               },
             },
-            {
-              value: backup,
-              name: '预留',
-              itemStyle: {
-                normal: {
-                  borderWidth: 1,
-                  borderColor: '#37A2DA',
-                },
-              },
-            },
           ],
 
           label: {
@@ -214,7 +197,6 @@ class CustomPieChart extends Component {
         total:'',
         used:'',
         usable:'',
-        backup:'',
       };
       this.getInfo(this.props, info);
       return (
@@ -228,17 +210,25 @@ class CustomPieChart extends Component {
     else{
       return(<div></div>);
     } 
+  };
+  componentWillUnmount() {
+    this.props.resetState();
   }
-}
+};
 
 const mapState = (state) => {
-  console.log(state.Resource.resourceUseData);
   return {
     resourceUseData: state.Resource.resourceUseData,
   }
 }
 
-export default connect(mapState, null)(CustomPieChart);
+const mapDispatch = (dispatch) => ({
+  resetState() {
+    dispatch(actionCreators.resetState());
+  },
+})
+
+export default connect(mapState, mapDispatch)(CustomPieChart);
 
 const styles = {
   customPieChart: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DetailTable from './components/DetailTable';
+import DetailTable from './components';
 
 export default class SubUserDetail extends Component {
   constructor(props) {

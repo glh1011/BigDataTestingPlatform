@@ -1,5 +1,5 @@
 import * as constants from './constants';
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 
 const displayUserInfo = (data) => ({
   type: constants.SETSUBUSERINFO,
@@ -8,10 +8,10 @@ const displayUserInfo = (data) => ({
 
 export const getUserDetail = () => {
   var subUserId = parseInt(localStorage.getItem('subUserId'));
-  var url = 'http://192.168.0.129:8080/user/getUserDetailInfo?id='+subUserId;
+  var url = '/user/getUserDetailInfo?id='+subUserId;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      const result = res.data;
+      const result = res;
       dispatch(displayUserInfo(result));
     })
   }

@@ -1,34 +1,12 @@
 import React, { Component } from "react";
 import IceContainer from "@icedesign/container";
 import { Table, Button, Input, Dialog, Slider } from "@icedesign/base";
-// import { Dialog, Slider } from "@alifd/next";
+// import { Slider } from "@alifd/next";
 import CellEditor from "./CellEditor";
 import "./EditableTable.scss";
 import { Notice } from "@icedesign/base";
 import axios from "axios";
-const slides = [
-  {
-    url: "https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg",
-    text: "Tape Player Skin Design Competition"
-  },
-  {
-    url: "https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg",
-    text: "Mobile Phone Taobao Skin Call"
-  },
-  {
-    url: "https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg",
-    text: "Design Enabling Public Welfare"
-  },
-  {
-    url: "https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg",
-    text: "Amoy Doll Design Competition"
-  }
-];
-const itemNodes = slides.map((item, index) => (
-  <div key={index} className="slider-img-wrapper">
-    <img src={item.url} alt={item.text} />
-  </div>
-));
+
 export default class EditableTable extends Component {
   static displayName = "EditableTable";
 
@@ -355,7 +333,6 @@ export default class EditableTable extends Component {
     });
   };
   createcluster = () => {
-    console.log('createcluster...');
     this.setState({
       dialog: false,
       dialogContent: "正在创建集群，请耐心等候...."
@@ -367,7 +344,6 @@ export default class EditableTable extends Component {
       })
       .then(response => {
         const id = response.data.data;
-
         let intervalid = setInterval(() => {
           axios
             .get("http://192.168.0.129:8080/cluster/status", {
@@ -407,7 +383,7 @@ export default class EditableTable extends Component {
                   document.getElementsByTagName("body")[0].append(form);
                   form.submit();
                 } else {
-                  this.setState((prevState, props) => ({
+                  this.setState(() => ({
                     percent: response.data.data.percent,
                     message: response.data.data.message
                   }));
@@ -415,7 +391,7 @@ export default class EditableTable extends Component {
               }
             })
             .catch(function(error) {});
-        }, 1000);
+        }, 5000);
       })
       .catch(error => {
         console.log(error);
@@ -424,11 +400,6 @@ export default class EditableTable extends Component {
   onChange = value => {
     this.setState({ clusterName: value });
   };
-  onOpen = () => {
-    this.setState({
-      visible: true
-    });
-  };
 
   onClose = () => {
     this.setState({
@@ -436,6 +407,33 @@ export default class EditableTable extends Component {
     });
   };
   render() {
+    const footer = (
+      <a onClick={this.onClose} href="javascript:;">
+        取消
+      </a>
+    );
+    const slides = [
+      {
+        url:
+          "https://img.alicdn.com/tps/TB1xuUcNVXXXXcRXXXXXXXXXXXX-1000-300.jpg",
+        text: "Mobile Phone Taobao Skin Call"
+      },
+      {
+        url:
+          "https://img.alicdn.com/tps/TB1ikP.NVXXXXaYXpXXXXXXXXXX-1000-300.jpg",
+        text: "Design Enabling Public Welfare"
+      },
+      {
+        url:
+          "https://img.alicdn.com/tps/TB1s1_JNVXXXXbhaXXXXXXXXXXX-1000-300.jpg",
+        text: "Amoy Doll Design Competition"
+      }
+    ];
+    const itemNodes = slides.map((item, index) => (
+      <div key={index} className="slider-img-wrapper">
+        <img src={item.url} alt={item.text} />
+      </div>
+    ));
     return (
       <div className="editable-table">
         <IceContainer>
@@ -534,13 +532,16 @@ export default class EditableTable extends Component {
             <Dialog
               style={{
                 width: "70%",
-                height: "63%"
+                height: "63%",
+                position: "absolute",
+                left: "15%",
+                top: "19%"
               }}
+              align="cc cc"
+              animation={false}
               title="创建集群"
               visible={this.state.visible}
-              onOk={this.onClose.bind(this, "okClick")}
-              footerActions={this.state.dialog ? ["ok"] : []}
-              align="cc cc"
+              footer={this.state.dialog ? footer : false}
             >
               <div style={{ display: this.state.dialog ? "block" : "none" }}>
                 <img
@@ -552,7 +553,7 @@ export default class EditableTable extends Component {
                 {this.state.dialogContent}
               </span>
               <div style={{ display: this.state.dialog ? "none" : "block" }}>
-                <Slider speed={1000} autoplay autoplaySpeed={2000}>
+                <Slider autoplay autoplaySpeed={2000}>
                   {itemNodes}
                 </Slider>
               </div>
@@ -574,7 +575,10 @@ export default class EditableTable extends Component {
                   <div className="progress-enter">
                     <div
                       className="progress-bg"
-                      style={{ width: this.state.percent + "%" }}
+                      style={{
+                        width: this.state.percent + "%",
+                        animationDuration: this.state.percent / 4 + "s"
+                      }}
                     />
                   </div>
                 </div>
@@ -615,7 +619,7 @@ const styles = {
     color: "#fff",
     borderRadius: "50px",
     marginRight: "30px",
-    display: "inline-block", 
+    display: "inline-block",
     border: "1px solid transparent",
     outline: "none"
   },

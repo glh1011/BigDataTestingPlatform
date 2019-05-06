@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,20 +13,19 @@ export const resetPwdForm = () => ({
 
 export const modifyPwd = (value, history) => {
   return (dispatch) => {
-    axios.post('http://192.168.0.129:8080/user/changePassword', {
+    axios.post('/user/changePassword', {
       newPassword: value.passwd,
       confirmPassword: value.rePasswd,
       id: parseInt(localStorage.getItem('userId')),
       oldPassword: value.oldPasswd
     })
     .then(function (response) {
-      if(response.data.meta.success){
+      if(response.meta.success){
         //跳转回上一页
         Feedback.toast.success('修改密码成功');
         history.goBack();
-        dispatch(resetPwdForm());
       }else{
-        Feedback.toast.error('修改密码成功');
+        Feedback.toast.error(response.meta.message);
       }
     })
     .catch(function (error) {

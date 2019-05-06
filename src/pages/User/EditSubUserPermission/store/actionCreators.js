@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -10,10 +10,10 @@ const getPermissions = (permissions) => ({
 export const getInfo = () => {
   //id获取被点击的下级用户id
   var id = localStorage.getItem("subUserId");
-  var url = "http://192.168.0.129:8080/userPermission/querySubPermissions?id="+id;
+  var url = "/userPermission/querySubPermissions?id="+id;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      let permissions1 = res.data.data;
+      let permissions1 = res.data;
       let list1=[],list=[];
     for (let key in permissions1){
       list.push({value: key,label: key})
@@ -33,11 +33,11 @@ export const changeInputValue = () => ({
 });
 
 export const submitForm = (value,id,history) => {
-  var url = "http://192.168.0.129:8080/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
+  var url = "/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-      if(response.data.meta.success){
+      if(response.meta.success){
         Feedback.toast.success('修改成功！');
         history.back();
       }else{

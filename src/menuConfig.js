@@ -2,20 +2,20 @@
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
 const headerMenuConfig = [
-  {
-    name: 'git仓库',
-    path: 'http://www.dfsdedu.cn/teacher',
-    external: true,
-    newWindow: true,
-    icon: 'link',
-  },
-  {
-    name: 'ui库',
-    path: 'http://www.dfsdedu.cn/#/teacher',
-    external: true,
-    newWindow: true,
-    icon: 'link',
-  },
+//   {
+//     name: 'git仓库',
+//     path: 'http://www.dfsdedu.cn/teacher',
+//     external: true,
+//     newWindow: true,
+//     icon: 'link',
+//   },
+//   {
+//     name: 'ui库',
+//     path: 'http://www.dfsdedu.cn/#/teacher',
+//     external: true,
+//     newWindow: true,
+//     icon: 'link',
+//   },
 ];
 
 const asideMenuConfig = [
@@ -45,7 +45,7 @@ const asideMenuConfig = [
     secondVisible: true,
     children: [
       {
-        name: '权限管理',
+        name: '系统权限',
         path: '/permissionManagement/allPermissions',
         zeroVisible: true,
         firstVisible: false,
@@ -95,15 +95,15 @@ const asideMenuConfig = [
     name: '可视化安装',
     path: '/VisInstall',
     icon: 'home',
-    zeroVisible: true,
-        firstVisible: true,
-        secondVisible: true,
+    zeroVisible: false,
+    firstVisible: true,
+    secondVisible: false,
     children: [{
         name: '创建集群',
         path: '/VisInstall/createMV',
-        zeroVisible: true,
+        zeroVisible: false,
         firstVisible: true,
-        secondVisible: true,
+        secondVisible: false,
       },
 
     ],

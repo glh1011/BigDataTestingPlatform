@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Dialog } from '@icedesign/base';
+import { Table, Pagination, Button, Dialog, Balloon } from '@icedesign/base';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
 import { withRouter } from 'react-router';
@@ -23,6 +23,27 @@ class Home extends Component {
       pathname: '/Resource/ClusterResourceManage',
     })
   }
+  renderHint = (value) => {
+    return (
+      <Balloon
+        align="lt"
+        closable={false}
+        style={{ lineHeight: '24px' }}
+        trigger={<div style={{ margin: '5px' }}>{value}</div>}
+      >
+        单击一行查看集群信息
+      </Balloon>
+    );
+  };
+  //   //悬浮在表格每一行的时候触发,提醒用户点击
+  // onRowMouseEnter = (record, index, e) => {
+  //   console.log('mouse111111111111');
+  //   console.log(e.target);
+  //   const Tooltip = Balloon.Tooltip;
+  //   return(
+  //     <Tooltip trigger={e.target} align='t' text="text text" />
+  //   )
+  // }
 
   bindUserCluster = (clusterName) => {
     localStorage.setItem('bindClusterName',clusterName);
@@ -61,7 +82,7 @@ class Home extends Component {
     if(userLevel==1) {
       const that = this;
       const userName = localStorage.getItem('userName');
-      console.log(that);
+      console.log(userName);
       return (
         <div>
           <Button 
@@ -93,7 +114,7 @@ class Home extends Component {
             shape="warning"
             onClick={
               (e)=>{    
-                that.recycleCluster(record.clusterName, that.props.current, userName);
+                that.recycleCluster(record.clusterName, userName, that.props.current);
                 e.stopPropagation();
               }
             }
@@ -115,16 +136,17 @@ class Home extends Component {
           dataSource={Array.from(clusterList)}
           onSort={this.handleSort}
           onRowClick={this.onRowClick}
+          onRowMouseEnter={this.onRowMouseEnter}
           hasBorder={false}
           className="custom-table"
           style={styles.customTable}
         >
-          <Table.Column width={100} title="集群ID" dataIndex="clusterId" />
-          <Table.Column width={100} title="集群名称" dataIndex="clusterName" />
-          <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu" />
-          <Table.Column width={100} title="内存（GB）" dataIndex="totalMem" />
-          <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk" />
-          <Table.Column width={200} title="创建时间" dataIndex="createTime" />
+          <Table.Column width={100} title="集群ID" dataIndex="clusterId" cell={this.renderHint}/>
+          <Table.Column width={100} title="集群名称" dataIndex="clusterName" cell={this.renderHint}/>
+          <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu" cell={this.renderHint}/>
+          <Table.Column width={100} title="内存（GB）" dataIndex="totalMem" cell={this.renderHint}/>
+          <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk" cell={this.renderHint}/>
+          <Table.Column width={200} title="创建时间" dataIndex="createTime" cell={this.renderHint}/>
           <Table.Column width={200} title="操作" cell={this.renderOperationButton} />
         </Table>
         <Pagination
@@ -161,8 +183,9 @@ const mapDispatch = (dispatch) => ({
     actionCreators.getBoundSecondUser(clusterName);
   },
   //回收集群
-  recycleCluster(clusterName, current) {
+  recycleCluster(clusterName, userName, current) {
     console.log('mapDispatch  ' + clusterName);
+    console.log(userName);
     dispatch(actionCreators.recycleCluster(clusterName, userName, current));
   }
 })
@@ -178,6 +201,7 @@ const styles = {
     width: '80%',
     minWidth: '1000px',
     marginLeft: '8%',
+    cursor:'pointer',
   },
   pagination: {
     margin: '20px 0',

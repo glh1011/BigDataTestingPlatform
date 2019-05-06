@@ -1,3 +1,3 @@
-import PrimaryUserTable from './components/primaryUser';
+import PrimaryUserTable from './components';
 
 export default PrimaryUserTable;

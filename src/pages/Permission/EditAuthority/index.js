@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EditAuthorityForm from './components/EditAuthorityForm';
+import EditAuthorityForm from './components';
 
 export default class EditAuthority extends Component {
   constructor(props) {

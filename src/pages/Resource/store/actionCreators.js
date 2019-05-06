@@ -1,6 +1,12 @@
-import axios from 'axios';
+import axios from '../../../utils/newRequest';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
+
+//重置state
+ export const resetState = () => ({
+	 type: constants.RESET_STATE
+ })  
+
 
 // 资源池查看
 const changeFirstLevelResourceList = (firstLevelResourceList, total) => ({
@@ -17,12 +23,12 @@ const changeAdminResource = (adminResource) => ({
 export const getFirstLevelResourceList = (current) => {
 	console.log("获取一级资源");
   return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/info/findAllFirstInfo?pageNum=' + current + '&pageSize=10').then((res) => {		
+		axios.get('/info/findAllFirstInfo?pageNum=' + current + '&pageSize=10').then((res) => {		
 			console.log(res);
-			if(res.data.meta.success){
-				const result = res.data.data.list;
+			if(res.meta.success){
+				const result = res.data.list;
 				console.log(result);
-				const total = res.data.data.pages;
+				const total = res.data.pages;
 				console.log(total);
 				dispatch(changeFirstLevelResourceList(result, total));
 			}
@@ -35,9 +41,9 @@ export const getFirstLevelResourceList = (current) => {
 
 export const getAdmainResource = () => {
 	return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/info/findAllAdminInfo?pageNum=1&pageSize=10').then((res)=>{
-			if(res.data.meta.success){
-				const result = res.data.data.list;
+		axios.get('/info/findAllAdminInfo?pageNum=1&pageSize=10').then((res)=>{
+			if(res.meta.success){
+				const result = res.data.list;
 				console.log("adminResource:" + result);
 				dispatch(changeAdminResource(result));
 			}
@@ -56,12 +62,12 @@ const changeFirstLevelUser = (result) => ({
 //分配一级资源池, 获取无资源池的一级用户
 export const getFirstLevelUserWithoutResource = () => {
 	return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/allocation/findFirstWithoutResource').then(
+		axios.get('/allocation/findFirstWithoutResource').then(
 			function (res) {
 				console.log(res);
-				if(res.data.meta.success){
+				if(res.meta.success){
 					const result =[];
-					res.data.data.map((item) => {
+					res.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -85,18 +91,18 @@ export const changeAllocateInputValue = (userName, cpu, memory, disk) => ({
 //分配一级资源池
 export const submitAllocateForm = (username, cpu, memory, disk, history) => {
 	return (dispatch) => {
-		const url = 'http://192.168.0.129:8080/allocation/allocateResourceToFirst?totalCpu='+cpu+'&totalMem='+memory+'&totalDisk='+disk+'&username='+username;
+		const url = '/allocation/allocateResourceToFirst?totalCpu='+cpu+'&totalMem='+memory+'&totalDisk='+disk+'&username='+username;
 		console.log(url);
 		axios.post(url)
 			.then(
 				function (response) {
 					console.log(response);
-					if(response.data.meta.success){
+					if(response.meta.success){
 						Feedback.toast.success("一级资源池分配成功");
 						history.goBack();
 					}
-					else if(response.data.meta.message==='资源不够充足'){
-						Feedback.toast.error(response.data.meta.message);
+					else if(response.meta.message==='资源不够充足'){
+						Feedback.toast.error(response.meta.message);
 					}
 					else{
 						Feedback.toast.error("一级资源池分配失败");
@@ -113,9 +119,9 @@ export const recycleResourcePool = (userName, current) => {
 	let that = this;
 	console.log('回收要开始啦');
 	return(dispatch) => {
-		axios.post('http://192.168.0.129:8080/delete/deleteFirst?userName='+userName).then((res) => {
-			console.log(res.data.meta.success);
-      if(res.data.meta.success){
+		axios.post('/delete/deleteFirst?userName='+userName).then((res) => {
+			console.log(res.meta.success);
+      if(res.meta.success){
 				Feedback.toast.success("一级资源池回收成功");
 				dispatch(getAdmainResource());
 				dispatch(getFirstLevelResourceList(current));
@@ -142,12 +148,12 @@ const changeFirstLevelResource = (firstLevelResource) => ({
 export const getClusterList = (current, username) => {
 	console.log(username);
   return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/info/findAllClusterInfo?pageNum=' + current + '&pageSize=10&username=' + username).then((res) => {
+		axios.get('/info/findAllClusterInfo?pageNum=' + current + '&pageSize=10&username=' + username).then((res) => {
 			console.log(res);
-			if(res.data.meta.success){
-				const result = res.data.data.list;
+			if(res.meta.success){
+				const result = res.data.list;
 				console.log(result);
-				const total = res.data.data.pages;
+				const total = res.data.pages;
 				console.log(total);
 				dispatch(changeClusterList(result, total));
 			}
@@ -160,9 +166,9 @@ export const getClusterList = (current, username) => {
 //查看username对应的那个一级资源
 export const getFirstLevelResource = (username) => {
 	return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/info/findOneFirstInfo?username=' + username).then((res)=>{
-			if(res.data.meta.success){
-				const result = res.data.data;
+		axios.get('/info/findOneFirstInfo?username=' + username).then((res)=>{
+			if(res.meta.success){
+				const result = res.data;
 				console.log(result);
 				var a = [result];
 				console.log(a);
@@ -185,12 +191,12 @@ const changeUnboundSecondLevelUser = (result) => ({
 
 export const getUnboundSecondUser = (clusterName) => {
   return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/allocation/findSecondWithoutConnect?clusterName=' + clusterName)
+		axios.get('/allocation/findSecondWithoutConnect?clusterName=' + clusterName)
 		  .then( (res) => {
 				console.log(res);
-				if(res.data.meta.success){
+				if(res.meta.success){
 					const result =[];
-					res.data.data.map((item) => {
+					res.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -207,13 +213,13 @@ export const getUnboundSecondUser = (clusterName) => {
 export const submitAssignClusterUser = (value, clusterName, history) => {
 	console.log(value);
 	console.log(clusterName);
-	const url = 'http://192.168.0.129:8080/allocation/assignRole?clusterName='+ clusterName +'&users=' + value ;
+	const url = '/allocation/assignRole?clusterName='+ clusterName +'&users=' + value ;
 	console.log(url);
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.data.meta.success);
-      if(response.data.meta.success){
+			console.log(response.meta.success);
+      if(response.meta.success){
         Feedback.toast.success('绑定集群成功！');
         history.goBack();
 			}
@@ -236,12 +242,12 @@ const changeBoundSecondLevelUser = (result) => ({
 
 export const getBoundSecondUser = (clusterName) => {
   return (dispatch) => {
-		axios.get('http://192.168.0.129:8080/allocation/findSecondConnect?clusterName=' + clusterName)
+		axios.get('/allocation/findSecondConnect?clusterName=' + clusterName)
 		  .then( (res) => {
 				console.log(res);
-				if(res.data.meta.success){
+				if(res.meta.success){
 					const result =[];
-					res.data.data.map((item) => {
+					res.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -258,13 +264,13 @@ export const getBoundSecondUser = (clusterName) => {
 export const submitUnassignClusterUser = (value, clusterName, history) => {
 	console.log(value);
 	console.log(clusterName);
-	const url = 'http://192.168.0.129:8080/allocation/unassignRole?clusterName='+ clusterName +'&users=' + value ;
+	const url = '/allocation/unassignRole?clusterName='+ clusterName +'&users=' + value ;
 	console.log(url);
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.data.meta.success);
-      if(response.data.meta.success){
+			console.log(response.meta.success);
+      if(response.meta.success){
         Feedback.toast.success('解绑集群成功！');
         history.goBack();
 			}
@@ -280,15 +286,16 @@ export const submitUnassignClusterUser = (value, clusterName, history) => {
 
 //回收集群
 export const recycleCluster = (clusterName, userName, current) => {
+	console.log(userName);
 	let that = this;
 	console.log('回收要开始啦');
 	return(dispatch) => {
-		axios.post('http://192.168.0.129:8080/delete/deleteCluster?clusterName='+clusterName).then((res) => {
-			console.log(res.data.meta.success);
-      if(res.data.meta.success){
+		axios.post('/delete/deleteCluster?clusterName='+clusterName).then((res) => {
+			console.log(res.meta.success);
+      if(res.meta.success){
 				Feedback.toast.success("集群回收成功");
 				dispatch(getFirstLevelResource(userName));
-				dispatch(getClusterList(userName,current));
+				dispatch(getClusterList(current, userName));
 			}
 			else{
 				Feedback.toast.error("集群回收失败");

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import { connect } from 'react-redux';
 
 class LiteTable extends Component {
@@ -34,12 +34,12 @@ class LiteTable extends Component {
 
   componentDidMount() {
     var id = parseInt(localStorage.getItem('userId'));
-    var url = 'http://192.168.0.129:8080/permission/queryPermissions?id='+id;
+    var url = '/permission/queryPermissions?id='+id;
     axios.get(url)
     .then((res)=>{
       const action = {
         type: 'dispaly_self_authorities',
-        tableData: res.data.data.list
+        tableData: res.data.list
       }
       this.props.displaySelfAuthorities(action);
     })

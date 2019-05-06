@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -10,10 +10,10 @@ const changeSelfInfo = (data) => ({
 export const getInfo = () => {
   //id获取当前用户id
   var id = parseInt(localStorage.getItem('userId'));
-  var url = "http://192.168.0.129:8080/user/getUserDetailInfo?id=" + id;
+  var url = "/user/getUserDetailInfo?id=" + id;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      dispatch(changeSelfInfo(res.data));
+      dispatch(changeSelfInfo(res));
     })
   }
 }
@@ -26,11 +26,11 @@ export const changeSelfInputValue = (name, email) => ({
 
 export const submitForm = (name, email, history) => {
   var id = parseInt(localStorage.getItem('userId'));
-  var url = "http://192.168.0.129:8080/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
+  var url = "/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-    if(response.data.meta.success){
+    if(response.meta.success){
       Feedback.toast.success("个人信息修改成功");
       //跳转回上一页
       history.goBack();

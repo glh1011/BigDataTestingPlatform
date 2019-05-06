@@ -1,4 +1,3 @@
-/* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import { Grid, Button } from '@icedesign/base';
@@ -8,14 +7,14 @@ import {
   FormBinderWrapper as IceFormBinderWrapper,
 } from '@icedesign/form-binder/lib';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store/';
+import { actionCreators } from '../store';
 
 const { Row, Col } = Grid;
 const { Group: CheckboxGroup } = Checkbox;
 
 @withRouter
 class PermissionForm extends Component {
-  static displayName = 'PermissionForm';
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,17 +22,21 @@ class PermissionForm extends Component {
     };
     this.onChange = this.onChange.bind(this);
   }
+
   handleSubmitForm1 = (value,id,history) => {
     this.props.handleSubmitForm(value,id,history)
   }
+
   onChange(selectedItems) {
     this.setState({
       value: selectedItems,
     });
   }
+
   validateAllFormField = () => {
     history.back();
   }
+
   render() {
     let list=[]
     if(this.props.dataSource){
@@ -50,7 +53,18 @@ class PermissionForm extends Component {
             <div style={styles.formContent}>
               <h2 style={styles.formTitle}>权限信息</h2>
               <div>
-                <CheckboxGroup itemDirection="ver" value={this.state.value} dataSource={list.list} onChange={this.onChange}/>
+                {/* <CheckboxGroup value={this.state.value} dataSource={list.list} onChange={this.onChange}/> */}
+                <CheckboxGroup value={this.state.value} onChange={this.onChange}>
+                {
+                  (list.list||[]).map((item, index) => {
+                    return (
+                      <div key={index} style={styles.checkboxWrapper}>
+                        <Checkbox value={item.value}>{item.value}</Checkbox>
+                      </div>
+                    )
+                  })
+                } 
+                </CheckboxGroup>
               </div>    
             </div>
           </IceFormBinderWrapper>
@@ -80,14 +94,18 @@ class PermissionForm extends Component {
       </div>
     );
   }
+
   componentDidMount() {
     this.props.getSubUserInfo(); 
   }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       value: nextProps.dataSource.list1,
     });
-  }}
+  }
+}
+
 const mapStateToProps = (state) => {
   return {
      dataSource: state.PermissionForm.permissions,
@@ -123,6 +141,14 @@ const styles = {
     paddingBottom: '10px',
     borderBottom: '1px solid #eee',
   },
-  
+  checkboxWrapper: {
+    display: 'inline-block',
+    borderBottom: '1px solid #fafafa',
+    lineHeight: '45px',
+    height: 45,
+    paddingLeft: '20px',
+    paddingRight: '20px',
+    textDecoration: 'none',
+  }
 };
 

@@ -25,8 +25,12 @@ class UnassignClusterUser extends Component {
     };
     this.onChange = this.onChange.bind(this);
   }
-  handleSubmitForm = (value,history) => {
-    this.props.handleSubmitForm(value,history)
+  handleSubmit = (value, clusterName ,history) => {
+    this.formRef.validateAll((error) => {
+      if (!error || error.length === 0) {
+        this.props.handleSubmitForm(value, clusterName, history);
+      }
+    });
   }
   onChange(selectedItems) {
     this.setState({
@@ -41,14 +45,16 @@ class UnassignClusterUser extends Component {
     const checkboxItem = [];
     if(boundSecondUser){
       boundSecondUser.map((item) => {
-        checkboxItem.push(<Checkbox value={item}>{item}</Checkbox>)
+        checkboxItem.push(<Checkbox value={item} key={item}>{item}</Checkbox>)
       })
     }
     return (
       <div className="user-form" style={styles.rightSection}>
         <IceContainer>
           <IceFormBinderWrapper
-            ref="form"
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
           >
             <div style={styles.formContent}>
               <div style={styles.titleContainer}>
@@ -75,7 +81,7 @@ class UnassignClusterUser extends Component {
                   已绑定用户 ：
                 </Col>
                 <Col s="12" l="10" style={{marginTop:'5px'}}>
-                  <IceFormBinder name="userName">
+                  <IceFormBinder name="userName" requried>
                   <CheckboxGroup
                     value={this.state.value}
                     onChange={this.onChange}
@@ -83,7 +89,7 @@ class UnassignClusterUser extends Component {
                     {checkboxItem}
                   </CheckboxGroup>
                   </IceFormBinder>
-                  <IceFormError name="displayName" />
+                  <IceFormError name="userName" />
                 </Col>
               </Row>
             </div>
@@ -94,7 +100,7 @@ class UnassignClusterUser extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>handleSubmitForm(that.state.value, clusterName, history)}
+                onClick={()=>this.handleSubmit(that.state.value, clusterName, history)}
               >
                 提交
               </Button>

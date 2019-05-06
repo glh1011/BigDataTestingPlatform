@@ -18,5 +18,5 @@ export default(state=defaultState, action) => {
     newState.value.opLevel = '';
     return newState;
   }
-      return state;
+  return state;
 }

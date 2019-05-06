@@ -2,17 +2,25 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Pagination, Dialog } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../../../utils/newRequest';
 import { Feedback } from '@icedesign/base';
 import { withRouter } from 'react-router';
 
 @withRouter
 export default class SelectableTable extends Component {
 
-  static displayName = 'SelectableTable';
-
   constructor(props) {
     super(props);
+
+    this.state = {
+      selectedRowKeys: [],
+      dataSource: [],
+      show: false,
+      idWillDelete: '',
+      total: 0,
+      current: 1
+    };
+
     // 表格可以勾选配置项
     this.rowSelection = {
       // 表格发生勾选状态变化时触发
@@ -31,16 +39,7 @@ export default class SelectableTable extends Component {
         console.log('onSelectAll', selected, records);
       },
     };
-
-    this.state = {
-      selectedRowKeys: [],
-      dataSource: [],
-      show: false,
-      idWillDelete: '',
-      total: 0,
-      current: 1
-    };
-   }
+  }
 
   clearSelectedKeys = () => {
     this.setState({
@@ -49,15 +48,14 @@ export default class SelectableTable extends Component {
   };
 
   deleteSelectedKeys = () => {
-    const { selectedRowKeys } = this.state;
+    Feedback.toast.prompt("批量删除暂未开启");
   };
 
   deleteItem = (record) => {
-    const { permissionId } = record;
-  
+    const { id } = record;
     this.setState({
       show: true,
-      idWillDelete: permissionId
+      idWillDelete: id
     })
   };
 
@@ -68,53 +66,18 @@ export default class SelectableTable extends Component {
     });
   };
 
-onClose = reason => {
+  onClose = reason => {
     console.log(reason);
     this.setState({
       show: false
     });
 };
 
-deleteSubmit = () => {
-  var current = this.state.current;
-  var that = this;
-  var url = 'http://192.168.0.129:8080/permission/deletePermissionById?id='+this.state.idWillDelete;
-  axios
-    .post(url)
-    .then(function(response) {
-      console.log(response);
-      if(response.data.meta.success){
-        Feedback.toast.success('删除权限成功');
-        that.listRender(current);
-      }else{
-        Feedback.toast.error('删除权限失败');
-      }
-    })
-    .catch(function (error) {
-      alert("Oops!"+error);
-    });
-  }
-
-onChange = (current) => {
-  var url = 'http://192.168.0.129:8080/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
-  axios.get(url).then((res) => {
-      const data = res.data.data.list;
-      const total = res.data.data.total;
-      this.setState({
-        dataSource: data,
-        total: total,
-        current: current
-      });
-    }).catch(() => {
-      console.log('error');
-    })
-  }
-
   renderOperator = (value, index, record) => {
     return (
       <div>
         <Link to='/permissionManagement/editPermission'
-        onClick={(e)=>{localStorage.setItem('permissionId',record.permissionId); e.stopPropagation();}}
+        onClick={(e)=>{localStorage.setItem('id',record.id); e.stopPropagation();}}
         >
           编辑
         </Link>
@@ -128,19 +91,64 @@ onChange = (current) => {
     );
   };
 
+  //第一次渲染权限列表首页
   listRender(currentPage) {
-    var url = 'http://192.168.0.129:8080/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
+    var url = '/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
     axios.get(url).then((res) => {
-      const data = res.data.data.list;
-      const total = res.data.data.total;
+      const data = res.data.list;
+      const total = res.data.total;
+      //将权限数组中的permissionId修改为id
+      data.forEach(function(item){
+        item.id = item.permissionId;
+        delete item.permissionId;
+      })
       this.setState({
         dataSource: data,
         total: total
+      });
+    })
+  }
+
+  //根据当前页面显示权限列表
+  onChange = (current) => {
+    var url = '/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
+    axios.get(url).then((res) => {
+      const data = res.data.list;
+      const total = res.data.total;
+      //将权限数组中的permissionId修改为id
+      data.forEach(function(item){
+        item.id = item.permissionId;
+        delete item.permissionId;
+      })
+      this.setState({
+        dataSource: data,
+        total: total,
+        current: current
       });
     }).catch(() => {
       console.log('error');
     })
   }
+
+  //删除权限
+  deleteSubmit = () => {
+    var current = this.state.current;
+    var that = this;
+    var url = '/permission/deletePermissionById?id='+this.state.idWillDelete;
+    axios.post(url)
+      .then(function(response) {
+        console.log(response);
+        if(response.meta.success){
+          Feedback.toast.success('删除权限成功');
+          that.listRender(current);
+        }else{
+          Feedback.toast.error('删除权限失败');
+        }
+      })
+      .catch(function (error) {
+        alert("Oops!"+error);
+      });
+    }
 
   componentDidMount() {
     this.listRender(1);
@@ -152,12 +160,17 @@ onChange = (current) => {
         <Dialog
           title="删除权限？"
           visible={this.state.show}
-          onOk={()=>{this.deleteSubmit();this.setState({show:false}); this.onClose.bind(this, 'okClick')}}
+          onOk={()=>{
+            this.deleteSubmit();
+            this.setState({show:false}); 
+            this.onClose.bind(this, 'okClick')
+          }}
           onCancel={this.onClose.bind(this, 'cancelClick')}
           onClose={this.onClose}>
           Are you sure to delete this permission?
       </Dialog>
       <div className="selectable-table" style={styles.selectableTable}>
+
         <IceContainer style={styles.IceContainer}>
           <a style={styles.formTitle}>系统权限</a>
           <div style={styles.btnContainer}>
@@ -183,6 +196,7 @@ onChange = (current) => {
             </Button>
           </div>
         </IceContainer>
+
         <IceContainer>
           <Table
             dataSource={this.state.dataSource}
@@ -192,7 +206,7 @@ onChange = (current) => {
                selectedRowKeys: this.state.selectedRowKeys
             }}
           >
-            <Table.Column title="编号" dataIndex="permissionId" width={50} />
+            <Table.Column title="编号" dataIndex="id" width={50} />
             <Table.Column title="名称" dataIndex="opName" width={230} />
             <Table.Column title="级别" dataIndex="opLevel" width={50} />
             <Table.Column title="创建者" dataIndex="creator" width={100} />
@@ -205,7 +219,11 @@ onChange = (current) => {
             />
           </Table>
           <div style={styles.pagination}>
-            <Pagination onChange={this.onChange} total={this.state.total} style={styles.pagination}/>
+            <Pagination 
+            onChange={this.onChange} 
+            total={this.state.total} 
+            style={styles.pagination}
+          />
           </div>
         </IceContainer>
       </div>
@@ -256,7 +274,4 @@ const styles = {
     marginTop:'-125px',
     zIndex:'10'
   },
-  dialogText: {
-    padding: '30px',
-  }
 };

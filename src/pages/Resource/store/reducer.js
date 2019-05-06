@@ -15,6 +15,21 @@ const defaultState = {
 }
 
 export default (state = defaultState, action) => {
+  console.log(action.type);
+  if(action.type === constants.RESET_STATE) {
+    console.log(action.type);
+    const newState = JSON.parse(JSON.stringify(state));
+    console.log(newState);
+    newState.resourcePoolList = [];
+    newState.clusterList = [];
+    newState.resourceUseData = [];
+    newState.allocateInputValue = {};
+    newState.firstLevelUser = [];
+    newState.unboundSecondUser = [];
+    newState.boundSecondUser = [];
+    console.log(newState);
+    return newState;
+  }
   if(action.type ===  constants.CHANGE_FIRST_LEVEL_LIST) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.resourcePoolList = action.resourcePoolList;

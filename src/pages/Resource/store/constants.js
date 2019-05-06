@@ -1,3 +1,4 @@
+export const RESET_STATE = 'resource/RESET_STATE';
 export const CHANGE_FIRST_LEVEL_LIST ='resource/CHANGE_FIRST_LEVEL_LIST';
 export const CHANGE_ADMAIN_RESOURCE = 'resource/CHANGE_ADMAIN_RESOURCE';
 export const CHANGE_CLUSTER_LIST ='resource/CHANGE_CLUSTER_LIST';

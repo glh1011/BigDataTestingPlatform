@@ -9,28 +9,31 @@ import {
 } from '@icedesign/form-binder';
 import './ChangePasswordForm.scss';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store';
+import { actionCreators } from '../store';
 import { withRouter } from 'react-router';
 
 const { Row, Col } = Grid;
 
 @withRouter
 class ChangePasswordForm extends Component {
-  static displayName = 'ChangePasswordForm';
 
-  static propTypes = {};
+  componentWillUnmount(){
+    this.props.resetForm();
+  }
 
-  static defaultProps = {};
-
-  formChange = (value) => {
-    this.setState({
-      value,
-    });
-  };
+  checkConfirmPassword=(rule, values, callback) => {
+    if (!values) {
+      callback('请输入正确的密码');
+    } else if (values && values !== this.props.value.passwd) {
+      callback('两次输入密码不一致');
+    } else {
+      callback();
+    }
+  }
 
   render() {
-    console.log(this.props.history);
     const { value, resetPwd, formChange, history } = this.props;
+    console.log(value);
     return (
       <div className="change-password-form">
         <IceContainer>
@@ -40,7 +43,7 @@ class ChangePasswordForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>重置下级用户密码</h2>
+              <h2 style={styles.formTitle}>修改密码</h2>
 
               <Row wrap style={styles.formItem}>
                 <Col xxs="7" s="4" l="3" style={styles.formLabel}>
@@ -88,6 +91,7 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="rePasswd"
                     required
+                    validator={this.checkConfirmPassword}
                   >
                     <Input
                       htmlType="password"
@@ -120,7 +124,7 @@ class ChangePasswordForm extends Component {
 
 const mapState = (state) => {
   return {
-    value: state.resetSubUserPassword.value
+    value: state.resetPassword.value
   }
 }
 
@@ -133,6 +137,10 @@ const mapDispatch = (dispatch) => {
     formChange(e) {
       dispatch(actionCreators.changeInputValue(e));
     },
+    resetForm(){
+      dispatch(actionCreators.resetPwdForm());
+    },
+    
   }
 }
 

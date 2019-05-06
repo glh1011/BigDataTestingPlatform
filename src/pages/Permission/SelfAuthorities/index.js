@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import LiteTable from './components/LiteTable';
+import LiteTable from './components';
 
 export default class SelfAuthorities extends Component {
   constructor(props) {

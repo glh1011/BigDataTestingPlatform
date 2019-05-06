@@ -9,7 +9,7 @@ const defaultState = {
 };
 
 export default(state=defaultState, action) => {
-  if(action.type == constants.CHANGEINPUTVALUE){
+  if(action.type == constants.CHANGEINPUT){
     const newState = JSON.parse(JSON.stringify(state));
     newState.value = action.value;
     return newState;

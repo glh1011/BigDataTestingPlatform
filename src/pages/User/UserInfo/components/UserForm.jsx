@@ -1,25 +1,20 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button, Icon } from '@icedesign/base';
+import { Input, Grid, Button } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder/lib';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store/';
+import { actionCreators } from '../store/';
 import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
 
 const { Row, Col } = Grid;
+
 @withRouter
 class UserForm extends Component {
-  static displayName = 'UserForm';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   render() {
     const { value, handleSubmitForm, history } = this.props;
@@ -32,16 +27,7 @@ class UserForm extends Component {
             ref="form"
           >
             <div style={styles.formContent}>
-            <div style={styles.titleContainer}>
               <h2 style={styles.formTitle}>个人信息</h2>
-              <div style={styles.btnContainer}>
-                <Link to="/userManagement/changeSubUserPwd">
-                  <Button size="small" style={styles.batchBtn}>
-                    <Icon type="add" />修改人员密码
-                  </Button>
-                  </Link>
-              </div>
-            </div>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
@@ -94,12 +80,11 @@ class UserForm extends Component {
                   姓名：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="name">
+                  <IceFormBinder name="name" message="长度小于32" max={32}>
                     <Input
                       size="large"
                       placeholder="请输入昵称"
                       style={{ width: '100%' }}
-                      
                     />
                   </IceFormBinder>
                   <IceFormError name="displayName" />
@@ -126,7 +111,6 @@ class UserForm extends Component {
                   <IceFormError name="email" />
                 </Col>
               </Row>
-
             </div>
           </IceFormBinderWrapper>
 
@@ -145,7 +129,7 @@ class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>{history.goBack();}}
+                onClick={()=>{this.props.history.goBack()}}
               >
                 取消
               </Button>
@@ -156,22 +140,22 @@ class UserForm extends Component {
     );
   }
   componentDidMount() {
-    this.props.getSubUserInfo();
+    this.props.getSelfInfo();
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    value: state.editSubUser.value.data
+    value: state.userForm.value.data
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  getSubUserInfo() {
+  getSelfInfo() {
     dispatch(actionCreators.getInfo());
   },
   handleInputChange(e) {
-    dispatch(actionCreators.changeInputValue(e.name, e.email));
+    dispatch(actionCreators.changeSelfInputValue(e.name, e.email));
   },
   //提交表单
   handleSubmitForm(value, history) {
@@ -186,14 +170,6 @@ const styles = {
     width: '100%',
     position: 'relative',
   },
-  btnContainer: {
-    float: 'right',
-  },
-  batchBtn: {
-    marginRight: '10px',
-    fontSize: '14px',
-    height: '26px',
-  },
   formItem: {
     marginBottom: 25,
   },
@@ -203,12 +179,9 @@ const styles = {
     textAlign: 'right',
   },
   formTitle: {
-    marginTop: '0',
-    display: 'inline-block',
-  },
-  titleContainer: {
-    borderBottom: '1px solid #eee',
     margin: '0 0 20px',
-  }
+    paddingBottom: '10px',
+    borderBottom: '1px solid #eee',
+  },
 };
 

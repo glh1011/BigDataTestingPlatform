@@ -1,64 +1,42 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button, Select } from '@icedesign/base';
+import { Input, Grid, Button, Icon } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder/lib';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store/';
+import { actionCreators } from '../store/';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const { Row, Col } = Grid;
-
 @withRouter
 class UserForm extends Component {
-  static displayName = 'UserForm';
-
-  static propTypes = {};
-
-  static defaultProps = {};
-
-  subUserRank = () => {
-    if(parseInt(localStorage.getItem('userLevel'))==0) {
-      return (
-        <Select
-        style={{ width: '100%' }}
-        size="large"
-        placeholder="请选择..."
-        dataSource={[
-          { label: '用户管理员', value: '1' },
-        ]}
-      ></Select>
-      )
-    }else{
-      return (
-      <Select
-        style={{ width: '100%' }}
-        size="large"
-        placeholder="请选择..."
-        dataSource={[
-          { label: '普通用户', value: '2' },
-        ]}
-      ></Select>
-      )
-    }
-  }
 
   render() {
-    const { value, formChange, submitSubUser, history, resetForm } = this.props;
+    const { value, handleSubmitForm, history } = this.props;
     return (
       <div className="user-form">
         <IceContainer>
           <IceFormBinderWrapper
             value={value}
-            onChange={formChange}
+            onChange={this.props.handleInputChange}
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>新增用户</h2>
+              <div style={styles.titleContainer}>
+                <h2 style={styles.formTitle}>个人信息</h2>
+                <div style={styles.btnContainer}>
+                  <Link to="/userManagement/changeSubUserPwd">
+                    <Button size="small" style={styles.batchBtn}>
+                      <Icon type="add" />修改人员密码
+                    </Button>
+                    </Link>
+                </div>
+              </div>
 
               <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
@@ -69,9 +47,10 @@ class UserForm extends Component {
                     <Input
                       size="large"
                       style={{ width: '100%' }}
+                      disabled 
                     />
                   </IceFormBinder>
-                  <IceFormError name="userName" />
+                  <IceFormError name="username" />
                 </Col>
               </Row>
 
@@ -81,7 +60,26 @@ class UserForm extends Component {
                 </Col>
                 <Col s="12" l="10">
                   <IceFormBinder name="userLevel">
-                  {this.subUserRank()}
+                  <Input
+                      size="large"
+                      style={{ width: '100%' }}
+                      disabled 
+                    />
+                  </IceFormBinder>
+                </Col>
+              </Row>
+
+              <Row style={styles.formItem}>
+                <Col xxs="6" s="3" l="3" style={styles.formLabel}>
+                  上级id：
+                </Col>
+                <Col s="12" l="10">
+                  <IceFormBinder name="superiorUserId">
+                  <Input
+                      size="large"
+                      style={{ width: '100%' }}
+                      disabled 
+                    />
                   </IceFormBinder>
                 </Col>
               </Row>
@@ -96,10 +94,10 @@ class UserForm extends Component {
                       size="large"
                       placeholder="请输入昵称"
                       style={{ width: '100%' }}
-                      
+                      message="长度小于32" max={32}
                     />
                   </IceFormBinder>
-                  <IceFormError name="name" />
+                  <IceFormError name="displayName" />
                 </Col>
               </Row>
 
@@ -117,30 +115,10 @@ class UserForm extends Component {
                     <Input
                       style={{ width: '100%' }}
                       size="large"
-                      placeholder="请输入正确的邮箱"
+                      placeholder="ice-admin@alibaba-inc.com"
                     />
                   </IceFormBinder>
                   <IceFormError name="email" />
-                </Col>
-              </Row>
-
-              <Row style={styles.formItem}>
-                <Col xxs="6" s="3" l="3" style={styles.formLabel}>
-                  密码：
-                </Col>
-                <Col s="12" l="10">
-                  <IceFormBinder
-                    name="passwd"
-                    required
-                  >
-                    <Input
-                      style={{ width: '100%' }}
-                      htmlType="password"
-                      size="large"
-                      placeholder="请输入初始密码"
-                    />
-                  </IceFormBinder>
-                  <IceFormError name="passwd" />
                 </Col>
               </Row>
 
@@ -152,9 +130,9 @@ class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>submitSubUser(value, history)}
+                onClick={()=>handleSubmitForm(value, history)}
               >
-                确认创建
+                确认修改
               </Button>
             </Col>
 
@@ -162,7 +140,7 @@ class UserForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>{history.goBack();resetForm()}}
+                onClick={()=>{history.goBack();}}
               >
                 取消
               </Button>
@@ -172,35 +150,44 @@ class UserForm extends Component {
       </div>
     );
   }
-}
-
-const mapState = (state) => {
-  return {
-    value: state.addSubUser.value
+  componentDidMount() {
+    this.props.getSubUserInfo();
   }
 }
 
-const mapDispatch = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    submitSubUser(value, history) {
-      console.log(value);
-      dispatch(actionCreators.addSubUser(value, history));
-    },
-    formChange(e) {
-      dispatch(actionCreators.changeFormValue(e));
-    },
-    resetForm() {
-      dispatch(actionCreators.resetAddSubUser());
-    }
+    value: state.editSubUser.value.data
   }
 }
 
-export default connect(mapState, mapDispatch)(UserForm)
+const mapDispatchToProps = (dispatch) => ({
+  getSubUserInfo() {
+    dispatch(actionCreators.getInfo());
+  },
+  handleInputChange(e) {
+    dispatch(actionCreators.changeInputValue(e.name, e.email));
+  },
+  //提交表单
+  handleSubmitForm(value, history) {
+    dispatch(actionCreators.submitForm(value.name, value.email, history));
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserForm);
 
 const styles = {
   formContent: {
     width: '100%',
     position: 'relative',
+  },
+  btnContainer: {
+    float: 'right',
+  },
+  batchBtn: {
+    marginRight: '10px',
+    fontSize: '14px',
+    height: '26px',
   },
   formItem: {
     marginBottom: 25,
@@ -211,8 +198,12 @@ const styles = {
     textAlign: 'right',
   },
   formTitle: {
-    margin: '0 0 20px',
-    paddingBottom: '10px',
-    borderBottom: '1px solid #eee',
+    marginTop: '0',
+    display: 'inline-block',
   },
+  titleContainer: {
+    borderBottom: '1px solid #eee',
+    margin: '0 0 20px',
+  }
 };
+

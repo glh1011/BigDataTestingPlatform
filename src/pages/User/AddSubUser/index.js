@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserForm from './components/UserForm';
+import UserForm from './components';
 
 export default class AddSubUser extends Component {
   constructor(props) {

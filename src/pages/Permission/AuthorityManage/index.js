@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SelectableTable from './components/SelectableTable';
+import SelectableTable from './components';
 
 export default class AuthorityManage extends Component {
   constructor(props) {

@@ -15,7 +15,6 @@ class OverviewInfo extends Component {
           info.total = data.resourceUseData[0].totalCpu + "个";
           info.used = data.resourceUseData[0].usedCpu + "个";
           info.usable = data.resourceUseData[0].totalCpu-data.resourceUseData[0].usedCpu + "个";
-          info.backup = 0 + "个";
         }
       break;
       case "memory":
@@ -23,7 +22,6 @@ class OverviewInfo extends Component {
           info.total = data.resourceUseData[0].totalMem + "GB";
           info.used = data.resourceUseData[0].usedMem + "GB";
           info.usable = data.resourceUseData[0].totalMem-data.resourceUseData[0].usedMem + "GB";
-          info.backup = 0 + "GB";
         }
       break;
       case "disk":
@@ -31,7 +29,6 @@ class OverviewInfo extends Component {
           info.total = data.resourceUseData[0].totalDisk + "GB";
           info.used = data.resourceUseData[0].usedDisk + "GB";
           info.usable = data.resourceUseData[0].totalDisk-data.resourceUseData[0].usedDisk + "GB";
-          info.backup = 0 + "GB";
         }
       break;
       default:
@@ -47,7 +44,6 @@ class OverviewInfo extends Component {
         total:'',
         used:'',
         usable:'',
-        backup:'',
       };
       this.getInfo(this.props, info);
       return (
@@ -68,10 +64,6 @@ class OverviewInfo extends Component {
                 <li style={styles.item}>
                   <span style={styles.label}>可用：</span>
                   <span style={styles.value}>{info.usable}</span>
-                </li>
-                <li style={styles.item}>
-                  <span style={styles.label}>预留：</span>
-                  <span style={styles.value}>{info.backup}</span>
                 </li>
               </ul>
             </IceContainer>

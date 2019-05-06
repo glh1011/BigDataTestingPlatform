@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ChangePasswordForm from './components/ChangePasswordForm';
+import ChangePasswordForm from './components';
 
 export default class ChangeSubUserPwd extends Component {
   constructor(props) {

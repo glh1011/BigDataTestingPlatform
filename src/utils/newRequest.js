@@ -12,29 +12,19 @@ import { updateAuthState } from './checkStore';
 
 const service = axios.create({
   baseURL: 'http://192.168.0.129:8080', // 请求地址
-  timeout: 5000, // 请求超时限制
+  timeout: 10000, // 请求超时限制
 });
 
-// 请求处理
-service.interceptors.request.use(config => {
-  Feedback.toast.loading('加载中...');
-  if (config.method === 'post') {
-    if (config.header) {
-      config.data = JSON.stringify({ ...config.data });
-      config.headers['Content-Type'] = config.header['Content-Type'];
-    } else {
-      config.data = qs.stringify({ ...config.data });
-      config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
-  } else {
-    config.params = { ...config.params };
-  }
-  return config;
-}, error => {
-  // 错误处理
-  Feedback.toast.error(error);
-  Promise.reject(error);
-});
+// // 请求处理
+// service.interceptors.request.use(config => {
+//   Feedback.toast.loading('加载中...');
+//   config.params = { ...config.params };
+//   return config;
+// }, error => {
+//   // 错误处理
+//   Feedback.toast.error(error);
+//   Promise.reject(error);
+// });
 
 // 响应处理
 service.interceptors.response.use(res => {

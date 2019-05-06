@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Dialog} from '@icedesign/base';
+import { Table, Pagination, Button, Dialog, Balloon} from '@icedesign/base';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
 import { withRouter } from 'react-router';
@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 //   });
 // };
 @withRouter
+
 class Home extends Component {
   static displayName = 'Home';
   handlePagination = (current) => {
@@ -34,6 +35,35 @@ class Home extends Component {
       pathname: '/Resource/FirstLevelResourceShow'
     })
   };
+
+  renderHint = (value) => {
+    return (
+      <Balloon
+        align="lt"
+        closable={false}
+        style={{ lineHeight: '24px' }}
+        trigger={<div style={{ margin: '5px' }}>{value}</div>}
+      >
+        单击一行查看一级资源池信息
+      </Balloon>
+    );
+  };
+
+// //悬浮在表格每一行的时候触发,提醒用户点击
+// onRowMouseEnter = (record, index, e) => {
+//   return(
+//     <Balloon
+//       trigger={e.target}
+//       align="tl"
+//       alignment="edge"
+//       triggerType="hover"
+//       style={{ width: 300 }}
+//     >
+//       点击表格的一行，可查看一级资源池下的集群列表
+//     </Balloon>
+//   )
+// }
+  
   //回收资源池
   haddleRecycleResourcePool = (userName, current) => {
     var that = this;
@@ -81,11 +111,11 @@ class Home extends Component {
           className="custom-table"
           style={styles.customTable}
         >
-          <Table.Column width={100} title="资源池ID" dataIndex="resourcePoolId" />
-          <Table.Column width={100} title="用户登录名" dataIndex="username"/>
-          <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu" />
-          <Table.Column width={100} title="内存（GB）" dataIndex="totalMem" />
-          <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk" />
+          <Table.Column width={100} title="资源池ID" dataIndex="resourcePoolId" cell={this.renderHint}/>
+          <Table.Column width={100} title="用户登录名" dataIndex="username" cell={this.renderHint}/>
+          <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu"  cell={this.renderHint}/>
+          <Table.Column width={100} title="内存（GB）" dataIndex="totalMem"  cell={this.renderHint}/>
+          <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk"  cell={this.renderHint}/>
           <Table.Column width={100} title="操作" cell={this.renderOperation} />
         </Table>
         <Pagination
@@ -131,6 +161,7 @@ const styles = {
     width: '80%',
     minWidth: '1000px',
     marginLeft: '8%',
+    cursor:'pointer',
   },
   pagination: {
     margin: '20px 0',

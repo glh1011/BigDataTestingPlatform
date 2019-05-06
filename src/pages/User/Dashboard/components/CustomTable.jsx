@@ -1,19 +1,43 @@
 import React, { Component } from 'react';
-import { Table, Icon, Button, Pagination } from '@icedesign/base';
+import { Table, Icon, Button, Pagination, Balloon } from '@icedesign/base';
 import { connect } from 'react-redux';
-import { actionCreators } from '../../store';
+import { actionCreators } from '../store';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
 
 @withRouter
 class Home extends Component {
-  static displayName = 'Home';
+
+  constructor(props){
+    super(props);
+    this.state = {
+      ballonVisible: false
+    }
+  }
 
   onRowClick = (record, index, e) => {
     localStorage.setItem('subUserId',record.userId);
     var id = record.id;
     this.props.history.push({ pathname: "/userManagement/subUserDetail", state: { id } });
+  }
+
+  onRowMouseEnter = (record, index, e) => {
+    console.log("鼠标进入一行");
+    this.setState({
+      ballonVisible: true
+    },function(){
+      console.log(this.state.ballonVisible);
+    })
+  }
+
+  onRowMouseLeave = (record, index, e) => {
+    console.log("鼠标离开一行");
+    this.setState({
+      ballonVisible: false
+    },function(){
+      console.log(this.state.ballonVisible);
+    })
   }
 
   handleSort = (dataIndex, order) => {
@@ -44,6 +68,19 @@ class Home extends Component {
         style={{display:'inline-block',marginRight:'10px'}}
         >权限</Link>
       </div>
+    );
+  };
+
+  renderHint = (value) => {
+    return (
+      <Balloon
+        align="lt"
+        closable={false}
+        style={{ lineHeight: '24px' }}
+        trigger={<div style={{ margin: '5px' }}>{value}</div>}
+      >
+        单击一行查看详细信息
+      </Balloon>
     );
   };
 
@@ -88,12 +125,38 @@ class Home extends Component {
               dataIndex="userId"
               sortable
               align="center"
+              cell={this.renderHint}
             />
-            <Table.Column width={100} title="登录名" dataIndex="userName" sortable />
-            <Table.Column width={100} title="姓名" dataIndex="name" />
-            <Table.Column width={100} title="上级id" dataIndex="superiorUserId" />
-            <Table.Column width={200} title="邮箱" dataIndex="email" />
-            <Table.Column width={100} title="token" dataIndex="token" />
+            <Table.Column 
+              width={100} title="登录名" 
+              dataIndex="userName" 
+              cell={this.renderHint} 
+              sortable 
+            />
+            <Table.Column 
+              width={100} 
+              title="姓名" 
+              dataIndex="name" 
+              cell={this.renderHint} 
+            />
+            <Table.Column 
+              width={100} 
+              title="上级id" 
+              dataIndex="superiorUserId" 
+              cell={this.renderHint} 
+            />
+            <Table.Column 
+              width={200} 
+              title="邮箱" 
+              dataIndex="email" 
+              cell={this.renderHint} 
+            />
+            <Table.Column 
+              width={100} 
+              title="token" 
+              dataIndex="token" 
+              cell={this.renderHint} 
+            />
             <Table.Column
               width={100}
               title="操作"

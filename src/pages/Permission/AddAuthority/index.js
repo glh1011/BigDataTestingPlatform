@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SettingsForm from './components/SettingsForm';
+import SettingsForm from './components';
 
 export default class AddAuthority extends Component {
   constructor(props) {
