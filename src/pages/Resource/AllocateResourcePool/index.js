@@ -63,7 +63,7 @@ class AllocateResourcePool extends Component {
                   一级用户：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="userName" required message="必填">
+                  <IceFormBinder name="userName" required message="请选择用户名">
                     <Select
                         style={{ width: '100%' }}
                         size="large"
@@ -92,7 +92,7 @@ class AllocateResourcePool extends Component {
                 </Col>
               </Row>
 
-              <Row style={styles.formItem}>
+              <Row style={styles.formItem} required message="必填">
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
                   内存（GB）：
                 </Col>

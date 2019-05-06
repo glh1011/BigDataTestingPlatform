@@ -20,22 +20,21 @@ class VmTable extends Component {
       const userName = localStorage.getItem('userName');
       url = 'http://192.168.0.129:8080/userCluster/findDetailByUser?userName=' + userName;
     }
-    if(parseInt(localStorage.getItem('userLevel')) == 1) {
-      const userName = localStorage.getItem('userName');
-      const clusterName = localStorage.getItem('onRowClickClusterName');
-      url = 'http://192.168.0.129:8080/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
-    }
-    if(parseInt(localStorage.getItem('userLevel')) == 0) {
+    if(parseInt(localStorage.getItem('userLevel')) == 1 || parseInt(localStorage.getItem('userLevel')) == 0) {
       const userName = localStorage.getItem('userName');
       const clusterName = localStorage.getItem('onRowClickClusterName');
       url = 'http://192.168.0.129:8080/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
     }
     console.log(url);
     axios.get(url).then((res) => {
-      const list = res.data;
-      this.setState({
-        dataSource: list,
-      });
+      if(res.data.meta.success){
+          const list = res.data;
+          this.setState({
+            dataSource: list,
+          });
+      }else{
+        alert("Oops"+error);
+      }
     })
   }
 
@@ -48,9 +47,10 @@ class VmTable extends Component {
       console.log(res);
       const info = res.data.data;
       if(res.data.meta.success){
+        let newWindow = window.open("about:blank");
+
         var form = document.createElement("form");
         form.method = "post";
-    
         form.action = info.url;
         var username = document.createElement("input");
         username.type = "hidden";
@@ -62,7 +62,8 @@ class VmTable extends Component {
         password.value = info.param.j_password;
         form.appendChild(username);
         form.appendChild(password);
-        document.getElementsByTagName("body")[0].append(form);
+
+        newWindow.document.getElementsByTagName("body")[0].append(form);
         form.submit();
       }
     })
