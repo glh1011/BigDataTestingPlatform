@@ -1,6 +1,6 @@
 import fetch from '../utils/request';
 
-export function loginByusername(username, password) {
+export async function loginByusername(username, password) {
   const data = {
     username,
     password,

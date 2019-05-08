@@ -74,7 +74,17 @@
   "themeConfig": {
     "theme": "light",
     "primaryColor": "#C7A47B",
-    "secondaryColor": "#313949"
+    "secondaryColor": "#313949",
+    "nextPrefix": "nextfd-"
   },
-  "proxyConfig": {}
+  "proxyConfig": {
+    "/api": {
+      "enable": true,
+      "target": "http://192.168.0.129:8080"
+    },
+    "/login": {
+      "enable": true,
+      "target": "http://192.168.0.129:8080"
+    }
+  }
 }

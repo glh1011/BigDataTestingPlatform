@@ -31,6 +31,10 @@ import ClusterResourceManage from './pages/Resource/ClusterResourceManage';
 
 import VisInstall from './pages/VisInstall';
 
+import PlatformLog from './pages/Log/components/PlatformLog';
+import CDHLog from './pages/Log/components/CDHLog';
+import UploadFile from './pages/UploadFile';
+
 const routerConfig = [
   {
     path: '/userManagement/dashboard',
@@ -131,6 +135,21 @@ const routerConfig = [
     path: '/VisInstall/createMV',
     layout: NormalLayout,
     component: VisInstall,
+  },
+  {
+    path: '/Log/PlatformLog',
+    layout: NormalLayout,
+    component: PlatformLog,
+  },
+  {
+    path: '/Log/CDHLog',
+    layout: NormalLayout,
+    component: CDHLog,
+  },
+  {
+    path: '/Upload/UploadFile',
+    layout: NormalLayout,
+    component: UploadFile,
   },
 ];
 

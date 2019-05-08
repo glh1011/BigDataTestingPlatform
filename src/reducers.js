@@ -20,6 +20,9 @@ import { reducer as userFormReducer } from './pages/User/UserInfo/store';
 
 import { reducer as ResourceReducer } from './pages/Resource/store';
 
+import { reducer as CDHLogReducer } from './pages/Log/components/CDHLog/store';
+import { reducer as PlatformLogReducer } from './pages/Log/components/PlatformLog/store';
+
 // Initial routing state
 const routeInitialState = {
   location: null,
@@ -57,6 +60,8 @@ export default function createReducer(injectedReducers) {
     userForm: userFormReducer,
     
     Resource: ResourceReducer,
+    PlatformLog: PlatformLogReducer,
+    CDHLog: CDHLogReducer,
     ...injectedReducers,
   });
 }

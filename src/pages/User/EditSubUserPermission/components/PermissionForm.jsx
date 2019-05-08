@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Grid, Button } from '@icedesign/base';
-import { Checkbox } from '@alifd/next';
+import { Grid, Button,Checkbox } from '@icedesign/base';
+// import { Checkbox } from '@alifd/next';
 import { withRouter } from 'react-router';
 import {
   FormBinderWrapper as IceFormBinderWrapper,

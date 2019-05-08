@@ -108,6 +108,40 @@ const asideMenuConfig = [
 
     ],
   },
+  {
+    name: '日志管理',
+    path: '/Log',
+    icon: 'message',
+    zeroVisible: true,
+    firstVisible: true,
+    secondVisible: true,
+    children: [
+      {
+        name: '平台日志',
+        path: '/Log/PlatformLog',
+        zeroVisible: true,
+        firstVisible: true,
+        secondVisible: true,
+      },
+    ],
+  },
+  {
+    name: '上传文件',
+    path: '/Upload',
+    icon: 'angle-up',
+    zeroVisible: true,
+    firstVisible: true,
+    secondVisible: true,
+    children: [
+      {
+        name: '上传文件',
+        path: '/Upload/UploadFile',
+        zeroVisible: true,
+        firstVisible: true,
+        secondVisible: true,
+      },
+    ],
+  },
 ];
 
 export { headerMenuConfig, asideMenuConfig };

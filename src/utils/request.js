@@ -18,17 +18,14 @@ const service = axios.create({
 // 请求处理
 service.interceptors.request.use(config => {
   Feedback.toast.loading('加载中...');
+  console.log('before', config);
   if (config.method === 'post') {
-    if (config.header) {
-      config.data = JSON.stringify({ ...config.data });
-      config.headers['Content-Type'] = config.header['Content-Type'];
-    } else {
-      config.data = qs.stringify({ ...config.data });
-      config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
+      // config.data = qs.stringify({ ...config.data });
+      // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   } else {
     config.params = { ...config.params };
   }
+  console.log('after', config);
   return config;
 }, error => {
   // 错误处理
