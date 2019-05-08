@@ -18,12 +18,12 @@ class VmTable extends Component {
     let url;
     if (parseInt(localStorage.getItem('userLevel')) == 2){
       const userName = localStorage.getItem('userName');
-      url = 'http://192.168.0.129:8080/userCluster/findDetailByUser?userName=' + userName;
+      url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUser?userName=' + userName;
     }
     if(parseInt(localStorage.getItem('userLevel')) == 1 || parseInt(localStorage.getItem('userLevel')) == 0) {
       const userName = localStorage.getItem('userName');
       const clusterName = localStorage.getItem('onRowClickClusterName');
-      url = 'http://192.168.0.129:8080/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
+      url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
     }
     console.log(url);
     axios.get(url).then((res) => {
@@ -42,7 +42,7 @@ class VmTable extends Component {
     console.log(clusterName);
     console.log(this.props);
     
-    var url = 'http://192.168.0.129:8080/jump/toClouderaCluster?clusterName='+clusterName;
+    var url = 'http://192.168.0.129:8080/api/jump/toClouderaCluster?clusterName='+clusterName;
     axios.get(url).then((res) => {
       console.log(res);
       const info = res.data.data;

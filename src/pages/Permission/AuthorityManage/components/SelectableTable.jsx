@@ -93,7 +93,7 @@ export default class SelectableTable extends Component {
 
   //第一次渲染权限列表首页
   listRender(currentPage) {
-    var url = '/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
+    var url = '/api/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
     axios.get(url).then((res) => {
       const data = res.data.list;
       const total = res.data.total;
@@ -111,7 +111,7 @@ export default class SelectableTable extends Component {
 
   //根据当前页面显示权限列表
   onChange = (current) => {
-    var url = '/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
+    var url = '/api/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
     axios.get(url).then((res) => {
       const data = res.data.list;
       const total = res.data.total;
@@ -134,7 +134,7 @@ export default class SelectableTable extends Component {
   deleteSubmit = () => {
     var current = this.state.current;
     var that = this;
-    var url = '/permission/deletePermissionById?id='+this.state.idWillDelete;
+    var url = '/api/permission/deletePermissionById?id='+this.state.idWillDelete;
     axios.post(url)
       .then(function(response) {
         console.log(response);

@@ -1,4 +1,5 @@
 import fetch from '../utils/request';
+import qs from 'querystring';
 
 export async function loginByusername(username, password) {
   const data = {
@@ -6,9 +7,12 @@ export async function loginByusername(username, password) {
     password,
   };
   return fetch({
-    url: '/login',
+    url: '/api/login',
     method: 'post',
-    data,
+    headers:{
+      "Content-type":"application/x-www-form-urlencoded"
+    },
+    data: qs.stringify({ ...data })
   });
 }
 

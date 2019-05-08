@@ -20,8 +20,13 @@ service.interceptors.request.use(config => {
   Feedback.toast.loading('加载中...');
   console.log('before', config);
   if (config.method === 'post') {
-      // config.data = qs.stringify({ ...config.data });
-      // config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    // if (config.header) {
+    //   config.data = JSON.stringify({ ...config.data });
+    //   config.headers['Content-Type'] = config.header['Content-Type'];
+    // } else {
+    //   config.data = qs.stringify({ ...config.data });
+    //   config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    // }
   } else {
     config.params = { ...config.params };
   }
@@ -40,7 +45,7 @@ service.interceptors.response.use(res => {
   // 处理接口返回数据
   if (res.status === 200) {
     updateAuthState();
-    return res.data;
+    return res;
   } else {
     Feedback.toast.error('数据获取错误！请刷新页面');
   }

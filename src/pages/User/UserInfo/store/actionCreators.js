@@ -10,7 +10,7 @@ const changeSelfInfo = (data) => ({
 export const getInfo = () => {
   //id获取当前用户id
   var id = parseInt(localStorage.getItem('userId'));
-  var url = "/user/getUserDetailInfo?id=" + id;
+  var url = "/api/user/getUserDetailInfo?id=" + id;
   return (dispatch) => {
     axios.get(url).then((res) => {
       dispatch(changeSelfInfo(res));
@@ -26,7 +26,7 @@ export const changeSelfInputValue = (name, email) => ({
 
 export const submitForm = (name, email, history) => {
   var id = parseInt(localStorage.getItem('userId'));
-  var url = "/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
+  var url = "/api/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {

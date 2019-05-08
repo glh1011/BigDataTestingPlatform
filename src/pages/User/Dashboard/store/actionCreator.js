@@ -12,7 +12,7 @@ export const getSubUserList = (current) => {
   var userId = parseInt(localStorage.getItem('userId'));
   console.log(localStorage.getItem('userId'));
   var pageSize = 10;
-  var url = '/user/getSubUsers?userId='+userId+"&pageNum="+current+"&pageSize="+pageSize;
+  var url = '/api/user/getSubUsers?userId='+userId+"&pageNum="+current+"&pageSize="+pageSize;
   return (dispatch) => {
     axios.get(url).then((res) => {
       console.log(res);

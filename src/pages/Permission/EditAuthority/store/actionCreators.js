@@ -9,7 +9,7 @@ const changeAuthorityInfo = (value) => ({
 
 export const getAuthorityDetail = () => {
   var permissionId = parseInt(localStorage.getItem('permissionId'))
-  var url = '/permission/findPermissonById?id='+permissionId;
+  var url = '/api/permission/findPermissonById?id='+permissionId;
   return (dispatch) => {
     axios.get(url).then((res) => {
       const result = res.data;
@@ -25,7 +25,7 @@ export const changeInput = (value) => ({
 
 export const modifyAuthority = (value, history) => {
   return (dispatch) => {
-    axios.post('/permission/ModifyPermisson', {
+    axios.post('/api/permission/ModifyPermisson', {
       deleted: 0,
       opLevel: parseInt(value.opLevel),
       opName: value.opName,

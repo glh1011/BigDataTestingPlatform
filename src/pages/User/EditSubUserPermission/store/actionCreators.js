@@ -10,7 +10,7 @@ const getPermissions = (permissions) => ({
 export const getInfo = () => {
   //id获取被点击的下级用户id
   var id = localStorage.getItem("subUserId");
-  var url = "/userPermission/querySubPermissions?id="+id;
+  var url = "/api/userPermission/querySubPermissions?id="+id;
   return (dispatch) => {
     axios.get(url).then((res) => {
       let permissions1 = res.data;
@@ -33,7 +33,7 @@ export const changeInputValue = () => ({
 });
 
 export const submitForm = (value,id,history) => {
-  var url = "/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
+  var url = "/api/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {

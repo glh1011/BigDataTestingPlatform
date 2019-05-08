@@ -16,7 +16,7 @@ const changeUrl = (url) => ({
 })
 
 export const changeUrlLog = () => {
-  var url = 'http://192.168.0.129:8080/jump/toOpenStack';
+  var url = 'http://192.168.0.129:8080/api/jump/toOpenStack';
   return (dispatch) => {
     axios.get(url).then((res) => {
       dispatch(changeUrl(res.data.data));
@@ -25,7 +25,7 @@ export const changeUrlLog = () => {
 }
 export const getJumpList = (value) => {
   console.log(value)
-  var url = 'http://192.168.0.129:8080/jump/toClouderaCluster?clusterName	='+value;
+  var url = 'http://192.168.0.129:8080/api/jump/toClouderaCluster?clusterName	='+value;
   return (dispatch) => {
     axios.get(url).then((res) => {
       console.log("res")
@@ -48,7 +48,7 @@ export const getJumpList = (value) => {
     }
   }
 export const getCluserName = (userName) => {
-   var url = 'http://192.168.0.129:8080/userCluster/findDetailByUser?userName='+userName;
+   var url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUser?userName='+userName;
   return (dispatch) => {
     axios.get(url).then((res) => {
       const cluserName=[];
@@ -68,7 +68,7 @@ export const getCluserName = (userName) => {
 
 export const getAllLogList = (current) => {
   var pageSize = 10;
-  var url = 'http://192.168.0.129:8080/logs/findAll?pageNum='+current+"&pageSize="+pageSize;
+  var url = 'http://192.168.0.129:8080/api/logs/findAll?pageNum='+current+"&pageSize="+pageSize;
   return (dispatch) => {
     axios.get(url).then((res) => {
       if(res.data.data){

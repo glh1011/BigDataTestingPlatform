@@ -13,7 +13,7 @@ export const resetAddForm = () => ({
 
 export const addAuthority = (opName, opLevel, history) => {
   return (dispatch) => {
-    axios.post('/permission/addPermission', {
+    axios.post('/api/permission/addPermission', {
       deleted: 0,
       opLevel: parseInt(opLevel),
       opName: opName,

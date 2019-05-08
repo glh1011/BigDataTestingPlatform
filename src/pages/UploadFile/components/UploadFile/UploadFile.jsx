@@ -44,7 +44,7 @@ class UploadFile extends Component {
 
   onSubmit = () => {
     //  console.log(this.uploaderRef)
-    var url = `http://192.168.0.129:8080/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`
+    var url = `http://192.168.0.129:8080/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`
     var data = new FormData()
     if (this.uploaderRef.state.fileList[0]) {
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
@@ -111,7 +111,7 @@ class UploadFile extends Component {
 
   componentWillMount() {
     var userName = localStorage.getItem('userName');
-    var url = 'http://192.168.0.129:8080/userCluster/findDetailByUser?userName=' +userName;//换成userName
+    var url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUser?userName=' +userName;//换成userName
     axios.get(url)
       .then((res) => {
         if (res.data.meta.success) {

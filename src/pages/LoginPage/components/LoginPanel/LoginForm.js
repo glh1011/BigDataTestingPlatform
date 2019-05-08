@@ -37,12 +37,12 @@ export default class LoginFrom extends Component {
   }) => {
     return new Promise((resolve, reject) => {
       loginByusername(username, password).then(data => {
-        console.log(data);
+        console.log(data.data.data);
         if (data) {
           localStorage.clear();
-          localStorage.setItem('userLevel',data.userLevel);
-          localStorage.setItem('userId',data.userId);
-          localStorage.setItem('userName',data.userName);
+          localStorage.setItem('userLevel',data.data.data.userLevel);
+          localStorage.setItem('userId',data.data.data.userId);
+          localStorage.setItem('userName',data.data.data.userName);
           const USER = {
             username,
             password,
@@ -53,7 +53,7 @@ export default class LoginFrom extends Component {
             sessionStorage.setItem('USER', base.Base64.encode(qs.stringify(USER))); // 加密
             // 登录成功后做对应的逻辑处理
             Feedback.toast.success('登录成功！');
-            if(data.userLevel != 2){
+            if(data.data.data.userLevel != 2){
               this.props.history.push('/userManagement/dashboard');
             }else{
               this.props.history.push('/Resource/ClusterResourceManage');

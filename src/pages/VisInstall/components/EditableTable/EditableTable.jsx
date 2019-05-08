@@ -338,7 +338,7 @@ export default class EditableTable extends Component {
       dialogContent: "正在创建集群，请耐心等候...."
     });
     axios
-      .post("http://192.168.0.129:8080/cluster/install", {
+      .post("http://192.168.0.129:8080/api/cluster/install", {
         clusterName: this.state.clusterName,
         virtualMachineRequests: this.state.dataSource
       })
@@ -346,7 +346,7 @@ export default class EditableTable extends Component {
         const id = response.data.data;
         let intervalid = setInterval(() => {
           axios
-            .get("http://192.168.0.129:8080/cluster/status", {
+            .get("http://192.168.0.129:8080/api/cluster/status", {
               params: { id: id }
             })
             .then(response => {

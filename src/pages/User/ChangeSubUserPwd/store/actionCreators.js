@@ -13,7 +13,7 @@ export const resetPwdForm = () => ({
 
 export const modifyPwd = (value, history) => {
   return (dispatch) => {
-    axios.post('/user/changeSubPassword', {
+    axios.post('/api/user/changeSubPassword', {
       newPassword: value.passwd,
       confirmPassword: value.rePasswd,
       id: parseInt(localStorage.getItem('subUserId')),

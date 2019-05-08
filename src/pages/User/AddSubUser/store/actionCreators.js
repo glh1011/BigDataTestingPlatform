@@ -13,7 +13,7 @@ export const resetAddSubUser = () => ({
 
 export const addSubUser = (value, history) => {
   return (dispatch) => {
-    axios.post('/user/addUser', {
+    axios.post('/api/user/addUser', {
       userName: value.userName,
       name: value.name,
       email: value.email,
