@@ -44,10 +44,14 @@ service.interceptors.response.use(res => {
   console.log(res);
   // 处理接口返回数据
   if (res.status === 200) {
-    updateAuthState();
-    return res;
+    if (res.data.meta.code === '403'){
+      Feedback.toast.error(res.data.meta.message);
+    }
+    else{
+      updateAuthState();
+      return res;
+    }
   } else if (res.status === 504){
-    alert("hhhhhhhhhh");
     //Feedback.toast.error('数据获取错误！请刷新页面');
   }
 

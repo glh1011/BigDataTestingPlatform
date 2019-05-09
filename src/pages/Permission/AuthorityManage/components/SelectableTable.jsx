@@ -146,7 +146,7 @@ export default class SelectableTable extends Component {
         }
       })
       .catch(function (error) {
-        alert("Oops!"+error);
+        console.log("Oops!"+error);
       });
     }
 
@@ -154,7 +154,14 @@ export default class SelectableTable extends Component {
     this.listRender(1);
   }
 
+  // componentWillUnmount() {
+  //   this.setState({
+  //     dataSource: [],
+  //   });
+  // }
+
   render() {
+    console.log(this.state);
     return (
       <div>
         <Dialog

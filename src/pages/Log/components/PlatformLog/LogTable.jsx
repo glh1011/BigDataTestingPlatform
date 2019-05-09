@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Balloon, Icon, Button, Select} from '@icedesign/base';
+import { Table, Pagination, Balloon, Icon, Button, Select, Feedback} from '@icedesign/base';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
@@ -34,7 +34,7 @@ class PlatformLog extends Component {
     this.props.jump(this.state.value);
     this.props.history.push('./CDHLog')}
     else{
-      alert("请选择集群")
+      Feedback.toast.prompt("请选择集群");
     }
    }
 

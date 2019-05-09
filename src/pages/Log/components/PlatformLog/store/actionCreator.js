@@ -42,7 +42,7 @@ export const getJumpList = (value) => {
       localStorage.setItem('j_password',j_password);
       localStorage.setItem('j_username',j_username)}
     // }catch{
-    //    alert("Oops!"+error);
+    //    console.log("Oops!"+error);
     //   }
     })
     }
@@ -52,7 +52,7 @@ export const getCluserName = (userName) => {
   return (dispatch) => {
     axios.get(url).then((res) => {
       const cluserName=[];
-      if(res.data){
+      if(res&&res.data){
       const cluserNameSize = res.data.data.length;
       console.log(cluserNameSize)
       for(let i=0;i<cluserNameSize;i++) {
@@ -71,12 +71,13 @@ export const getAllLogList = (current) => {
   var url = '/api/logs/findAll?pageNum='+current+"&pageSize="+pageSize;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      if(res.data.data){
-        const PlatformLog = res.data.data.list;
-        const total = res.data.data.total;
-        dispatch(changeLogList(PlatformLog, total));
+      if(res){
+        if(res.data.data){
+          const PlatformLog = res.data.data.list;
+          const total = res.data.data.total;
+          dispatch(changeLogList(PlatformLog, total));
+        }
       }
-
     })
   }
 }

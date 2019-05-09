@@ -29,7 +29,7 @@ export const modifyPwd = (value, history) => {
       }
     })
     .catch(function (error) {
-      alert("Oops!"+error);
+      console.log("Oops!"+error);
     });
   }
 }

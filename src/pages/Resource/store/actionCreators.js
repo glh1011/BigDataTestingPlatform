@@ -110,7 +110,7 @@ export const submitAllocateForm = (username, cpu, memory, disk, history) => {
 				}
 			)
 			.catch(function (error) {
-				alert("Oops!"+error);
+				console.log("Oops!"+error);
 		});
 	}		
 }
@@ -294,7 +294,6 @@ export const recycleCluster = (clusterName, userName, current) => {
 	return(dispatch) => {
 		axios.post('/api/delete/deleteCluster?clusterName='+clusterName).then((res) => {
 			console.log(res);
-			alert(res);
       if(res.data.meta.success){
 				Feedback.toast.success("集群回收成功");
 				dispatch(getFirstLevelResource(userName));

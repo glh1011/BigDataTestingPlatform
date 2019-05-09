@@ -7,13 +7,16 @@ const defaultState = {
 };
 
 export default(state=defaultState, action) => {
-  switch(action.type) {
-    case constants.CHANGESUBUSERLIST:
-      const newState = JSON.parse(JSON.stringify(state));
-      newState.subUsers = action.subUsers;
-      newState.total = action.total;
-      return newState;
-    default:
-      return state;
+  if(action.type == constants.CHANGESUBUSERLIST){
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.subUsers = action.subUsers;
+    newState.total = action.total;
+    return newState;
+  }if(action.type == constants.CLEARTABLE){
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.subUsers = [];
+    newState.total = 0;
+    return newState;
   }
+  return state;
 }

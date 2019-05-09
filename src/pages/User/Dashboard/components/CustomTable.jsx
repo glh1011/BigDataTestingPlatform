@@ -87,6 +87,10 @@ class Home extends Component {
     this.props.getSubUsers();
   }
 
+  componentWillUnmount() {
+    this.props.resetTable();
+  }
+
   renderAddBtn = () => {
     if(parseInt(localStorage.getItem('userLevel'))==0||parseInt(localStorage.getItem('userLevel'))==1) {
       return (
@@ -189,10 +193,12 @@ const mapDispatchToProps = (dispatch) => ({
     var current = 1;
     dispatch(actionCreators.getSubUserList(current));
   },
-
   //分页
   onChange(current) {
     dispatch(actionCreators.getSubUserList(current));
+  },
+  resetTable() {
+    dispatch(actionCreators.clearTable());
   }
 })
 

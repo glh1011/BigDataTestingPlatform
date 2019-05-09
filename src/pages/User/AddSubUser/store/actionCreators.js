@@ -29,7 +29,7 @@ export const addSubUser = (value, history) => {
         Feedback.toast.error('添加人员失败！');
       }
     }).catch(function (error) {
-      alert("Oops!"+error);
+      console.log("Oops!"+error);
     });
   }
 }

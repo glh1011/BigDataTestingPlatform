@@ -39,7 +39,7 @@ export const submitForm = (name, email, history) => {
       }
     })
     .catch(function (error) {
-      alert("Oops!"+error);
+      console.log("Oops!"+error);
     });
   }
 };

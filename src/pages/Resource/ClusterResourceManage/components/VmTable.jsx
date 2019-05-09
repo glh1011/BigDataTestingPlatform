@@ -34,7 +34,7 @@ class VmTable extends Component {
             dataSource: list,
           });
       }else{
-        alert("Oops"+res.data.meta.message);
+        console.log("Oops"+res.data.meta.message);
       }
     })
   }

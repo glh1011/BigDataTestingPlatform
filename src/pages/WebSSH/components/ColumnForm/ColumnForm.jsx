@@ -6,7 +6,7 @@ import {
   FormBinder as IceFormBinder,
   FormError as IceFormError,
 } from '@icedesign/form-binder';
-import { Input, Button, Select, Grid } from '@icedesign/base';
+import { Input, Button, Select, Grid, Feedback } from '@icedesign/base';
 
 const { Row, Col } = Grid;
 
@@ -170,7 +170,7 @@ export default class ColumnForm extends Component {
         display:'block',
       })
     }else{
-      alert('请选择！');
+      Feedback.toast.prompt('请选择！');
     }
     
 
@@ -182,9 +182,12 @@ export default class ColumnForm extends Component {
     var username = localStorage.getItem('userName');
     axios.get('/api/userCluster/findDetailByUser?userName='+username)
     .then(function (res) {
-        that.setState({
+        if(res){
+          that.setState({
             clusterArr:res.data.data
-        })
+          })
+        }
+
     })
   }
 }

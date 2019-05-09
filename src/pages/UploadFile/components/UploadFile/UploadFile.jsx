@@ -118,7 +118,7 @@ class UploadFile extends Component {
     var url = '/api/userCluster/findDetailByUser?userName=' +userName;//换成userName
     axios.get(url)
       .then((res) => {
-        if (res.data.meta.success) {
+        if (res&&res.data.meta.success) {
           console.log(res)
           var clusterData, clusterNameArr = [], vmwareObj = {}, vmwarehostNameArr = []
 
@@ -139,10 +139,10 @@ class UploadFile extends Component {
           console.log(clusterNameArr, vmwareObj)
           this.setState({ clusterName: clusterNameArr, vmwareData: vmwareObj })
         }
-        else {
-          Feedback.toast.error("获取集群失败")
-          console.log("获取集群失败")
-        }
+        // else {
+        //   Feedback.toast.error("获取集群失败")
+        //   console.log("获取集群失败")
+        // }
       })
       .catch(e => {
         console.log("Oops, error", e)

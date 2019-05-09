@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
 import axios from '../../../../utils/request';
 import { connect } from 'react-redux';
+import { Feedback } from '@icedesign/base';
 
 class LiteTable extends Component {
 
@@ -32,15 +33,25 @@ class LiteTable extends Component {
     var url = '/api/permission/queryPermissions?id='+id+'&pageNum=1&pageSize=1000';
     axios.get(url)
     .then((res)=>{
-      const action = {
-        type: 'dispaly_self_authorities',
-        tableData: res.data.data.list
+      if(res.data.meta.success){
+        const action = {
+          type: 'dispaly_self_authorities',
+          tableData: res.data.data.list
+        }
+        this.props.displaySelfAuthorities(action);
+      }else if(res.data.meta.code === '403'){
+        //Feedback.toast.error(res.data.meta.message);
       }
-      this.props.displaySelfAuthorities(action);
     })
     .catch(e => console.log("Oops, error", e))
   }
+
+  componentWillUnmount() {
+    this.props.resetSelfPermissionTable();
+  }
 }
+
+
 
 const mapStateToProps = (state) => {
   return {
@@ -50,6 +61,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatch = (dispatch) => ({
   displaySelfAuthorities(action) {
+    dispatch(action);
+  },
+  resetSelfPermissionTable() {
+    const action = ({
+      type: 'clear_permission_table',
+    });
     dispatch(action);
   }
 })

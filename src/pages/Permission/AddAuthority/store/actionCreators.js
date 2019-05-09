@@ -27,7 +27,7 @@ export const addAuthority = (description, opName, opLevel, history) => {
       }
     })
     .catch(function (error) {
-      alert("Oops"+error);
+      console.log("Oops"+error);
     });
    }
 }

@@ -15,15 +15,20 @@ export const getSubUserList = (current) => {
   return (dispatch) => {
     getSubUserListAxios(userId, current, pageSize).then((res) => {
       console.log(res);
-      if(res.data.meta.success){
-        const subUsers = res.data.data.list;
-        const total = res.data.data.total;
-        dispatch(changeSubUserList(subUsers, total));
+      if(res){
+        if(res.data.meta.success){
+          const subUsers = res.data.data.list;
+          const total = res.data.data.total;
+          dispatch(changeSubUserList(subUsers, total));
+        }
+        // if(res.data.meta.message=='用户没有操作权限不允许访问'){
+        //   Feedback.toast.error('用户没有操作权限不允许访问！');
+        // }
       }
-      if(res.data.meta.message=='用户没有操作权限不允许访问'){
-        Feedback.toast.error('用户没有操作权限不允许访问！');
-      }
-
     })
   }
 }
+
+export const clearTable = () => ({
+  type: constants.CLEARTABLE,
+})
