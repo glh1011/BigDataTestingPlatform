@@ -36,8 +36,20 @@ class SettingsForm extends Component {
                   名称：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="opName" required message="必填" max={64}>
+                  <IceFormBinder name="description" required message="必填" max={64}>
                     <Input size="large" placeholder="请输入权限名称" />
+                  </IceFormBinder>
+                  <IceFormError name="description" />
+                </Col>
+              </Row>
+
+              <Row style={styles.formItem}>
+                <Col xxs="6" s="3" l="3" style={styles.label}>
+                  url：
+                </Col>
+                <Col s="12" l="10">
+                  <IceFormBinder name="opName" required message="必填" max={64}>
+                    <Input size="large" placeholder="请输入权限url" />
                   </IceFormBinder>
                   <IceFormError name="opName" />
                 </Col>

@@ -118,6 +118,7 @@ export const submitAllocateForm = (username, cpu, memory, disk, history) => {
 export const recycleResourcePool = (userName, current) => {
 	let that = this;
 	console.log('回收要开始啦');
+	Feedback.toast.loading("正在回收");
 	return(dispatch) => {
 		axios.post('/api/delete/deleteFirst?userName='+userName).then((res) => {
 			console.log(res.data.meta.success);
@@ -289,9 +290,11 @@ export const recycleCluster = (clusterName, userName, current) => {
 	console.log(userName);
 	let that = this;
 	console.log('回收要开始啦');
+	Feedback.toast.loading("正在回收");
 	return(dispatch) => {
 		axios.post('/api/delete/deleteCluster?clusterName='+clusterName).then((res) => {
-			console.log(res.data.meta.success);
+			console.log(res);
+			alert(res);
       if(res.data.meta.success){
 				Feedback.toast.success("集群回收成功");
 				dispatch(getFirstLevelResource(userName));

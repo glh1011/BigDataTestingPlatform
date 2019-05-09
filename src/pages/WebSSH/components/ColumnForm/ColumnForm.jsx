@@ -150,13 +150,14 @@ export default class ColumnForm extends Component {
       })
         .then(function (res) {
           that.setState({
-            password:'res.data.data',
+            password:res.data.data,
           },function(){
               let ipvalue = that.state.ipArr[that.state.hostnameValue];
               console.log(ipvalue);
               let iframe = document.querySelector('iframe#wssh');
-              let message = JSON.stringify([ipvalue, '22', 'root', this.state.password]);
+              let message = JSON.stringify([ipvalue, '22', 'root', that.state.password]);
               iframe.contentWindow.postMessage(message, '*');
+              console.log(message);
               var OnMessage = function(e){
                  console.log(e);
               };

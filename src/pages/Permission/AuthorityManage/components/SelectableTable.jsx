@@ -77,7 +77,7 @@ export default class SelectableTable extends Component {
     return (
       <div>
         <Link to='/permissionManagement/editPermission'
-        onClick={(e)=>{localStorage.setItem('id',record.id); e.stopPropagation();}}
+        onClick={(e)=>{localStorage.setItem('permissionId',record.id); e.stopPropagation();}}
         >
           编辑
         </Link>
@@ -207,15 +207,16 @@ export default class SelectableTable extends Component {
             }}
           >
             <Table.Column title="编号" dataIndex="id" width={50} />
-            <Table.Column title="名称" dataIndex="opName" width={230} />
+            <Table.Column title="名称" dataIndex="description" width={180} />
+            <Table.Column title="url" dataIndex="opName" width={200} />
             <Table.Column title="级别" dataIndex="opLevel" width={50} />
             <Table.Column title="创建者" dataIndex="creator" width={100} />
-            <Table.Column title="创建时间" dataIndex="createTime" width={280} />
+            <Table.Column title="创建时间" dataIndex="createTime" width={180} />
             <Table.Column
               title="操作"
               cell={this.renderOperator}
               lock="right"
-              width={120}
+              width={50}
             />
           </Table>
           <div style={styles.pagination}>

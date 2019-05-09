@@ -31,7 +31,7 @@ export default class LoginFrom extends Component {
     password,
   }) => {
     return new Promise((resolve, reject) => {
-      Feedback.toast.loading('加载中...');
+      Feedback.toast.loading({size:'large',content:'加载中...'});
       loginByusername(username, password).then(data => {
         console.log(data.data.data);
         if (data) {
@@ -48,7 +48,7 @@ export default class LoginFrom extends Component {
             store.dispatch(saveLoginUser(USER));
             sessionStorage.setItem('USER', base.Base64.encode(qs.stringify(USER))); // 加密
             // 登录成功后做对应的逻辑处理
-            Feedback.toast.success('登录成功！');
+            Feedback.toast.success({size:'large',content:'登录成功'});
             if(data.data.data.userLevel != 2){
               this.props.history.push('/userManagement/dashboard');
             }else{

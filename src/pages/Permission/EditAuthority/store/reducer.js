@@ -5,6 +5,7 @@ const defaultState = {
     opName: '',
     opLevel: '',
     modifier: '',
+    description: ''
   }
 };
 
@@ -19,6 +20,7 @@ export default(state=defaultState, action) => {
     newState.value.opName = action.value.opName;
     newState.value.opLevel = action.value.opLevel;
     newState.value.modifier = action.value.modifier;
+    newState.value.description = action.value.description;
     return newState;
   }
       return state;

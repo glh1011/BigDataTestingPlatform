@@ -11,15 +11,16 @@ export const resetAddForm = () => ({
   type: constants.RESETADDFORM
 })
 
-export const addAuthority = (opName, opLevel, history) => {
+export const addAuthority = (description, opName, opLevel, history) => {
   return (dispatch) => {
     axios.post('/api/permission/addPermission', {
+      description: description,
       deleted: 0,
       opLevel: parseInt(opLevel),
       opName: opName,
     })
     .then(function (response) {
-      if(response.meta.data.success){
+      if(response.data.meta.success){
         Feedback.toast.success("添加权限成功");
         history.goBack();
       }else{

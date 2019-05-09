@@ -29,6 +29,7 @@ export const modifyAuthority = (value, history) => {
       deleted: 0,
       opLevel: parseInt(value.opLevel),
       opName: value.opName,
+      description: value.description,
       permissionId: parseInt(localStorage.getItem('permissionId'))
     })
     .then(function (response) {
