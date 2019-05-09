@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Grid, Select} from '@icedesign/base';
+import { Input, Button, Grid, Select, Feedback} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -22,7 +22,12 @@ class AllocateResourcePool extends Component {
     this.formRef.validateAll((error, value) => {
       console.log(value);
       if (!error || error.length === 0) {
-        this.props.handleSubmitForm(value, this.props.history); 
+        if(value.cpu.length<=10&&value.disk.length<=10&&value.memory.length<=10){
+          this.props.handleSubmitForm(value, this.props.history); 
+        }
+        else {
+          Feedback.toast.error("CPU、内存、硬盘数量位数不能超过10！");
+        }
       }
     });
   }
@@ -80,29 +85,33 @@ class AllocateResourcePool extends Component {
                   CPU（个）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="cpu" required message="必填">
+                  <IceFormBinder name="cpu" required message="必填且不能超过十位">
                     <Input
                         size="large"
                         placeholder="请输入CPU数量"
                         style={{ width: '100%' }}
                         htmlType="number"
+                        maxLength={10}
+                        hasLimitHint
                       />
                   </IceFormBinder>
                   <IceFormError name="cpu" />
                 </Col>
               </Row>
 
-              <Row style={styles.formItem} required message="必填">
+              <Row style={styles.formItem}>
                 <Col xxs="6" s="3" l="3" style={styles.formLabel}>
                   内存（GB）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="memory" required message="必填">
+                  <IceFormBinder name="memory" required message="必填且不能超过十位">
                     <Input
                         size="large"
                         placeholder="请输入内存数量"
                         style={{ width: '100%' }}
                         htmlType="number"
+                        maxLength={10}
+                        hasLimitHint
                       />
                   </IceFormBinder>
                   <IceFormError name="memory" />
@@ -114,12 +123,14 @@ class AllocateResourcePool extends Component {
                   硬盘（GB）：
                 </Col>
                 <Col s="12" l="10">
-                  <IceFormBinder name="disk" required message="必填">
+                  <IceFormBinder name="disk" required message="必填且不能超过十位">
                     <Input
                       size="large"
                       placeholder="请输入硬盘数量"
                       style={{ width: '100%' }}
                       htmlType="number"
+                      maxLength={10}
+                      hasLimitHint
                     />
                   </IceFormBinder>
                   <IceFormError name="disk" />

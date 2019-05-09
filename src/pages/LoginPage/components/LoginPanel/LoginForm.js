@@ -80,7 +80,6 @@ export default class LoginFrom extends Component {
         component: 'Input',
         componentProps: {
           placeholder: '用户名',
-          size: 'large',
           maxLength: 20,
         },
         formBinderProps: {
