@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import { connect } from 'react-redux';
 
 class LiteTable extends Component {
-  static displayName = 'LiteTable';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   render() {
     return (
@@ -39,7 +34,7 @@ class LiteTable extends Component {
     .then((res)=>{
       const action = {
         type: 'dispaly_self_authorities',
-        tableData: res.data.list
+        tableData: res.data.data.list
       }
       this.props.displaySelfAuthorities(action);
     })

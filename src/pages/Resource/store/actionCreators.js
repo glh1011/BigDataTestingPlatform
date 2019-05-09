@@ -1,4 +1,4 @@
-import axios from '../../../utils/newRequest';
+import axios from '../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -25,10 +25,10 @@ export const getFirstLevelResourceList = (current) => {
   return (dispatch) => {
 		axios.get('/api/info/findAllFirstInfo?pageNum=' + current + '&pageSize=10').then((res) => {		
 			console.log(res);
-			if(res.meta.success){
-				const result = res.data.list;
+			if(res.data.meta.success){
+				const result = res.data.data.list;
 				console.log(result);
-				const total = res.data.pages;
+				const total = res.data.data.pages;
 				console.log(total);
 				dispatch(changeFirstLevelResourceList(result, total));
 			}
@@ -42,8 +42,8 @@ export const getFirstLevelResourceList = (current) => {
 export const getAdmainResource = () => {
 	return (dispatch) => {
 		axios.get('/api/info/findAllAdminInfo?pageNum=1&pageSize=10').then((res)=>{
-			if(res.meta.success){
-				const result = res.data.list;
+			if(res.data.meta.success){
+				const result = res.data.data.list;
 				console.log("adminResource:" + result);
 				dispatch(changeAdminResource(result));
 			}
@@ -65,9 +65,9 @@ export const getFirstLevelUserWithoutResource = () => {
 		axios.get('/api/allocation/findFirstWithoutResource').then(
 			function (res) {
 				console.log(res);
-				if(res.meta.success){
+				if(res.data.meta.success){
 					const result =[];
-					res.data.map((item) => {
+					res.data.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -97,12 +97,12 @@ export const submitAllocateForm = (username, cpu, memory, disk, history) => {
 			.then(
 				function (response) {
 					console.log(response);
-					if(response.meta.success){
+					if(response.data.meta.success){
 						Feedback.toast.success("一级资源池分配成功");
 						history.goBack();
 					}
-					else if(response.meta.message==='资源不够充足'){
-						Feedback.toast.error(response.meta.message);
+					else if(response.data.meta.message==='资源不够充足'){
+						Feedback.toast.error(response.data.meta.message);
 					}
 					else{
 						Feedback.toast.error("一级资源池分配失败");
@@ -120,8 +120,8 @@ export const recycleResourcePool = (userName, current) => {
 	console.log('回收要开始啦');
 	return(dispatch) => {
 		axios.post('/api/delete/deleteFirst?userName='+userName).then((res) => {
-			console.log(res.meta.success);
-      if(res.meta.success){
+			console.log(res.data.meta.success);
+      if(res.data.meta.success){
 				Feedback.toast.success("一级资源池回收成功");
 				dispatch(getAdmainResource());
 				dispatch(getFirstLevelResourceList(current));
@@ -150,10 +150,10 @@ export const getClusterList = (current, username) => {
   return (dispatch) => {
 		axios.get('/api/info/findAllClusterInfo?pageNum=' + current + '&pageSize=10&username=' + username).then((res) => {
 			console.log(res);
-			if(res.meta.success){
-				const result = res.data.list;
+			if(res.data.meta.success){
+				const result = res.data.data.list;
 				console.log(result);
-				const total = res.data.pages;
+				const total = res.data.data.pages;
 				console.log(total);
 				dispatch(changeClusterList(result, total));
 			}
@@ -167,8 +167,8 @@ export const getClusterList = (current, username) => {
 export const getFirstLevelResource = (username) => {
 	return (dispatch) => {
 		axios.get('/api/info/findOneFirstInfo?username=' + username).then((res)=>{
-			if(res.meta.success){
-				const result = res.data;
+			if(res.data.meta.success){
+				const result = res.data.data;
 				console.log(result);
 				var a = [result];
 				console.log(a);
@@ -194,9 +194,9 @@ export const getUnboundSecondUser = (clusterName) => {
 		axios.get('/api/allocation/findSecondWithoutConnect?clusterName=' + clusterName)
 		  .then( (res) => {
 				console.log(res);
-				if(res.meta.success){
+				if(res.data.meta.success){
 					const result =[];
-					res.data.map((item) => {
+					res.data.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -218,8 +218,8 @@ export const submitAssignClusterUser = (value, clusterName, history) => {
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.meta.success);
-      if(response.meta.success){
+			console.log(response.data.meta.success);
+      if(response.data.meta.success){
         Feedback.toast.success('绑定集群成功！');
         history.goBack();
 			}
@@ -245,9 +245,9 @@ export const getBoundSecondUser = (clusterName) => {
 		axios.get('/api/allocation/findSecondConnect?clusterName=' + clusterName)
 		  .then( (res) => {
 				console.log(res);
-				if(res.meta.success){
+				if(res.data.meta.success){
 					const result =[];
-					res.data.map((item) => {
+					res.data.data.map((item) => {
 						result.push(item.userName);
 					});
 					console.log(result);
@@ -269,8 +269,8 @@ export const submitUnassignClusterUser = (value, clusterName, history) => {
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.meta.success);
-      if(response.meta.success){
+			console.log(response.data.meta.success);
+      if(response.data.meta.success){
         Feedback.toast.success('解绑集群成功！');
         history.goBack();
 			}
@@ -291,8 +291,8 @@ export const recycleCluster = (clusterName, userName, current) => {
 	console.log('回收要开始啦');
 	return(dispatch) => {
 		axios.post('/api/delete/deleteCluster?clusterName='+clusterName).then((res) => {
-			console.log(res.meta.success);
-      if(res.meta.success){
+			console.log(res.data.meta.success);
+      if(res.data.meta.success){
 				Feedback.toast.success("集群回收成功");
 				dispatch(getFirstLevelResource(userName));
 				dispatch(getClusterList(current, userName));

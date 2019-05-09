@@ -24,7 +24,8 @@ class CDHLog extends Component {
     this.subForm.submit();
     var param= setInterval(() => {
      if(this.props.url){
-       this.iFrame.src=this.props.url.split('/j')[0]+"/cmf/process/all/api/logs/search"
+       console.log(this.props.url.split('/j')[0])
+       this.iFrame.src=this.props.url.split('/j')[0]+"/cmf/process/all/logs/search"
        window.clearInterval(param);
      }
    }, 100);

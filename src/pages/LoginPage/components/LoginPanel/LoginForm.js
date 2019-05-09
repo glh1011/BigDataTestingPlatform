@@ -15,11 +15,6 @@ import {
 
 @withRouter
 export default class LoginFrom extends Component {
-  static displayName = 'LoginFrom';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   // formChange = (value) => {
   //   console.log('formChange:', value);
@@ -36,6 +31,7 @@ export default class LoginFrom extends Component {
     password,
   }) => {
     return new Promise((resolve, reject) => {
+      Feedback.toast.loading('加载中...');
       loginByusername(username, password).then(data => {
         console.log(data.data.data);
         if (data) {

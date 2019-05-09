@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -19,11 +19,11 @@ export const addAuthority = (opName, opLevel, history) => {
       opName: opName,
     })
     .then(function (response) {
-      if(response.meta.success){
+      if(response.meta.data.success){
         Feedback.toast.success("添加权限成功");
         history.goBack();
       }else{
-        Feedback.toast.error(response.meta.message);
+        Feedback.toast.error(response.data.meta.message);
       }
     })
     .catch(function (error) {

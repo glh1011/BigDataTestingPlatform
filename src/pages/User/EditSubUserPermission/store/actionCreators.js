@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,7 +13,7 @@ export const getInfo = () => {
   var url = "/api/userPermission/querySubPermissions?id="+id;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      let permissions1 = res.data;
+      let permissions1 = res.data.data;
       let list1=[],list=[];
     for (let key in permissions1){
       list.push({value: key,label: key})
@@ -37,7 +37,7 @@ export const submitForm = (value,id,history) => {
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-      if(response.meta.success){
+      if(response.data.meta.success){
         Feedback.toast.success('修改成功！');
         history.back();
       }else{

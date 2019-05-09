@@ -11,7 +11,6 @@ import { Feedback } from '@icedesign/base';
 import { updateAuthState } from './checkStore';
 
 const service = axios.create({
-  baseURL: 'http://192.168.0.129:8080', // 请求地址
   timeout: 10000, // 请求超时限制
 });
 

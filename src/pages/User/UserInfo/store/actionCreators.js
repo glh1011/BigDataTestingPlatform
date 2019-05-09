@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,7 +13,7 @@ export const getInfo = () => {
   var url = "/api/user/getUserDetailInfo?id=" + id;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      dispatch(changeSelfInfo(res));
+      dispatch(changeSelfInfo(res.data));
     })
   }
 }
@@ -30,7 +30,7 @@ export const submitForm = (name, email, history) => {
   return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-    if(response.meta.success){
+    if(response.data.meta.success){
       Feedback.toast.success("个人信息修改成功");
       //跳转回上一页
       history.goBack();

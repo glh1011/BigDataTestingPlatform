@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -20,12 +20,12 @@ export const modifyPwd = (value, history) => {
       oldPassword: value.oldPasswd
     })
     .then(function (response) {
-      if(response.meta.success){
+      if(response.data.meta.success){
         //跳转回上一页
         Feedback.toast.success('修改密码成功');
         history.goBack();
       }else{
-        Feedback.toast.error(response.meta.message);
+        Feedback.toast.error(response.data.meta.message);
       }
     })
     .catch(function (error) {

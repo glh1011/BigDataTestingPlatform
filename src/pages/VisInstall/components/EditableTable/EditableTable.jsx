@@ -5,7 +5,7 @@ import { Table, Button, Input, Dialog, Slider } from "@icedesign/base";
 import CellEditor from "./CellEditor";
 import "./EditableTable.scss";
 import { Notice } from "@icedesign/base";
-import axios from "axios";
+import axios from "../../../../utils/request";
 
 export default class EditableTable extends Component {
   static displayName = "EditableTable";
@@ -338,7 +338,7 @@ export default class EditableTable extends Component {
       dialogContent: "正在创建集群，请耐心等候...."
     });
     axios
-      .post("http://192.168.0.129:8080/api/cluster/install", {
+      .post("/api/cluster/install", {
         clusterName: this.state.clusterName,
         virtualMachineRequests: this.state.dataSource
       })
@@ -346,7 +346,7 @@ export default class EditableTable extends Component {
         const id = response.data.data;
         let intervalid = setInterval(() => {
           axios
-            .get("http://192.168.0.129:8080/api/cluster/status", {
+            .get("/api/cluster/status", {
               params: { id: id }
             })
             .then(response => {

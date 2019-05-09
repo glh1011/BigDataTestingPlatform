@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Pagination, Dialog } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import { Feedback } from '@icedesign/base';
 import { withRouter } from 'react-router';
 
@@ -95,8 +95,8 @@ export default class SelectableTable extends Component {
   listRender(currentPage) {
     var url = '/api/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
     axios.get(url).then((res) => {
-      const data = res.data.list;
-      const total = res.data.total;
+      const data = res.data.data.list;
+      const total = res.data.data.total;
       //将权限数组中的permissionId修改为id
       data.forEach(function(item){
         item.id = item.permissionId;
@@ -113,8 +113,8 @@ export default class SelectableTable extends Component {
   onChange = (current) => {
     var url = '/api/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
     axios.get(url).then((res) => {
-      const data = res.data.list;
-      const total = res.data.total;
+      const data = res.data.data.list;
+      const total = res.data.data.total;
       //将权限数组中的permissionId修改为id
       data.forEach(function(item){
         item.id = item.permissionId;
@@ -138,7 +138,7 @@ export default class SelectableTable extends Component {
     axios.post(url)
       .then(function(response) {
         console.log(response);
-        if(response.meta.success){
+        if(response.data.meta.success){
           Feedback.toast.success('删除权限成功');
           that.listRender(current);
         }else{

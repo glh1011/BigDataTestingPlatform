@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Feedback, Button, Select, Upload, Dialog, Loading } from '@icedesign/base';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import axios from '../../../../utils/request';
 import { withRouter } from 'react-router';
 
 
@@ -44,7 +44,7 @@ class UploadFile extends Component {
 
   onSubmit = () => {
     //  console.log(this.uploaderRef)
-    var url = `http://192.168.0.129:8080/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`
+    var url = `/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`
     var data = new FormData()
     if (this.uploaderRef.state.fileList[0]) {
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
@@ -100,7 +100,8 @@ class UploadFile extends Component {
   }
 
   onChange(info) {
-  //  console.log(info)
+    console.log(info)
+    console.log(this.state.status);
     if (info.file && info.file.status == 'removed') {
       this.setState({ status: true })
     }
@@ -111,7 +112,7 @@ class UploadFile extends Component {
 
   componentWillMount() {
     var userName = localStorage.getItem('userName');
-    var url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUser?userName=' +userName;//换成userName
+    var url = '/api/userCluster/findDetailByUser?userName=' +userName;//换成userName
     axios.get(url)
       .then((res) => {
         if (res.data.meta.success) {

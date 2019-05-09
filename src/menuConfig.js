@@ -2,20 +2,7 @@
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
 const headerMenuConfig = [
-//   {
-//     name: 'git仓库',
-//     path: 'http://www.dfsdedu.cn/teacher',
-//     external: true,
-//     newWindow: true,
-//     icon: 'link',
-//   },
-//   {
-//     name: 'ui库',
-//     path: 'http://www.dfsdedu.cn/#/teacher',
-//     external: true,
-//     newWindow: true,
-//     icon: 'link',
-//   },
+
 ];
 
 const asideMenuConfig = [
@@ -136,6 +123,23 @@ const asideMenuConfig = [
       {
         name: '上传文件',
         path: '/Upload/UploadFile',
+        zeroVisible: true,
+        firstVisible: true,
+        secondVisible: true,
+      },
+    ],
+  },
+  {
+    name: 'WebSSH',
+    path: '/WebSSH',
+    icon: 'angle-up',
+    zeroVisible: true,
+    firstVisible: true,
+    secondVisible: true,
+    children: [
+      {
+        name: 'WebSSH',
+        path: '/WebSSH',
         zeroVisible: true,
         firstVisible: true,
         secondVisible: true,

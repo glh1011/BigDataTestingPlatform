@@ -11,13 +11,13 @@ import { Feedback } from '@icedesign/base';
 import { updateAuthState } from './checkStore';
 
 const service = axios.create({
-  baseURL: 'http://192.168.0.129:8080', // 请求地址
-  timeout: 5000, // 请求超时限制
+  //baseURL: 'http://192.168.0.129:8080', // 请求地址
+  timeout: 10000, // 请求超时限制
 });
 
 // 请求处理
 service.interceptors.request.use(config => {
-  Feedback.toast.loading('加载中...');
+  
   console.log('before', config);
   if (config.method === 'post') {
     // if (config.header) {
@@ -41,16 +41,18 @@ service.interceptors.request.use(config => {
 // 响应处理
 service.interceptors.response.use(res => {
   Feedback.toast.hide();
-
+  console.log(res);
   // 处理接口返回数据
   if (res.status === 200) {
     updateAuthState();
     return res;
-  } else {
-    Feedback.toast.error('数据获取错误！请刷新页面');
+  } else if (res.status === 504){
+    alert("hhhhhhhhhh");
+    //Feedback.toast.error('数据获取错误！请刷新页面');
   }
 
 }, error => {
+  console.log(error);
   // 错误处理
   Feedback.toast.error(error, `请求发生错误-${JSON.stringify(error)}`);
   Promise.reject(error);

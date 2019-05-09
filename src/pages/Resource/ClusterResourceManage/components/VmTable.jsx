@@ -3,7 +3,8 @@ import { Table, Icon, Button,} from '@icedesign/base';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import axios from 'axios';
+import axios from '../../../../utils/request';
+import { Feedback } from '@icedesign/base';
 
 @withRouter
 class VmTable extends Component {
@@ -18,12 +19,12 @@ class VmTable extends Component {
     let url;
     if (parseInt(localStorage.getItem('userLevel')) == 2){
       const userName = localStorage.getItem('userName');
-      url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUser?userName=' + userName;
+      url = '/api/userCluster/findDetailByUser?userName=' + userName;
     }
     if(parseInt(localStorage.getItem('userLevel')) == 1 || parseInt(localStorage.getItem('userLevel')) == 0) {
       const userName = localStorage.getItem('userName');
       const clusterName = localStorage.getItem('onRowClickClusterName');
-      url = 'http://192.168.0.129:8080/api/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
+      url = '/api/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
     }
     console.log(url);
     axios.get(url).then((res) => {
@@ -33,7 +34,7 @@ class VmTable extends Component {
             dataSource: list,
           });
       }else{
-        alert("Oops"+error);
+        alert("Oops"+res.data.meta.message);
       }
     })
   }
@@ -42,7 +43,8 @@ class VmTable extends Component {
     console.log(clusterName);
     console.log(this.props);
     
-    var url = 'http://192.168.0.129:8080/api/jump/toClouderaCluster?clusterName='+clusterName;
+    var url = '/api/jump/toClouderaCluster?clusterName='+clusterName;
+    Feedback.toast.loading('加载中...');
     axios.get(url).then((res) => {
       console.log(res);
       const info = res.data.data;

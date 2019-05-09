@@ -35,6 +35,8 @@ import PlatformLog from './pages/Log/components/PlatformLog';
 import CDHLog from './pages/Log/components/CDHLog';
 import UploadFile from './pages/UploadFile';
 
+import WebSSH from './pages/WebSSH';
+
 const routerConfig = [
   {
     path: '/userManagement/dashboard',
@@ -150,6 +152,11 @@ const routerConfig = [
     path: '/Upload/UploadFile',
     layout: NormalLayout,
     component: UploadFile,
+  },
+  {
+    path: '/WebSSH',
+    layout: NormalLayout,
+    component: WebSSH,
   },
 ];
 

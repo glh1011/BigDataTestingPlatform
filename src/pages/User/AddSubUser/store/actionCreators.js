@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -23,7 +23,7 @@ export const addSubUser = (value, history) => {
       deleted: 0
     })
     .then(function (response) {
-    if(response.meta.success){
+    if(response.data.meta.success){
       Feedback.toast.success('添加人员成功！');
       history.goBack();
     }else{

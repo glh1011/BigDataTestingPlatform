@@ -1,4 +1,4 @@
-import axios from '../../../../utils/newRequest';
+import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -12,7 +12,7 @@ export const getAuthorityDetail = () => {
   var url = '/api/permission/findPermissonById?id='+permissionId;
   return (dispatch) => {
     axios.get(url).then((res) => {
-      const result = res.data;
+      const result = res.data.data;
       dispatch(changeAuthorityInfo(result));
     })
   }
@@ -32,7 +32,7 @@ export const modifyAuthority = (value, history) => {
       permissionId: parseInt(localStorage.getItem('permissionId'))
     })
     .then(function (response) {
-      if(response.meta.success){
+      if(response.data.meta.success){
         Feedback.toast.success("权限修改成功");
         history.goBack();
       }else{
