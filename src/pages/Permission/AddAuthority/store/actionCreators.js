@@ -1,4 +1,4 @@
-import axios from '../../../../utils/request';
+import { addPermissionAxios } from '../../../../api/permission';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,13 +13,12 @@ export const resetAddForm = () => ({
 
 export const addAuthority = (description, opName, opLevel, history) => {
   return (dispatch) => {
-    axios.post('/api/permission/addPermission', {
-      description: description,
-      deleted: 0,
-      opLevel: parseInt(opLevel),
-      opName: opName,
-    })
-    .then(function (response) {
+    addPermissionAxios(
+      description,
+      0,
+      parseInt(opLevel),
+      opName,
+    ).then(function (response) {
       if(response.data.meta.success){
         Feedback.toast.success("添加权限成功");
         history.goBack();

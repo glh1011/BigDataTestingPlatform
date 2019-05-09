@@ -5,7 +5,6 @@ import { actionCreators } from '../store';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 
-
 @withRouter
 class Home extends Component {
 
@@ -140,19 +139,19 @@ class Home extends Component {
               cell={this.renderHint} 
             />
             <Table.Column 
-              width={100} 
+              width={60} 
               title="上级id" 
               dataIndex="superiorUserId" 
               cell={this.renderHint} 
             />
             <Table.Column 
-              width={200} 
+              width={100} 
               title="邮箱" 
               dataIndex="email" 
               cell={this.renderHint} 
             />
             <Table.Column 
-              width={100} 
+              width={200} 
               title="token" 
               dataIndex="token" 
               cell={this.renderHint} 

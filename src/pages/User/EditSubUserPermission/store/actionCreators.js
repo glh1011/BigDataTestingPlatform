@@ -1,30 +1,31 @@
-import axios from '../../../../utils/request';
+import { 
+  querySubPermissionsAxios,
+  giveAndCancelAuthorityAxios,
+ } from '../../../../api/user';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
-const getPermissions = (permissions) => ({
+const getPermissions = (permissions, checkedArr) => ({
   type: constants.GETPERMISSIONS,
   permissions,
+  checkedArr
 })
 
 export const getInfo = () => {
   //id获取被点击的下级用户id
   var id = localStorage.getItem("subUserId");
-  var url = "/api/userPermission/querySubPermissions?id="+id;
   return (dispatch) => {
-    axios.get(url).then((res) => {
-      let permissions1 = res.data.data;
-      let list1=[],list=[];
-    for (let key in permissions1){
-      list.push({value: key,label: key})
-      if(permissions1[key]===0){
-      list1.push(key)}
-  }
-      let permissions={};
-      permissions.list=list;
-      permissions.list1=list1;
-      permissions.id=id
-      dispatch(getPermissions(permissions));
+    querySubPermissionsAxios(id).then((res) => {
+      let permissions = res.data.data;
+      console.log(permissions);
+      //将结果中的选中值提取出来放进value数组
+      let checkedArr = [];
+      for(let key in permissions){
+        if(permissions[key].selected === true){
+          checkedArr.push(permissions[key].permission.opName)
+        }
+      }
+      dispatch(getPermissions(permissions, checkedArr));
 })
 }}
 
@@ -33,9 +34,9 @@ export const changeInputValue = () => ({
 });
 
 export const submitForm = (value,id,history) => {
-  var url = "/api/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
+  console.log('actioncreators'+value);
   return (dispatch) => {
-    axios.post(url)
+    giveAndCancelAuthorityAxios(id, value)
     .then(function (response) {
       if(response.data.meta.success){
         Feedback.toast.success('修改成功！');
@@ -48,5 +49,13 @@ export const submitForm = (value,id,history) => {
     console.log(error);
     });
   }
-   
 };
+
+export const selectCheckbox = (selectedItems) => ({
+  type: constants.SELECTCHECKBOX,
+  selectedItems
+})
+
+export const clearCheckbox = () => ({
+  type: constants.CLEARCHECKBOX,
+})

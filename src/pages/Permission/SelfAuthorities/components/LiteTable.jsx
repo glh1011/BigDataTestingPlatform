@@ -29,7 +29,7 @@ class LiteTable extends Component {
 
   componentDidMount() {
     var id = parseInt(localStorage.getItem('userId'));
-    var url = '/api/permission/queryPermissions?id='+id;
+    var url = '/api/permission/queryPermissions?id='+id+'&pageNum=1&pageSize=1000';
     axios.get(url)
     .then((res)=>{
       const action = {

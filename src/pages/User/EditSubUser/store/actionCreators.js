@@ -1,4 +1,7 @@
-import axios from '../../../../utils/request';
+import { 
+  getUserDetailInfoAxios,
+  changeUserInfoAxios,
+ } from '../../../../api/user';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -10,9 +13,8 @@ const changeSelfInfo = (data) => ({
 export const getInfo = () => {
   //id获取被点击的下级用户id
   var id = parseInt(localStorage.getItem('subUserId'));
-  var url = "/api/user/getUserDetailInfo?id="+id;
   return (dispatch) => {
-    axios.get(url).then((res) => {
+    getUserDetailInfoAxios(id).then((res) => {
       dispatch(changeSelfInfo(res.data));
     })
   }
@@ -26,9 +28,8 @@ export const changeInputValue = (name, email) => ({
 
 export const submitForm = (name, email, history) => {
   var id = parseInt(localStorage.getItem('subUserId'))
-  var url = "/api/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
   return (dispatch) => {
-    axios.post(url)
+    changeUserInfoAxios(id, email, name)
     .then(function (response) {
       if(response.data.meta.success){
         Feedback.toast.success("下级人员信息修改成功");

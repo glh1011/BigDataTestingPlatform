@@ -15,32 +15,17 @@ const { Group: CheckboxGroup } = Checkbox;
 @withRouter
 class PermissionForm extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: this.props.dataSource ? this.props.dataSource.list1 : [],
-    };
-    this.onChange = this.onChange.bind(this);
-  }
-
-  handleSubmitForm1 = (value,id,history) => {
-    this.props.handleSubmitForm(value,id,history)
-  }
-
-  onChange(selectedItems) {
-    this.setState({
-      value: selectedItems,
-    });
-  }
-
   validateAllFormField = () => {
     history.back();
   }
 
   render() {
+    const { dataSource, value, onChange, handleSubmitForm } = this.props;
+    console.log('选中的checkvalue'+value);
     let list=[]
-    if(this.props.dataSource){
-      list=this.props.dataSource;
+    if(dataSource){
+      list=dataSource;
+      console.log(list);
     }else{
       list=[]
     }
@@ -53,13 +38,12 @@ class PermissionForm extends Component {
             <div style={styles.formContent}>
               <h2 style={styles.formTitle}>权限信息</h2>
               <div>
-                {/* <CheckboxGroup value={this.state.value} dataSource={list.list} onChange={this.onChange}/> */}
-                <CheckboxGroup value={this.state.value} onChange={this.onChange}>
+                <CheckboxGroup value={value} onChange={onChange}>
                 {
-                  (list.list||[]).map((item, index) => {
+                  (list||[]).map((item, index) => {
                     return (
                       <div key={index} style={styles.checkboxWrapper}>
-                        <Checkbox value={item.value}>{item.value}</Checkbox>
+                        <Checkbox value={item.permission.opName}>{item.permission.description}</Checkbox>
                       </div>
                     )
                   })
@@ -74,7 +58,7 @@ class PermissionForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={() => this.handleSubmitForm1(this.state.value,list.id,history)}
+                onClick={() => handleSubmitForm(value,localStorage.getItem('subUserId'),history)}
               >
                 确认修改
               </Button>
@@ -99,16 +83,23 @@ class PermissionForm extends Component {
     this.props.getSubUserInfo(); 
   }
 
+  componentWillUnmount() {
+    this.props.checkboxReset();
+  }
+
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      value: nextProps.dataSource.list1,
-    });
+    // this.setState({
+    //   value: nextProps.dataSource.list1,
+    // });
   }
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.PermissionForm.permissions);
+  
   return {
-     dataSource: state.PermissionForm.permissions,
+    value: state.PermissionForm.checkedArr,
+    dataSource: state.PermissionForm.permissions,
   }
 }
 
@@ -117,7 +108,15 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(actionCreators.getInfo());
   },
   handleSubmitForm(value,id,history) {
-    dispatch(actionCreators.submitForm(value,id,history))
+    console.log('mapdispatch' + value);
+    dispatch(actionCreators.submitForm(value,id,history));
+  },
+  onChange(selectedItems) {
+    console.log(selectedItems);
+    dispatch(actionCreators.selectCheckbox(selectedItems));
+  },
+  checkboxReset() {
+    dispatch(actionCreators.clearCheckbox());
   }
 })
 

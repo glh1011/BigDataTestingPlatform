@@ -49,8 +49,11 @@ class UploadFile extends Component {
     if (this.uploaderRef.state.fileList[0]) {
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
       this.setState({ visible: true })
+      //console.log(url)
+     // console.log(data)
       axios.post(url, data)
         .then((res) => {
+          console.log(res)
           if (res.data.meta.success) {
             console.log(res)
             this.setState({ visible: false, status: true })
@@ -100,8 +103,8 @@ class UploadFile extends Component {
   }
 
   onChange(info) {
-    console.log(info)
-    console.log(this.state.status);
+    // console.log(info)
+    //console.log(this.state.status);
     if (info.file && info.file.status == 'removed') {
       this.setState({ status: true })
     }
@@ -156,13 +159,13 @@ class UploadFile extends Component {
         <div style={styles.IceContainer}>
           <a style={styles.formTitle}>上传文件</a>
         </div>
-        <div style={styles.tableContainer}>
-          <div style={styles.demo_container}>
-            <div>
+        <div className ="tableContainer" style={styles.tableContainer}>
+          <div className ="demo_container" style={styles.demo_container}>
+           
               <Select style={styles.next_select} size="large" placeholder="集群名称" dataSource={clusterName} value={cluster} onChange={this.handleClusterChange} />
-              &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            <Select style={styles.next_select} size="large" placeholder="虚拟机" dataSource={data} value={vm} onChange={this.handleVmChange} disabled={disabled} />
-            </div>
+            
+            <Select style={styles.next_select_right} size="large" placeholder="虚拟机" dataSource={data} value={vm} onChange={this.handleVmChange} disabled={disabled} />
+          
           </div>
           <br />
           <div style={{ margin: "10px 70px" }}>
@@ -172,7 +175,7 @@ class UploadFile extends Component {
               <Upload
                 timeout={60000}//一分钟
                 limit={1}
-                // action="https://www.easy-mock.com/mock/5b713974309d0d7d107a74a3/alifd/upload"
+                action={`/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`}
                 autoUpload={false}
                 ref={this.saveUploaderRef}
                 listType="text"
@@ -277,12 +280,19 @@ const styles = {
   demo_container: {
     // background_color: "#8a9099",
     padding: "16px",
-    margin: "auto 50px",
+    margin: "10px 50px 10px",
   },
   next_select: {
+    float:"left",
     background_color: "#eee",
     width: "30%",
-    margin_right: "10px",
+  },
+  next_select_right:{
+    float:"left",
+    background_color: "#eee",
+    width: "30%",
+    positionelative:"relative",
+    left:"10%",
   }
 };
 

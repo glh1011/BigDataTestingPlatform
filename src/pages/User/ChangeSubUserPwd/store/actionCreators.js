@@ -1,4 +1,4 @@
-import axios from '../../../../utils/request';
+import { changePasswordAxios } from '../../../../api/user';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
@@ -13,13 +13,13 @@ export const resetPwdForm = () => ({
 
 export const modifyPwd = (value, history) => {
   return (dispatch) => {
-    axios.post('/api/user/changeSubPassword', {
-      newPassword: value.passwd,
-      confirmPassword: value.rePasswd,
-      id: parseInt(localStorage.getItem('subUserId')),
-      oldPassword: value.oldPasswd
-    })
-    .then(function (response) {
+    changePasswordAxios(
+      "subUser",
+      value.passwd,
+      value.rePasswd,
+      parseInt(localStorage.getItem('subUserId')),
+      value.oldPasswd
+    ).then(function (response) {
       if(response.data.meta.success){
         //跳转回上一页
         Feedback.toast.success('重置下级人员密码成功');

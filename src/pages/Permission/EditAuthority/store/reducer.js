@@ -23,5 +23,5 @@ export default(state=defaultState, action) => {
     newState.value.description = action.value.description;
     return newState;
   }
-      return state;
+  return state;
 }

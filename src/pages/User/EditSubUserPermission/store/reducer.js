@@ -2,8 +2,7 @@
 import * as constants from './constants';
 
 const defaultState = {
-   value: {
-   }
+   value: {}
 };
 //输入框中改变state改变
 export default (state = defaultState, action) => {
@@ -15,8 +14,22 @@ export default (state = defaultState, action) => {
   }
   //获取到接口数据并设置state
   if(action.type == constants.GETPERMISSIONS) {
+    console.log(action);
     const newState = JSON.parse(JSON.stringify(state));
     newState.permissions = action.permissions;
+    newState.checkedArr = action.checkedArr;
+    return newState;
+  }
+  if(action.type == constants.SELECTCHECKBOX) {
+    console.log(action);
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.checkedArr = action.selectedItems;
+    return newState;
+  }
+  if(action.type == constants.CLEARCHECKBOX) {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.permissions = [];
+    newState.checkedArr = [];
     return newState;
   }
   return state;
