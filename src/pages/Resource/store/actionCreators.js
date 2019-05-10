@@ -25,16 +25,18 @@ export const getFirstLevelResourceList = (current) => {
   return (dispatch) => {
 		axios.get('/api/info/findAllFirstInfo?pageNum=' + current + '&pageSize=10').then((res) => {		
 			console.log(res);
-			if(res.data.meta.success){
-				const result = res.data.data.list;
-				console.log(result);
-				const total = res.data.data.pages;
-				console.log(total);
-				dispatch(changeFirstLevelResourceList(result, total));
+			if(res){
+				if(res.data.meta.success){
+					const result = res.data.data.list;
+					console.log(result);
+					const total = res.data.data.pages;
+					console.log(total);
+					dispatch(changeFirstLevelResourceList(result, total));
+				}
+				else{
+					Feedback.toast.error("获取一级资源池列表出错");
+				}	
 			}
-			else{
-				Feedback.toast.error("获取一级资源池列表出错");
-			}	
 		});
 	}
 }
@@ -42,13 +44,15 @@ export const getFirstLevelResourceList = (current) => {
 export const getAdmainResource = () => {
 	return (dispatch) => {
 		axios.get('/api/info/findAllAdminInfo?pageNum=1&pageSize=10').then((res)=>{
-			if(res.data.meta.success){
-				const result = res.data.data.list;
-				console.log("adminResource:" + result);
-				dispatch(changeAdminResource(result));
-			}
-			else{
-				Feedback.toast.error("获取资源池信息出错");
+			if(res){
+				if(res.data.meta.success){
+					const result = res.data.data.list;
+					console.log("adminResource:" + result);
+					dispatch(changeAdminResource(result));
+				}
+				else{
+					Feedback.toast.error("获取资源池信息出错");
+				}
 			}
 		});
 	}
@@ -64,17 +68,19 @@ export const getFirstLevelUserWithoutResource = () => {
 	return (dispatch) => {
 		axios.get('/api/allocation/findFirstWithoutResource').then(
 			function (res) {
-				console.log(res);
-				if(res.data.meta.success){
-					const result =[];
-					res.data.data.map((item) => {
-						result.push(item.userName);
-					});
-					console.log(result);
-					dispatch(changeFirstLevelUser(result));
-				}
-				else{
-					Feedback.toast.error("获取无资源池的一级用户失败");
+				if(res){
+					console.log(res);
+					if(res.data.meta.success){
+						const result =[];
+						res.data.data.map((item) => {
+							result.push(item.userName);
+						});
+						console.log(result);
+						dispatch(changeFirstLevelUser(result));
+					}
+					else{
+						Feedback.toast.error("获取无资源池的一级用户失败");
+					}
 				}
 		});
 	}
@@ -96,17 +102,19 @@ export const submitAllocateForm = (username, cpu, memory, disk, history) => {
 		axios.post(url)
 			.then(
 				function (response) {
-					console.log(response);
-					if(response.data.meta.success){
-						Feedback.toast.success("一级资源池分配成功");
-						history.goBack();
+					if(response){
+						console.log(response);
+						if(response.data.meta.success){
+							Feedback.toast.success("一级资源池分配成功");
+							history.goBack();
+						}
+						else if(response.data.meta.message==='资源不够充足'){
+							Feedback.toast.error(response.data.meta.message);
+						}
+						else{
+							Feedback.toast.error("一级资源池分配失败");
+						}	
 					}
-					else if(response.data.meta.message==='资源不够充足'){
-						Feedback.toast.error(response.data.meta.message);
-					}
-					else{
-						Feedback.toast.error("一级资源池分配失败");
-					}	
 				}
 			)
 			.catch(function (error) {
@@ -122,13 +130,15 @@ export const recycleResourcePool = (userName, current) => {
 	return(dispatch) => {
 		axios.post('/api/delete/deleteFirst?userName='+userName).then((res) => {
 			console.log(res.data.meta.success);
-      if(res.data.meta.success){
-				Feedback.toast.success("一级资源池回收成功");
-				dispatch(getAdmainResource());
-				dispatch(getFirstLevelResourceList(current));
-			}
-			else{
-				Feedback.toast.error("一级资源池回收失败");
+			if(res){
+				if(res.data.meta.success){
+					Feedback.toast.success("一级资源池回收成功");
+					dispatch(getAdmainResource());
+					dispatch(getFirstLevelResourceList(current));
+				}
+				else{
+					Feedback.toast.error("一级资源池回收失败");
+				}
 			}
 		})
 	}
@@ -150,17 +160,19 @@ export const getClusterList = (current, username) => {
 	console.log(username);
   return (dispatch) => {
 		axios.get('/api/info/findAllClusterInfo?pageNum=' + current + '&pageSize=10&username=' + username).then((res) => {
-			console.log(res);
-			if(res.data.meta.success){
-				const result = res.data.data.list;
-				console.log(result);
-				const total = res.data.data.pages;
-				console.log(total);
-				dispatch(changeClusterList(result, total));
-			}
-			else{
-				Feedback.toast.error("获取集群列表失败");
-			}
+			if(res){
+				console.log(res);
+				if(res.data.meta.success){
+					const result = res.data.data.list;
+					console.log(result);
+					const total = res.data.data.pages;
+					console.log(total);
+					dispatch(changeClusterList(result, total));
+				}
+				else{
+					Feedback.toast.error("获取集群列表失败");
+				}
+			}	
 		});
 	}
 }
@@ -168,15 +180,17 @@ export const getClusterList = (current, username) => {
 export const getFirstLevelResource = (username) => {
 	return (dispatch) => {
 		axios.get('/api/info/findOneFirstInfo?username=' + username).then((res)=>{
-			if(res.data.meta.success){
-				const result = res.data.data;
-				console.log(result);
-				var a = [result];
-				console.log(a);
-				dispatch(changeFirstLevelResource(a));
-			}
-			else{
-				Feedback.toast.error("获取一级资源池信息出错");
+			if(res){
+				if(res.data.meta.success){
+					const result = res.data.data;
+					console.log(result);
+					var a = [result];
+					console.log(a);
+					dispatch(changeFirstLevelResource(a));
+				}
+				else{
+					Feedback.toast.error("获取一级资源池信息出错");
+				}
 			}
 		});
 	}
@@ -194,17 +208,19 @@ export const getUnboundSecondUser = (clusterName) => {
   return (dispatch) => {
 		axios.get('/api/allocation/findSecondWithoutConnect?clusterName=' + clusterName)
 		  .then( (res) => {
-				console.log(res);
-				if(res.data.meta.success){
-					const result =[];
-					res.data.data.map((item) => {
-						result.push(item.userName);
-					});
-					console.log(result);
-					dispatch(changeUnboundSecondLevelUser(result));
-				}
-				else{
-					Feedback.toast.error('获取未绑定二级用户失败');
+				if(res){
+					console.log(res);
+					if(res.data.meta.success){
+						const result =[];
+						res.data.data.map((item) => {
+							result.push(item.userName);
+						});
+						console.log(result);
+						dispatch(changeUnboundSecondLevelUser(result));
+					}
+					else{
+						Feedback.toast.error('获取未绑定二级用户失败');
+					}
 				}
 			})
 	}
@@ -219,14 +235,16 @@ export const submitAssignClusterUser = (value, clusterName, history) => {
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.data.meta.success);
-      if(response.data.meta.success){
-        Feedback.toast.success('绑定集群成功！');
-        history.goBack();
+			if(response){
+				console.log(response.data.meta.success);
+				if(response.data.meta.success){
+					Feedback.toast.success('绑定集群成功！');
+					history.goBack();
+				}
+				else{
+					Feedback.toast.error('绑定集群失败！');
+				}
 			}
-			else{
-        Feedback.toast.error('绑定集群失败！');
-      }
     })
     .catch(function (error) {
     console.log(error);
@@ -245,17 +263,19 @@ export const getBoundSecondUser = (clusterName) => {
   return (dispatch) => {
 		axios.get('/api/allocation/findSecondConnect?clusterName=' + clusterName)
 		  .then( (res) => {
-				console.log(res);
-				if(res.data.meta.success){
-					const result =[];
-					res.data.data.map((item) => {
-						result.push(item.userName);
-					});
-					console.log(result);
-					dispatch(changeBoundSecondLevelUser(result));
-				}
-				else{
-					Feedback.toast.error('获取已绑定二级用户失败');
+				if(res){
+					console.log(res);
+					if(res.data.meta.success){
+						const result =[];
+						res.data.data.map((item) => {
+							result.push(item.userName);
+						});
+						console.log(result);
+						dispatch(changeBoundSecondLevelUser(result));
+					}
+					else{
+						Feedback.toast.error('获取已绑定二级用户失败');
+					}
 				}
 			})
 	}
@@ -270,14 +290,16 @@ export const submitUnassignClusterUser = (value, clusterName, history) => {
 	return (dispatch) => {
     axios.post(url)
     .then(function (response) {
-			console.log(response.data.meta.success);
-      if(response.data.meta.success){
-        Feedback.toast.success('解绑集群成功！');
-        history.goBack();
+			if(response){
+				console.log(response.data.meta.success);
+				if(response.data.meta.success){
+					Feedback.toast.success('解绑集群成功！');
+					history.goBack();
+				}
+				else{
+					Feedback.toast.error('解绑集群失败！');
+				}
 			}
-			else{
-        Feedback.toast.error('解绑集群失败！');
-      }
     })
     .catch(function (error) {
     console.log(error);
@@ -293,14 +315,16 @@ export const recycleCluster = (clusterName, userName, current) => {
 	Feedback.toast.loading("正在回收");
 	return(dispatch) => {
 		axios.post('/api/delete/deleteCluster?clusterName='+clusterName).then((res) => {
-			console.log(res);
-      if(res.data.meta.success){
-				Feedback.toast.success("集群回收成功");
-				dispatch(getFirstLevelResource(userName));
-				dispatch(getClusterList(current, userName));
-			}
-			else{
-				Feedback.toast.error("集群回收失败");
+			if(res){
+				console.log(res);
+				if(res.data.meta.success){
+					Feedback.toast.success("集群回收成功");
+					dispatch(getFirstLevelResource(userName));
+					dispatch(getClusterList(current, userName));
+				}
+				else{
+					Feedback.toast.error("集群回收失败");
+				}
 			}
 		})
 	}
