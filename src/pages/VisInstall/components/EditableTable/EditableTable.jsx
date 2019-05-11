@@ -332,6 +332,57 @@ export default class EditableTable extends Component {
       }
     });
   };
+  getStatus = id => {
+    axios
+      .get("/api/cluster/status", {
+        params: { id: id }
+      })
+      .then(response => {
+        if (response.data.data.status == "FAILED") {
+          this.setState({
+            visible: true,
+            dialogContent: response.data.data.message,
+            dialog: true
+          });
+          return true;
+        } else {
+          this.setState({
+            visible: true
+          });
+          if (
+            response.data.data.percent == "100" &&
+            response.data.data.status == "REDIRECT"
+          ) {
+            // clearInterval(intervalid);
+            var form = document.createElement("form");
+            form.method = "post";
+
+            form.action = response.data.data.message.url;
+            var username = document.createElement("input");
+            username.type = "hidden";
+            username.name = "j_username";
+            username.value = response.data.data.message.param.j_username;
+            var password = document.createElement("input");
+            password.type = "hidden";
+            password.name = "j_password";
+            password.value = response.data.data.message.param.j_password;
+            form.appendChild(username);
+            form.appendChild(password);
+            document.getElementsByTagName("body")[0].append(form);
+            form.submit();
+            return true;
+          } else {
+            this.setState(() => ({
+              percent: response.data.data.percent,
+              message: response.data.data.message
+            }));
+            return false;
+          }
+        }
+      })
+      .catch(function(error) {});
+  };
+
   createcluster = () => {
     this.setState({
       dialog: false,
@@ -344,54 +395,15 @@ export default class EditableTable extends Component {
       })
       .then(response => {
         const id = response.data.data;
-        let intervalid = setInterval(() => {
-          axios
-            .get("/api/cluster/status", {
-              params: { id: id }
-            })
-            .then(response => {
-              if (response.data.data.status == "FAILED") {
-                this.setState({
-                  visible: true,
-                  dialogContent: response.data.data.message,
-                  dialog: true
-                });
-                clearInterval(intervalid);
-              } else {
-                this.setState({
-                  visible: true
-                });
-                if (
-                  response.data.data.percent == "100" &&
-                  response.data.data.status == "REDIRECT"
-                ) {
-                  clearInterval(intervalid);
-                  var form = document.createElement("form");
-                  form.method = "post";
-
-                  form.action = response.data.data.message.url;
-                  var username = document.createElement("input");
-                  username.type = "hidden";
-                  username.name = "j_username";
-                  username.value = response.data.data.message.param.j_username;
-                  var password = document.createElement("input");
-                  password.type = "hidden";
-                  password.name = "j_password";
-                  password.value = response.data.data.message.param.j_password;
-                  form.appendChild(username);
-                  form.appendChild(password);
-                  document.getElementsByTagName("body")[0].append(form);
-                  form.submit();
-                } else {
-                  this.setState(() => ({
-                    percent: response.data.data.percent,
-                    message: response.data.data.message
-                  }));
-                }
-              }
-            })
-            .catch(function(error) {});
-        }, 5000);
+        let isCompleted = this.getStatus(id);
+        if (!isCompleted) {
+          let intervalid = setInterval(() => {
+            isCompleted = this.getStatus(id);
+            if (isCompleted) {
+              clearInterval(intervalid);
+            }
+          }, 5000);
+        }
       })
       .catch(error => {
         console.log(error);
@@ -412,6 +424,7 @@ export default class EditableTable extends Component {
         取消
       </a>
     );
+    //设置轮播图片
     const slides = [
       {
         url:
@@ -531,12 +544,9 @@ export default class EditableTable extends Component {
             </button>
             <Dialog
               style={{
-                width: "70%",
-                height: "63%",
-                position: "absolute",
-                left: "15%",
-                top: "19%"
+                width: "60%"
               }}
+              shouldUpdatePosition
               align="cc cc"
               animation={false}
               title="创建集群"
@@ -552,7 +562,13 @@ export default class EditableTable extends Component {
               <span style={{ color: this.state.dialog ? "red" : "black" }}>
                 {this.state.dialogContent}
               </span>
-              <div style={{ display: this.state.dialog ? "none" : "block" }}>
+              <div
+                style={{
+                  display: this.state.dialog ? "none" : "block",
+                  width: "1000px",
+                  height: "300px"
+                }}
+              >
                 <Slider autoplay autoplaySpeed={2000}>
                   {itemNodes}
                 </Slider>
