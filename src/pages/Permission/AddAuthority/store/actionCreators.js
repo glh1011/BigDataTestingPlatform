@@ -19,11 +19,13 @@ export const addAuthority = (description, opName, opLevel, history) => {
       parseInt(opLevel),
       opName,
     ).then(function (response) {
-      if(response.data.meta.success){
-        Feedback.toast.success("添加权限成功");
-        history.goBack();
-      }else{
-        Feedback.toast.error(response.data.meta.message);
+      if(response){
+        if(response.data.meta.success){
+          Feedback.toast.success("添加权限成功");
+          history.goBack();
+        }else{
+          Feedback.toast.error(response.data.meta.message);
+        }
       }
     })
     .catch(function (error) {

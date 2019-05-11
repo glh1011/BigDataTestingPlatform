@@ -28,14 +28,17 @@ class VmTable extends Component {
     }
     console.log(url);
     axios.get(url).then((res) => {
-      if(res.data.meta.success){
+      if(res){
+        if(res.data.meta.success){
           const list = res.data;
           this.setState({
             dataSource: list,
           });
-      }else{
-        console.log("Oops"+res.data.meta.message);
+        }else{
+          console.log("Oops"+res.data.meta.message);
+        }
       }
+
     })
   }
 
@@ -46,28 +49,30 @@ class VmTable extends Component {
     var url = '/api/jump/toClouderaCluster?clusterName='+clusterName;
     Feedback.toast.loading('加载中...');
     axios.get(url).then((res) => {
-      console.log(res);
-      const info = res.data.data;
-      if(res.data.meta.success){
-        let newWindow = window.open("about:blank");
-
-        var form = document.createElement("form");
-        form.method = "post";
-        form.action = info.url;
-        var username = document.createElement("input");
-        username.type = "hidden";
-        username.name = "j_username";
-        username.value = info.param.j_username;
-        var password = document.createElement("input");
-        password.type = "hidden";
-        password.name = "j_password";
-        password.value = info.param.j_password;
-        form.appendChild(username);
-        form.appendChild(password);
-
-        newWindow.document.getElementsByTagName("body")[0].append(form);
-        form.submit();
-      }
+      if(res){
+        console.log(res);
+        const info = res.data.data;
+        if(res.data.meta.success){
+          let newWindow = window.open("about:blank");
+  
+          var form = document.createElement("form");
+          form.method = "post";
+          form.action = info.url;
+          var username = document.createElement("input");
+          username.type = "hidden";
+          username.name = "j_username";
+          username.value = info.param.j_username;
+          var password = document.createElement("input");
+          password.type = "hidden";
+          password.name = "j_password";
+          password.value = info.param.j_password;
+          form.appendChild(username);
+          form.appendChild(password);
+  
+          newWindow.document.getElementsByTagName("body")[0].append(form);
+          form.submit();
+        }
+      } 
     })
   }
 

@@ -95,17 +95,19 @@ export default class SelectableTable extends Component {
   listRender(currentPage) {
     var url = '/api/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
     axios.get(url).then((res) => {
-      const data = res.data.data.list;
-      const total = res.data.data.total;
-      //将权限数组中的permissionId修改为id
-      data.forEach(function(item){
-        item.id = item.permissionId;
-        delete item.permissionId;
-      })
-      this.setState({
-        dataSource: data,
-        total: total
-      });
+      if(res){
+        const data = res.data.data.list;
+        const total = res.data.data.total;
+        //将权限数组中的permissionId修改为id
+        data.forEach(function(item){
+          item.id = item.permissionId;
+          delete item.permissionId;
+        })
+        this.setState({
+          dataSource: data,
+          total: total
+        });
+      }
     })
   }
 
@@ -113,18 +115,20 @@ export default class SelectableTable extends Component {
   onChange = (current) => {
     var url = '/api/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
     axios.get(url).then((res) => {
-      const data = res.data.data.list;
-      const total = res.data.data.total;
-      //将权限数组中的permissionId修改为id
-      data.forEach(function(item){
-        item.id = item.permissionId;
-        delete item.permissionId;
-      })
-      this.setState({
-        dataSource: data,
-        total: total,
-        current: current
-      });
+      if(res){
+        const data = res.data.data.list;
+        const total = res.data.data.total;
+        //将权限数组中的permissionId修改为id
+        data.forEach(function(item){
+          item.id = item.permissionId;
+          delete item.permissionId;
+        })
+        this.setState({
+          dataSource: data,
+          total: total,
+          current: current
+        });        
+      } 
     }).catch(() => {
       console.log('error');
     })
@@ -137,12 +141,14 @@ export default class SelectableTable extends Component {
     var url = '/api/permission/deletePermissionById?id='+this.state.idWillDelete;
     axios.post(url)
       .then(function(response) {
-        console.log(response);
-        if(response.data.meta.success){
-          Feedback.toast.success('删除权限成功');
-          that.listRender(current);
-        }else{
-          Feedback.toast.error('删除权限失败');
+        if(response){
+          console.log(response);
+          if(response.data.meta.success){
+            Feedback.toast.success('删除权限成功');
+            that.listRender(current);
+          }else{
+            Feedback.toast.error('删除权限失败');
+          }
         }
       })
       .catch(function (error) {
