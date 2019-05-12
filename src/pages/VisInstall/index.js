@@ -2,9 +2,8 @@ import React, {
   Component
 } from "react";
 import MainData from "./components/MainData";
-// import TabDialog from "./components/TabDialog";
 import EditableTable from './components/EditableTable';
-import axios from "../../utils/request";
+import { defaultAxios } from "../../api/visInstall";
 export default class VisInstall extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +18,7 @@ export default class VisInstall extends Component {
   }
   componentDidMount() {
     const _this = this; //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
-    axios.get('/api/cluster/default')
+    defaultAxios()
       .then(function (response) {
         _this.setState({
           generatorData: response.data.data,
@@ -33,7 +32,7 @@ export default class VisInstall extends Component {
           error: error
         })
       })
-    axios.get('/api/info/current')
+      defaultAxios()
       .then(function (response) {
         _this.setState({
           cpu: response.data.data.cpu,

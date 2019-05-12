@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from '../../../../utils/request';
 import IceContainer from '@icedesign/container';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
@@ -7,7 +6,8 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import { Input, Button, Select, Grid, Feedback } from '@icedesign/base';
-import { getPasswdAxios } from '../../../../api/webSSH'
+import { getPasswdAxios } from '../../../../api/webSSH';
+import { findDetailByUserAndClusterAxios, findDetailByUserAxios } from '../../../../api/resource'
 
 const { Row, Col } = Grid;
 
@@ -111,11 +111,11 @@ export default class ColumnForm extends Component {
 
   onFormChange = (value) => {
     const that = this;
-    var username = localStorage.getItem('userName');
+    var userName = localStorage.getItem('userName');
     that.setState({
         clusterValue:value
-   },function(){
-        axios.get('/api/userCluster/findDetailByUserAndCluster?userName='+username+'&clusterName='+this.state.clusterValue)
+    },function(){
+      findDetailByUserAndClusterAxios(userName, this.state.clusterValue)
         .then(function (res) {
           let iparr = {};
           res.data.data[0].vms.map((item,index)=>(
@@ -174,8 +174,8 @@ export default class ColumnForm extends Component {
   componentDidMount() {
     const that=this;  
     //获取集群名  
-    var username = localStorage.getItem('userName');
-    axios.get('/api/userCluster/findDetailByUser?userName='+username)
+    var userName = localStorage.getItem('userName');
+    findDetailByUserAxios(userName)
     .then(function (res) {
         if(res){
           that.setState({

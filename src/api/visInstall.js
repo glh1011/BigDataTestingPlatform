@@ -21,3 +21,10 @@ export async function statusAxios(id) {
     params
   });
 }
+
+export async function defaultAxios() {
+  return fetch({
+    url: '/api/cluster/default',
+    method: 'get',
+  });
+}

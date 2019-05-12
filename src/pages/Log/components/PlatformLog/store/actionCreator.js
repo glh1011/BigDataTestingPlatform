@@ -1,10 +1,10 @@
-import axios from '../../../../../utils/request';
 import * as constants from './constants';
 import { 
   toOpenStackAxios,
   toClouderaClusterAxios,
   findAllAxios
- } from '../../../../../api/log'
+ } from '../../../../../api/log';
+ import { findDetailByUserAxios } from '../../../../../api/resource'
 
 const changeLogList = (PlatformLog, total, cluserName) => ({
   type: constants.CHANGELOGLIST,
@@ -43,9 +43,8 @@ export const getJumpList = (value) => {
     }
   }
 export const getCluserName = (userName) => {
-   var url = '/api/userCluster/findDetailByUser?userName='+userName;
   return (dispatch) => {
-    axios.get(url).then((res) => {
+    findDetailByUserAxios(userName).then((res) => {
       const cluserName=[];
       if(res&&res.data){
       const cluserNameSize = res.data.data.length;

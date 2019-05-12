@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Feedback, Button, Select, Upload, Dialog, Loading } from '@icedesign/base';
-import axios from '../../../../utils/request';
 import { uploadFileAxios } from '../../../../api/uploadFile';
+import { findDetailByUserAxios } from '../../../../api/resource';
 import { withRouter } from 'react-router';
 
 
@@ -107,8 +107,7 @@ class UploadFile extends Component {
 
   componentWillMount() {
     var userName = localStorage.getItem('userName');
-    var url = '/api/userCluster/findDetailByUser?userName=' +userName;//换成userName
-    axios.get(url)
+    findDetailByUserAxios(userName)
       .then((res) => {
         if (res&&res.data.meta.success) {
           console.log(res)
