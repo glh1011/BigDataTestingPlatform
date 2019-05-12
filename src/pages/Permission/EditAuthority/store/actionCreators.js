@@ -33,11 +33,13 @@ export const modifyAuthority = (value, history) => {
       permissionId: parseInt(localStorage.getItem('permissionId'))
     })
     .then(function (response) {
-      if(response.data.meta.success){
-        Feedback.toast.success("权限修改成功");
-        history.goBack();
-      }else{
-        Feedback.toast.error("权限修改失败");
+      if(response){
+        if(response.data.meta.success){
+          Feedback.toast.success("权限修改成功");
+          history.goBack();
+        }else{
+          Feedback.toast.error("权限修改失败");
+        }
       }
     })
     .catch(function (error) {

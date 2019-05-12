@@ -5,6 +5,10 @@ import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import axios from '../../../../utils/request';
 import { Feedback } from '@icedesign/base';
+import { findDetailByUserAxios,
+  findDetailByUserAndClusterAxios,
+  toClouderaClusterAxios,
+} from '../../../../api/resource';
 
 @withRouter
 class VmTable extends Component {
@@ -16,64 +20,103 @@ class VmTable extends Component {
   }
 
   listRender = () => {
-    let url;
     if (parseInt(localStorage.getItem('userLevel')) == 2){
       const userName = localStorage.getItem('userName');
-      url = '/api/userCluster/findDetailByUser?userName=' + userName;
+      findDetailByUserAxios(userName).then(
+        (res) => {
+          if(res){   
+            if(res.data.meta.success){
+              const list = res.data;
+              this.setState({
+                dataSource: list,
+              });
+            }else{
+              console.log("Oops"+res.data.meta.message);
+            }
+          }
+        }
+      )
     }
     if(parseInt(localStorage.getItem('userLevel')) == 1 || parseInt(localStorage.getItem('userLevel')) == 0) {
       const userName = localStorage.getItem('userName');
       const clusterName = localStorage.getItem('onRowClickClusterName');
-      url = '/api/userCluster/findDetailByUserAndCluster?userName=' + userName + '&clusterName=' + clusterName;
-    }
-    console.log(url);
-    axios.get(url).then((res) => {
-      if(res){
-        if(res.data.meta.success){
-          const list = res.data;
-          this.setState({
-            dataSource: list,
-          });
-        }else{
-          console.log("Oops"+res.data.meta.message);
+      findDetailByUserAndClusterAxios(userName, clusterName).then(
+        (res) => {
+          if(res){   
+            if(res.data.meta.success){
+              const list = res.data;
+              this.setState({
+                dataSource: list,
+              });
+            }else{
+              console.log("Oops"+res.data.meta.message);
+            }
+          }
         }
-      }
-
-    })
+      )
+    }
   }
 
   jumpToCDH = (clusterName) => {
     console.log(clusterName);
     console.log(this.props);
     
-    var url = '/api/jump/toClouderaCluster?clusterName='+clusterName;
+    // var url = '/api/jump/toClouderaCluster?clusterName='+clusterName;
     Feedback.toast.loading('加载中...');
-    axios.get(url).then((res) => {
-      if(res){
-        console.log(res);
-        const info = res.data.data;
-        if(res.data.meta.success){
-          let newWindow = window.open("about:blank");
+    toClouderaClusterAxios(clusterName).then(
+      (res) => {
+        if(res){
+          console.log(res);
+          const info = res.data.data;
+          if(res.data.meta.success){
+            let newWindow = window.open("about:blank");
+    
+            var form = document.createElement("form");
+            form.method = "post";
+            form.action = info.url;
+            var username = document.createElement("input");
+            username.type = "hidden";
+            username.name = "j_username";
+            username.value = info.param.j_username;
+            var password = document.createElement("input");
+            password.type = "hidden";
+            password.name = "j_password";
+            password.value = info.param.j_password;
+            form.appendChild(username);
+            form.appendChild(password);
+    
+            newWindow.document.getElementsByTagName("body")[0].append(form);
+            form.submit();
+          }
+        }        
+      }
+    )
+    // axios.get(url).then((res) => {
+    //   if(res){
+    //     console.log(res);
+    //     const info = res.data.data;
+    //     if(res.data.meta.success){
+    //       let newWindow = window.open("about:blank");
   
-          var form = document.createElement("form");
-          form.method = "post";
-          form.action = info.url;
-          var username = document.createElement("input");
-          username.type = "hidden";
-          username.name = "j_username";
-          username.value = info.param.j_username;
-          var password = document.createElement("input");
-          password.type = "hidden";
-          password.name = "j_password";
-          password.value = info.param.j_password;
-          form.appendChild(username);
-          form.appendChild(password);
+    //       var form = document.createElement("form");
+    //       form.method = "post";
+    //       form.action = info.url;
+    //       var username = document.createElement("input");
+    //       username.type = "hidden";
+    //       username.name = "j_username";
+    //       username.value = info.param.j_username;
+    //       var password = document.createElement("input");
+    //       password.type = "hidden";
+    //       password.name = "j_password";
+    //       password.value = info.param.j_password;
+    //       form.appendChild(username);
+    //       form.appendChild(password);
   
-          newWindow.document.getElementsByTagName("body")[0].append(form);
-          form.submit();
-        }
-      } 
-    })
+    //       newWindow.document.getElementsByTagName("body")[0].append(form);
+    //       form.submit();
+    //     }
+    //   } 
+    // })
   }
 
   componentDidMount() {

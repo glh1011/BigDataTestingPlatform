@@ -27,7 +27,8 @@ service.interceptors.request.use(config => {
     //   config.data = qs.stringify({ ...config.data });
     //   config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     // }
-  } else {
+  } 
+  else {
     config.params = { ...config.params };
   }
   console.log('after', config);
