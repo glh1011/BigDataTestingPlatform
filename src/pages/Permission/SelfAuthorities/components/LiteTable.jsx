@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import axios from '../../../../utils/request';
+import { queryPermissionsAxios } from '../../../../api/permission';
 import { connect } from 'react-redux';
-import { Feedback } from '@icedesign/base';
 
 class LiteTable extends Component {
 
@@ -30,8 +29,7 @@ class LiteTable extends Component {
 
   componentDidMount() {
     var id = parseInt(localStorage.getItem('userId'));
-    var url = '/api/permission/queryPermissions?id='+id+'&pageNum=1&pageSize=1000';
-    axios.get(url)
+    queryPermissionsAxios(id, 1, 1000)
     .then((res)=>{
       if(res.data.meta.success){
         const action = {
@@ -39,8 +37,6 @@ class LiteTable extends Component {
           tableData: res.data.data.list
         }
         this.props.displaySelfAuthorities(action);
-      }else if(res.data.meta.code === '403'){
-        //Feedback.toast.error(res.data.meta.message);
       }
     })
     .catch(e => console.log("Oops, error", e))

@@ -53,7 +53,7 @@ export default class VisInstall extends Component {
   }
   render() {
     if (!this.state.isLoaded && !this.state.currentLoaded) {
-      return <div > Loading < /div>
+      return (<div> Loading </div>)
     } else {
       return ( < div className = "vis-install-page" >
         <

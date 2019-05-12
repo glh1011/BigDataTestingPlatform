@@ -17,20 +17,22 @@ const service = axios.create({
 
 // 请求处理
 service.interceptors.request.use(config => {
-  
-  console.log('before', config);
+  console.log(config);
   if (config.method === 'post') {
-    // if (config.header) {
-    //   config.data = JSON.stringify({ ...config.data });
-    //   config.headers['Content-Type'] = config.header['Content-Type'];
-    // } else {
-    //   config.data = qs.stringify({ ...config.data });
-    //   config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    // }
+    //config.data = JSON.stringify({ ...config.data });
+    //config.params = qs.stringify({ ...config.params });
+    if (config.headers) {
+      // config.data = JSON.stringify({ ...config.data });
+      //config.headers['Content-Type'] = config.header['Content-Type'];
+      console.log("has header");
+    } else {
+      //config.data = JSON.stringify({ ...config.data });
+      //config.params = qs.stringify({ ...config.params });
+      console.log("has no header");
+    }
   } else {
     config.params = { ...config.params };
   }
-  console.log('after', config);
   return config;
 }, error => {
   // 错误处理

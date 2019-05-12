@@ -41,46 +41,67 @@ export async function changePasswordAxios(position, newPassword, confirmPassword
 
 //根据当前页码获取下级人员列表getSubUserList
 export async function getSubUserListAxios(userId, current, pageSize) {
-  const url = '/api/user/getSubUsers?userId='+userId+"&pageNum="+current+"&pageSize="+pageSize;
+  const url = '/api/user/getSubUsers';
+  const params = {
+    userId,
+    current,
+    pageSize
+  };
   return fetch({
     url: url,
     method: 'get',
+    params
   });
 }
 
 //获取用户详细信息
 export async function getUserDetailInfoAxios(id) {
-  const url = "/api/user/getUserDetailInfo?id="+id;
+  const url = "/api/user/getUserDetailInfo";
+  const params = { id };
   return fetch({
     url: url,
     method: 'get',
+    params
   });
 }
 
 //修改用户信息
 export async function changeUserInfoAxios(id, email, name) {
-  const url = "/api/user/changeUserInfo?id="+id+"&email="+email+"&name="+name;
+  const url = "/api/user/changeUserInfo?";
+  const params = {
+    id,
+    email,
+    name
+  };
   return fetch({
     url: url,
     method: 'post',
+    params
   });
 }
 
 //查询下级用户具有的权限
 export async function querySubPermissionsAxios(id) {
-  const url = "/api/userPermission/querySubPermissions?id="+id;
+  const url = "/api/userPermission/querySubPermissions";
+  const params = { id };
   return fetch({
     url: url,
     method: 'get',
+    params
   });
 }
 
 //赋予或取消下级用户权限
 export async function giveAndCancelAuthorityAxios(id, value) {
   console.log('api' + value);
-  const url = "/api/userPermission/giveAndCancelAuthority?id="+id+"&opNames="+value;
+  const url = "/api/userPermission/giveAndCancelAuthority";
+  const params = {
+    id,
+    opNames: value.join(",")
+  };
   return fetch({
     url: url,
     method: 'post',
+    params
   });
 }

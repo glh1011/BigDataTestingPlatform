@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import IceContainer from "@icedesign/container";
 import { Table, Button, Input, Dialog, Slider } from "@icedesign/base";
-// import { Slider } from "@alifd/next";
 import CellEditor from "./CellEditor";
 import "./EditableTable.scss";
 import { Notice } from "@icedesign/base";
-import axios from "../../../../utils/request";
+import { installAxios, statusAxios } from '../../../../api/visInstall'
 
 export default class EditableTable extends Component {
-  static displayName = "EditableTable";
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   constructor(props) {
     super(props);
@@ -333,10 +327,7 @@ export default class EditableTable extends Component {
     });
   };
   getStatus = id => {
-    axios
-      .get("/api/cluster/status", {
-        params: { id: id }
-      })
+    statusAxios(id)
       .then(response => {
         if (response.data.data.status == "FAILED") {
           this.setState({
@@ -388,11 +379,7 @@ export default class EditableTable extends Component {
       dialog: false,
       dialogContent: "正在创建集群，请耐心等候...."
     });
-    axios
-      .post("/api/cluster/install", {
-        clusterName: this.state.clusterName,
-        virtualMachineRequests: this.state.dataSource
-      })
+    installAxios(this.state.clusterName, this.state.dataSource)
       .then(response => {
         const id = response.data.data;
         let isCompleted = this.getStatus(id);

@@ -1,8 +1,7 @@
-/* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import { Feedback, Button, Select, Upload, Dialog, Loading } from '@icedesign/base';
-import { connect } from 'react-redux';
 import axios from '../../../../utils/request';
+import { uploadFileAxios } from '../../../../api/uploadFile';
 import { withRouter } from 'react-router';
 
 
@@ -43,15 +42,11 @@ class UploadFile extends Component {
   };
 
   onSubmit = () => {
-    //  console.log(this.uploaderRef)
-    var url = `/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`
     var data = new FormData()
     if (this.uploaderRef.state.fileList[0]) {
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
       this.setState({ visible: true })
-      //console.log(url)
-     // console.log(data)
-      axios.post(url, data)
+      uploadFileAxios(this.state.vm, this.state.cluster, data)
         .then((res) => {
           console.log(res)
           if (res.data.meta.success) {
@@ -59,7 +54,6 @@ class UploadFile extends Component {
             this.setState({ visible: false, status: true })
             Feedback.toast.success("文件上传成功");
           }
-
           else {
             console.log(res)
             this.setState({ visible: false })
@@ -103,8 +97,6 @@ class UploadFile extends Component {
   }
 
   onChange(info) {
-    // console.log(info)
-    //console.log(this.state.status);
     if (info.file && info.file.status == 'removed') {
       this.setState({ status: true })
     }
