@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Balloon, Icon, Button, Select, Feedback} from '@icedesign/base';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
 import { Link } from 'react-router-dom';

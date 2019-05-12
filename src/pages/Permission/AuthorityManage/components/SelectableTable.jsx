@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Table, Button, Icon, Pagination, Dialog } from '@icedesign/base';
 import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
-import axios from '../../../../utils/request';
+import { 
+  findAllPermissonAxios,
+  deletePermissionByIdAxios
+ } from '../../../../api/permission';
 import { Feedback } from '@icedesign/base';
 import { withRouter } from 'react-router';
 
@@ -91,30 +94,9 @@ export default class SelectableTable extends Component {
     );
   };
 
-  //第一次渲染权限列表首页
-  listRender(currentPage) {
-    var url = '/api/permission/findAllPermisson?pageNum='+currentPage+'&pageSize=10'
-    axios.get(url).then((res) => {
-      if(res){
-        const data = res.data.data.list;
-        const total = res.data.data.total;
-        //将权限数组中的permissionId修改为id
-        data.forEach(function(item){
-          item.id = item.permissionId;
-          delete item.permissionId;
-        })
-        this.setState({
-          dataSource: data,
-          total: total
-        });
-      }
-    })
-  }
-
-  //根据当前页面显示权限列表
-  onChange = (current) => {
-    var url = '/api/permission/findAllPermisson?pageNum='+current+'&pageSize=10';
-    axios.get(url).then((res) => {
+  //根据当前页码显示权限列表
+  showCurrentPage = (current) => {
+    findAllPermissonAxios(current, 10).then((res) => {
       if(res){
         const data = res.data.data.list;
         const total = res.data.data.total;
@@ -127,8 +109,8 @@ export default class SelectableTable extends Component {
           dataSource: data,
           total: total,
           current: current
-        });        
-      } 
+        });
+      }
     }).catch(() => {
       console.log('error');
     })
@@ -138,14 +120,12 @@ export default class SelectableTable extends Component {
   deleteSubmit = () => {
     var current = this.state.current;
     var that = this;
-    var url = '/api/permission/deletePermissionById?id='+this.state.idWillDelete;
-    axios.post(url)
+    deletePermissionByIdAxios(this.state.idWillDelete)
       .then(function(response) {
         if(response){
-          console.log(response);
           if(response.data.meta.success){
             Feedback.toast.success('删除权限成功');
-            that.listRender(current);
+            that.showCurrentPage(current);
           }else{
             Feedback.toast.error('删除权限失败');
           }
@@ -157,17 +137,11 @@ export default class SelectableTable extends Component {
     }
 
   componentDidMount() {
-    this.listRender(1);
+    //第一次渲染权限列表首页
+    this.showCurrentPage(1);
   }
 
-  // componentWillUnmount() {
-  //   this.setState({
-  //     dataSource: [],
-  //   });
-  // }
-
   render() {
-    console.log(this.state);
     return (
       <div>
         <Dialog
@@ -234,7 +208,7 @@ export default class SelectableTable extends Component {
           </Table>
           <div style={styles.pagination}>
             <Pagination 
-            onChange={this.onChange} 
+            onChange={this.showCurrentPage} 
             total={this.state.total} 
             style={styles.pagination}
           />

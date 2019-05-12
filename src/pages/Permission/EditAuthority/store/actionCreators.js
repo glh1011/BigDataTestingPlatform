@@ -1,6 +1,9 @@
-import axios from '../../../../utils/request';
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
+import { 
+  findPermissonByIdAxios,
+  ModifyPermissonAxios
+ } from '../../../../api/permission';
 
 const changeAuthorityInfo = (value) => ({
   type: constants.DISPLAYAUTHORITYINFO,
@@ -9,9 +12,8 @@ const changeAuthorityInfo = (value) => ({
 
 export const getAuthorityDetail = () => {
   var permissionId = parseInt(localStorage.getItem('permissionId'))
-  var url = '/api/permission/findPermissonById?id='+permissionId;
   return (dispatch) => {
-    axios.get(url).then((res) => {
+    findPermissonByIdAxios(permissionId).then((res) => {
       const result = res.data.data;
       dispatch(changeAuthorityInfo(result));
     })
@@ -25,13 +27,13 @@ export const changeInput = (value) => ({
 
 export const modifyAuthority = (value, history) => {
   return (dispatch) => {
-    axios.post('/api/permission/ModifyPermisson', {
-      deleted: 0,
-      opLevel: parseInt(value.opLevel),
-      opName: value.opName,
-      description: value.description,
-      permissionId: parseInt(localStorage.getItem('permissionId'))
-    })
+    ModifyPermissonAxios(
+      0,
+      parseInt(value.opLevel),
+      value.opName,
+      value.description,
+      parseInt(localStorage.getItem('permissionId'))
+    )
     .then(function (response) {
       if(response){
         if(response.data.meta.success){

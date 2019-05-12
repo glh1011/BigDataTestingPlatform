@@ -7,6 +7,7 @@ import {
   FormError as IceFormError,
 } from '@icedesign/form-binder';
 import { Input, Button, Select, Grid, Feedback } from '@icedesign/base';
+import { getPasswdAxios } from '../../../../api/webSSH'
 
 const { Row, Col } = Grid;
 
@@ -140,14 +141,8 @@ export default class ColumnForm extends Component {
 
   submit = () => {
     const that = this;
-
     if(that.state.clusterValue != '' && that.state.hostnameValue != ''){
-      axios.get('/api/vm/getPasswd',{
-        params:{
-          clusterName:this.state.clusterValue,
-          hostName:this.state.hostnameValue
-        }
-      })
+      getPasswdAxios(this.state.clusterValue, this.state.hostnameValue)
         .then(function (res) {
           that.setState({
             password:res.data.data,

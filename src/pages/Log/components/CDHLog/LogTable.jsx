@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Pagination, Balloon, Icon, Button, Select } from '@icedesign/base';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { actionCreators } from './store';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 // import { Select,Form } from '@alifd/next';
 const {AutoComplete} = Select;
@@ -44,8 +41,6 @@ class CDHLog extends Component {
       </div>
       );}}
 const mapStateToProps = (state) => {
-  console.log("state")
-  console.log(state)
   return {
     url: state.CDHLog.url,
     j_password: state.CDHLog.j_password,
