@@ -19,23 +19,24 @@ export default class VisInstall extends Component {
     };
   }
   componentDidMount() {
-    axios.get('/api/cluster/default')
-      .then((response) => {
-        this.setState({
+    const _this = this; //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
+    defaultAxios()
+      .then(function (response) {
+        _this.setState({
           generatorData: response.data.data,
           isLoaded: true
         });
       })
       .catch((error) => {
         console.log(error);
-        this.setState({
+        _this.setState({
           isLoaded: false,
           error: error
         })
       })
-    axios.get('/api/info/current')
-      .then((response) => {
-        this.setState({
+    defaultAxios()
+      .then(function (response) {
+        _this.setState({
           cpu: response.data.data.cpu,
           mem: response.data.data.mem,
           disk: response.data.data.disk,
@@ -44,7 +45,7 @@ export default class VisInstall extends Component {
       })
       .catch((error) => {
         console.log(error);
-        this.setState({
+        _this.setState({
           currentLoaded: false,
           error: error
         })
