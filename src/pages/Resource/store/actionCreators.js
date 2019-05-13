@@ -71,6 +71,7 @@ export const getFirstLevelResourceList = (pageNum) => {
 			(res) => {
         if(res){
 					if(res.data.meta.success){
+						console.log(res.data.data);
 						const result = res.data.data.list;
 						console.log(result);
 						const total = res.data.data.pages;

@@ -15,7 +15,9 @@ export const getInfo = () => {
   var id = parseInt(localStorage.getItem('userId'));
   return (dispatch) => {
     getUserDetailInfoAxios(id).then((res) => {
-      dispatch(changeSelfInfo(res.data));
+      if(res){
+        dispatch(changeSelfInfo(res.data));
+      }
     })
   }
 }

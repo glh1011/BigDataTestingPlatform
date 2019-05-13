@@ -1,7 +1,7 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button } from '@icedesign/base';
+import { Input, Grid, Button, Feedback } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -19,6 +19,18 @@ class ChangePasswordForm extends Component {
 
   componentWillUnmount(){
     this.props.resetForm();
+  }
+  
+  handleSubmit = (inputValue, history) => {
+    this.formRef.validateAll((error, value) => {
+      if (!error || error.length === 0) {
+        this.props.resetPwd(inputValue, history)
+      }
+      else {
+        console.log(error);
+        Feedback.toast.error("密码不能为空!");
+      }
+    });
   }
 
   checkConfirmPassword=(rule, values, callback) => {
@@ -40,7 +52,9 @@ class ChangePasswordForm extends Component {
           <IceFormBinderWrapper
             value={value}
             onChange={formChange}
-            ref="form"
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
           >
             <div style={styles.formContent}>
               <h2 style={styles.formTitle}>修改密码</h2>
@@ -53,6 +67,7 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="oldPasswd"
                     required
+                    message='必填'
                   >
                     <Input
                       htmlType="password"
@@ -72,6 +87,7 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="passwd"
                     required
+                    message='必填'
                   >
                     <Input
                       htmlType="password"
@@ -91,6 +107,7 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="rePasswd"
                     required
+                    message='必填'
                     validator={this.checkConfirmPassword}
                   >
                     <Input
@@ -110,7 +127,7 @@ class ChangePasswordForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>resetPwd(value, history)}
+                onClick={()=>{this.handleSubmit(value, history)}}
               >
                 提 交
               </Button>

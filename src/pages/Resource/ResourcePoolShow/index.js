@@ -49,7 +49,7 @@ class ResourcePoolShow extends Component {
     );
   }
   componentDidMount(){
-    this.props.showResourceList(this.props.current);
+    this.props.showResourceList();
     this.props.showAdmainResource();
   }
 }
@@ -59,8 +59,9 @@ const mapState = (state) => ({
 })
 
 const mapDispatch = (dispatch) => ({
-  showResourceList(current) {
-    dispatch(actionCreators.getFirstLevelResourceList(current));
+  showResourceList() {
+    let pageNum = 1;
+    dispatch(actionCreators.getFirstLevelResourceList(pageNum));
   },
   showAdmainResource() {
     dispatch(actionCreators.getAdmainResource());

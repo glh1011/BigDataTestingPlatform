@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Button, Grid, Checkbox} from '@icedesign/base';
+import { Input, Button, Grid, Checkbox, Feedback} from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -95,7 +95,7 @@ class UnassignClusterUser extends Component {
             </div>
           </IceFormBinderWrapper>
 
-          <Row style={{ marginTop: 150 }}>
+          <Row>
             <Col offset="3">
               <Button
                 size="large"
@@ -174,6 +174,7 @@ const styles = {
     textAlign: 'right',
   },
   formTitle: {
+    margin: 0,
     paddingBottom: '10px',
     display: 'inline-block',
   },

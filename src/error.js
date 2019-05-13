@@ -6,6 +6,8 @@
  *
  */
 import React, { Component } from 'react';
+import BasicException from './components/BasicException';
+
 
 export default class ErrorCheck extends Component {
   state = {
@@ -21,9 +23,7 @@ export default class ErrorCheck extends Component {
   render() {
     if (this.state.error) {
       return (
-        <div>
-          <span role="img" arial-label="sir">👮</span>网络错误，请刷新网页。
-        </div>
+        <BasicException />
       );
     }
 

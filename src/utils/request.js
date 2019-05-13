@@ -33,6 +33,7 @@ service.interceptors.request.use(config => {
   } else {
     config.params = { ...config.params };
   }
+  console.log('111');
   return config;
 }, error => {
   // 错误处理
@@ -42,19 +43,26 @@ service.interceptors.request.use(config => {
 
 // 响应处理
 service.interceptors.response.use(res => {
+  console.log('222');
   Feedback.toast.hide();
   console.log(res);
   // 处理接口返回数据
   if (res.status === 200) {
     if (res.data.meta.code === '403'){
-      Feedback.toast.error(res.data.meta.message);
+      console.log(res.data.meta.code);
+      window.location.href = '/#/NotPermission';
     }
     else{
+      //更新token
       updateAuthState();
       return res;
-    }
-  } else if (res.status === 504){
+    }//
+  } 
+  else if (res.status === 504){
     //Feedback.toast.error('数据获取错误！请刷新页面');
+  }
+  else if ( res.status === 401 ){
+    window.location.href = '/#/NotLogin';
   }
 
 }, error => {

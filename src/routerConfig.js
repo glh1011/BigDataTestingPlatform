@@ -18,7 +18,7 @@ import SubUserDetail from './pages/User/SubUserDetail';
 import ChangeSelfPwd from './pages/User/ChangeSelfPwd';
 
 import EditSubUser from './pages/User/EditSubUser';
-import ChangeSubUserPwd from './pages/User/ChangeSubUserPwd'
+import ChangeSubUserPwd from './pages/User/ChangeSubUserPwd';
 import NormalLayout from './layouts/BasicLayout/NormalLayout';
 import EditSubUserPermission from './pages/User/EditSubUserPermission';
 
@@ -37,6 +37,11 @@ import UploadFile from './pages/UploadFile';
 
 import WebSSH from './pages/WebSSH';
 
+import NotPermission from './components/NotPermission';
+import BasicException from './components/BasicException';
+import NotLogin from './components/NotLogin';
+
+
 const routerConfig = [
   {
     path: '/userManagement/dashboard',
@@ -44,9 +49,9 @@ const routerConfig = [
     component: Dashboard,
   },
   {
-    path: '/permissionManagement/addPermission',
+    path: '/Resource/ResourcePoolShow',
     layout: NormalLayout,
-    component: AddAuthority,
+    component: ResourcePoolShow,
   },
   {
     path: '/login',
@@ -99,14 +104,14 @@ const routerConfig = [
     component: ChangeSubUserPwd,
   },
   {
+    path: '/permissionManagement/addPermission',
+    layout: NormalLayout,
+    component: AddAuthority,
+  },
+  {
     path: '/userManagement/editSubUserPermission',
     layout: NormalLayout,
     component: EditSubUserPermission,
-  },
-  {
-    path: '/Resource/ResourcePoolShow',
-    layout: NormalLayout,
-    component: ResourcePoolShow,
   },
   {
     path: '/Resource/FirstLevelResourceShow',
@@ -157,6 +162,21 @@ const routerConfig = [
     path: '/WebSSH/ssh',
     layout: NormalLayout,
     component: WebSSH,
+  },
+  {
+    path: '/NotPermission',
+    layout: NormalLayout,
+    component: NotPermission,
+  },
+  {
+    path: '/BasicException',
+    layout: NormalLayout,
+    component: BasicException,
+  },
+  {
+    path: '/NotLogin',
+    layout: NormalLayout,
+    component: NotLogin,
   },
 ];
 

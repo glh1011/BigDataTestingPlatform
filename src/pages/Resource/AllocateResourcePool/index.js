@@ -218,6 +218,7 @@ const styles = {
     textAlign: 'right',
   },
   formTitle: {
+    margin: 0,
     paddingBottom: '10px',
     display: 'inline-block',
   },

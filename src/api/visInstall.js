@@ -28,3 +28,10 @@ export async function defaultAxios() {
     method: 'get',
   });
 }
+
+export async function currentAxios() {
+  return fetch({
+    url: '/api/info/current',
+    method: 'get',
+  });
+}

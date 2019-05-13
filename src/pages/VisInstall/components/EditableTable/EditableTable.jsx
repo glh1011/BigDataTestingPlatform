@@ -337,45 +337,47 @@ export default class EditableTable extends Component {
   getStatus = id => {
     statusAxios(id)
       .then(response => {
-        if (response.data.data.status == "FAILED") {
-          this.setState({
-            visible: true,
-            dialogContent: response.data.data.message,
-            dialog: true
-          });
-          return true;
-        } else {
-          this.setState({
-            visible: true
-          });
-          if (
-            response.data.data.percent == "100" &&
-            response.data.data.status == "REDIRECT"
-          ) {
-            // clearInterval(intervalid);
-            var form = document.createElement("form");
-            form.method = "post";
-
-            form.action = response.data.data.message.url;
-            var username = document.createElement("input");
-            username.type = "hidden";
-            username.name = "j_username";
-            username.value = response.data.data.message.param.j_username;
-            var password = document.createElement("input");
-            password.type = "hidden";
-            password.name = "j_password";
-            password.value = response.data.data.message.param.j_password;
-            form.appendChild(username);
-            form.appendChild(password);
-            document.getElementsByTagName("body")[0].append(form);
-            form.submit();
+        if(response){
+          if (response.data.data.status == "FAILED") {
+            this.setState({
+              visible: true,
+              dialogContent: response.data.data.message,
+              dialog: true
+            });
             return true;
           } else {
-            this.setState(() => ({
-              percent: response.data.data.percent,
-              message: response.data.data.message
-            }));
-            return false;
+            this.setState({
+              visible: true
+            });
+            if (
+              response.data.data.percent == "100" &&
+              response.data.data.status == "REDIRECT"
+            ) {
+              // clearInterval(intervalid);
+              var form = document.createElement("form");
+              form.method = "post";
+  
+              form.action = response.data.data.message.url;
+              var username = document.createElement("input");
+              username.type = "hidden";
+              username.name = "j_username";
+              username.value = response.data.data.message.param.j_username;
+              var password = document.createElement("input");
+              password.type = "hidden";
+              password.name = "j_password";
+              password.value = response.data.data.message.param.j_password;
+              form.appendChild(username);
+              form.appendChild(password);
+              document.getElementsByTagName("body")[0].append(form);
+              form.submit();
+              return true;
+            } else {
+              this.setState(() => ({
+                percent: response.data.data.percent,
+                message: response.data.data.message
+              }));
+              return false;
+            }
           }
         }
       })
@@ -389,16 +391,17 @@ export default class EditableTable extends Component {
     });
     installAxios(this.state.clusterName, this.state.dataSource)
       .then(response => {
-        const id = response.data.data;
-        let isCompleted = this.getStatus(id);
-        if (!isCompleted) {
-          //如果集群未创建完成，则继续请求查看创建进度
-          let intervalid = setInterval(() => {
-            isCompleted = this.getStatus(id);
-            if (isCompleted) {
-              clearInterval(intervalid);
-            }
-          }, 5000);
+        if(response){
+          const id = response.data.data;
+          let isCompleted = this.getStatus(id);
+          if (!isCompleted) {
+            let intervalid = setInterval(() => {
+              isCompleted = this.getStatus(id);
+              if (isCompleted) {
+                clearInterval(intervalid);
+              }
+            }, 5000);
+          }
         }
       })
       .catch(error => {

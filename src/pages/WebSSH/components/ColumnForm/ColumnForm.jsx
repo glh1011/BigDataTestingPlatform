@@ -114,21 +114,22 @@ export default class ColumnForm extends Component {
     var userName = localStorage.getItem('userName');
     that.setState({
         clusterValue:value
-    },function(){
+    },function(){ 
       findDetailByUserAndClusterAxios(userName, this.state.clusterValue)
         .then(function (res) {
-          let iparr = {};
-          res.data.data[0].vms.map((item,index)=>(
-              iparr[item.hostName]=item.ip
-          ))
-          that.setState({
-            hostnameArr:res.data.data[0].vms,
-            ipArr:iparr,
-            hostnameValue:'',            
-          })
-      })
-
-   });
+          if(res) {
+            let iparr = {};
+            res.data.data[0].vms.map((item,index)=>(
+                iparr[item.hostName]=item.ip
+            ))
+            that.setState({
+              hostnameArr:res.data.data[0].vms,
+              ipArr:iparr,
+              hostnameValue:'',            
+            })
+          }
+        })
+    });
   };
 
   onhostnameChange = (value) => {
@@ -143,24 +144,26 @@ export default class ColumnForm extends Component {
     const that = this;
     if(that.state.clusterValue != '' && that.state.hostnameValue != ''){
       getPasswdAxios(this.state.clusterValue, this.state.hostnameValue)
-        .then(function (res) {
-          that.setState({
-            password:res.data.data,
-          },function(){
-              let ipvalue = that.state.ipArr[that.state.hostnameValue];
-              console.log(ipvalue);
-              let iframe = document.querySelector('iframe#wssh');
-              let message = JSON.stringify([ipvalue, '22', 'root', that.state.password]);
-              iframe.contentWindow.postMessage(message, '*');
-              console.log(message);
-              var OnMessage = function(e){
-                 console.log(e);
-              };
-              if(window.addEventListener){
-                window.addEventListener("message",OnMessage,false);
-              }
-          })
-      }) 
+        .then(function (res) { 
+          if(res){
+            that.setState({
+              password:res.data.data,
+            },function(){
+                let ipvalue = that.state.ipArr[that.state.hostnameValue];
+                console.log(ipvalue);
+                let iframe = document.querySelector('iframe#wssh');
+                let message = JSON.stringify([ipvalue, '22', 'root', that.state.password]);
+                iframe.contentWindow.postMessage(message, '*');
+                console.log(message);
+                var OnMessage = function(e){
+                   console.log(e);
+                };
+                if(window.addEventListener){
+                  window.addEventListener("message",OnMessage,false);
+                }
+            })
+          }
+        }) 
       that.setState({
         display:'block',
       })
@@ -182,7 +185,6 @@ export default class ColumnForm extends Component {
             clusterArr:res.data.data
           })
         }
-
     })
   }
 }
