@@ -154,7 +154,7 @@ const routerConfig = [
     component: UploadFile,
   },
   {
-    path: '/WebSSH',
+    path: '/WebSSH/ssh',
     layout: NormalLayout,
     component: WebSSH,
   },

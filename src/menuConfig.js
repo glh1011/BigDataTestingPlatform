@@ -92,13 +92,12 @@ const asideMenuConfig = [
         firstVisible: true,
         secondVisible: false,
       },
-
     ],
   },
   {
     name: '日志管理',
     path: '/Log',
-    icon: 'message',
+    icon: 'home',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -115,7 +114,7 @@ const asideMenuConfig = [
   {
     name: '上传文件',
     path: '/Upload',
-    icon: 'angle-up',
+    icon: 'home',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -132,14 +131,14 @@ const asideMenuConfig = [
   {
     name: 'WebSSH',
     path: '/WebSSH',
-    icon: 'angle-up',
+    icon: 'home',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
     children: [
       {
         name: 'WebSSH',
-        path: '/WebSSH',
+        path: '/WebSSH/ssh',
         zeroVisible: true,
         firstVisible: true,
         secondVisible: true,
