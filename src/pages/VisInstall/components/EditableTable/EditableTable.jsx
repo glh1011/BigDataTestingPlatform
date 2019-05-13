@@ -12,37 +12,43 @@ export default class EditableTable extends Component {
     super(props);
 
     this.state = {
-      dataSource: this.props.generatorData,
+      dataSource: this.props.generatorData, //目前的资源
       cpuUsed:
-        parseInt(this.props.generatorData[0].cpu) *
-          parseInt(this.props.generatorData[0].num) +
-        parseInt(this.props.generatorData[1].cpu) *
-          parseInt(this.props.generatorData[1].num),
+        this.props.generatorData.length > 0 //目前已使用的cpu资源
+          ? parseInt(this.props.generatorData[0].cpu) *
+              parseInt(this.props.generatorData[0].num) +
+            parseInt(this.props.generatorData[1].cpu) *
+              parseInt(this.props.generatorData[1].num)
+          : 0,
       memUsed:
-        parseInt(this.props.generatorData[0].mem) *
-          parseInt(this.props.generatorData[0].num) +
-        parseInt(this.props.generatorData[1].mem) *
-          parseInt(this.props.generatorData[1].num),
+        this.props.generatorData.length > 0 //目前已使用内存资源
+          ? parseInt(this.props.generatorData[0].mem) *
+              parseInt(this.props.generatorData[0].num) +
+            parseInt(this.props.generatorData[1].mem) *
+              parseInt(this.props.generatorData[1].num)
+          : 0,
       diskUsed:
-        parseInt(this.props.generatorData[0].disk) *
-          parseInt(this.props.generatorData[0].num) +
-        parseInt(this.props.generatorData[1].disk) *
-          parseInt(this.props.generatorData[1].num),
-      unabled: false,
-      whoOut: "",
-      clusterName: "",
-      visible: false,
-      dialogContent: "正在创建集群，请耐心等候....",
-      dialog: false,
-      percent: 0,
-      message: ""
+        this.props.generatorData.length > 0 //目前已使用的硬盘资源
+          ? parseInt(this.props.generatorData[0].disk) *
+              parseInt(this.props.generatorData[0].num) +
+            parseInt(this.props.generatorData[1].disk) *
+              parseInt(this.props.generatorData[1].num)
+          : 0,
+      unabled: false, //目前是否有资源超过可用资源
+      whoOut: "", //说明是哪项内容超过给定内容
+      clusterName: "", //集群名称
+      visible: false, //是否显示弹窗
+      dialogContent: "正在创建集群，请耐心等候....", //说明是否在创建集群或创建失败的原因
+      dialog: false, //创建集群是否失败，true为创建失败
+      percent: 0, //目前创建的进度
+      message: "" //目前创建集群处于的阶段信息
     };
   }
 
   renderOrder = (value, index) => {
     return <span>{index}</span>;
   };
-
+  //删除一项
   deleteItem = index => {
     const dltUsed = this.state.dataSource[index];
     this.state.dataSource.splice(index, 1);
@@ -132,6 +138,7 @@ export default class EditableTable extends Component {
       </div>
     );
   };
+  //修改一项中的内容
   changeDataSource = (index, valueKey, value) => {
     this.state.dataSource[index][valueKey] = value;
     let runAsync = () => {
@@ -245,7 +252,7 @@ export default class EditableTable extends Component {
       />
     );
   };
-
+  //新增一项
   addNewItem = () => {
     this.state.dataSource.push({
       cpu: "1",
@@ -326,6 +333,7 @@ export default class EditableTable extends Component {
       }
     });
   };
+  //创建集群时的请求信息
   getStatus = id => {
     statusAxios(id)
       .then(response => {
@@ -373,7 +381,7 @@ export default class EditableTable extends Component {
       })
       .catch(function(error) {});
   };
-
+  //创建集群
   createcluster = () => {
     this.setState({
       dialog: false,
@@ -384,6 +392,7 @@ export default class EditableTable extends Component {
         const id = response.data.data;
         let isCompleted = this.getStatus(id);
         if (!isCompleted) {
+          //如果集群未创建完成，则继续请求查看创建进度
           let intervalid = setInterval(() => {
             isCompleted = this.getStatus(id);
             if (isCompleted) {
@@ -399,7 +408,7 @@ export default class EditableTable extends Component {
   onChange = value => {
     this.setState({ clusterName: value });
   };
-
+  //关闭弹窗
   onClose = () => {
     this.setState({
       visible: false
