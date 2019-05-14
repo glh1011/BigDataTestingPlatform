@@ -20,33 +20,37 @@ export default class VisInstall extends Component {
     };
   }
   componentDidMount() {
-    const _this = this; //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
+    // const _this = this; //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
     defaultAxios()
-      .then(function (response) {
-        _this.setState({
-          generatorData: response.data.data,
-          isLoaded: true
-        });
+      .then((response) => {
+        if (response) {
+          this.setState({
+            generatorData: response.data.data,
+            isLoaded: true
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
-        _this.setState({
+        this.setState({
           isLoaded: false,
           error: error
         })
       })
     currentAxios()
-      .then(function (response) {
-        _this.setState({
-          cpu: response.data.data.cpu,
-          mem: response.data.data.mem,
-          disk: response.data.data.disk,
-          currentLoaded: true
-        });
+      .then((response) => {
+        if (response) {
+          this.setState({
+            cpu: response.data.data.cpu,
+            mem: response.data.data.mem,
+            disk: response.data.data.disk,
+            currentLoaded: true
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
-        _this.setState({
+        this.setState({
           currentLoaded: false,
           error: error
         })

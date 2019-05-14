@@ -11,6 +11,7 @@ class CDHLog extends Component {
   constructor(props) {
     super(props);
     this.subFormRef = element => {
+      console.log(element)
       this.subForm = element;
     };
     this.iFrameRef = element => {
@@ -18,11 +19,14 @@ class CDHLog extends Component {
     };
   }
   componentDidMount() {
+    // console.log(this.props.url);
+    console.log("1111111111111111111111111111")
     this.subForm.submit();
     var param= setInterval(() => {
      if(this.props.url){
        console.log(this.props.url.split('/j')[0])
        this.iFrame.src=this.props.url.split('/j')[0]+"/cmf/process/all/logs/search"
+       console.log(this.iFrame.src)
        window.clearInterval(param);
      }
    }, 100);
@@ -33,13 +37,15 @@ class CDHLog extends Component {
         <div style={styles.IceContainer}>
           <a style={styles.formTitle}>CDH日志</a>
         </div>
-      <form id="subForm" action={this.props.url} method="post" target="showZip" ref={this.subFormRef}> 
-      <input type="hidden" name="j_username"  value={this.props.j_username} />
-      <input type="hidden" name="j_password"  value={this.props.j_password} />
-     </form>
-  <iframe name="showZip" width = "100%" height="380px" sandbox='allow-scripts allow-same-origin' ref={this.iFrameRef}></iframe>
+        <form id="subForm" action={this.props.url} method="post" target="showZip" ref={this.subFormRef}> 
+          <input type="hidden" name="j_username"  value={this.props.j_username} />
+          <input type="hidden" name="j_password"  value={this.props.j_password} />
+        </form>
+        <iframe name="showZip" width = "100%" height="380px" sandbox='allow-scripts allow-same-origin' ref={this.iFrameRef}></iframe>
       </div>
-      );}}
+      );
+    }
+  }
 const mapStateToProps = (state) => {
   return {
     url: state.CDHLog.url,

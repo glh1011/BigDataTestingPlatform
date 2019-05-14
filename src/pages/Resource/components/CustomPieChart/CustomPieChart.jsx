@@ -9,7 +9,7 @@ import { actionCreators } from '../../store';
  */
 class CustomPieChart extends Component {
   static displayName = 'CustomPieChart';
-
+  
   getInfo(data, info){
     console.log(data);
     switch(data.name){

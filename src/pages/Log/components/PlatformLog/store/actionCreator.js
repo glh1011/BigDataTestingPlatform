@@ -23,39 +23,47 @@ const changeUrl = (url) => ({
 export const changeUrlLog = () => {
   return (dispatch) => {
     toOpenStackAxios().then((res) => {
-      dispatch(changeUrl(res.data.data));
+      if(res) {
+        dispatch(changeUrl(res.data.data));
+      }
     })
   }
 }
 export const getJumpList = (value) => {
   return (dispatch) => {
     toClouderaClusterAxios(value).then((res) => {
-      console.log("res")
-      console.log(res)
-      if(res.data){
-      const j_password = res.data.data.param.j_password;
-      const j_username = res.data.data.param.j_username;
-      const url1=res.data.data.url
-      localStorage.setItem('url',url1);
-      localStorage.setItem('j_password',j_password);
-      localStorage.setItem('j_username',j_username)}
+      if(res) {
+        console.log("随便写点啥");
+        console.log(res);
+        if(res.data){
+          const j_password = res.data.data.param.j_password;
+          const j_username = res.data.data.param.j_username;
+          const url1=res.data.data.url
+          localStorage.setItem('url',url1);
+          localStorage.setItem('j_password',j_password);
+          localStorage.setItem('j_username',j_username)
+        }
+      }
     })
-    }
   }
+}
 export const getCluserName = (userName) => {
   return (dispatch) => {
     findDetailByUserAxios(userName).then((res) => {
-      const cluserName=[];
-      if(res&&res.data){
-      const cluserNameSize = res.data.data.length;
-      console.log(cluserNameSize)
-      for(let i=0;i<cluserNameSize;i++) {
-        const cluster=res.data.data[i].clusterName
-        console.log(cluster)
-        cluserName.push({label:cluster, value:cluster});
-      }}
-      console.log(cluserName)
-      dispatch(changeCluserName(cluserName));
+      if(res) {
+        const cluserName=[];
+        if(res.data){
+          const cluserNameSize = res.data.data.length;
+          console.log(cluserNameSize)
+          for(let i=0;i<cluserNameSize;i++) {
+            const cluster=res.data.data[i].clusterName
+            console.log(cluster)
+            cluserName.push({label:cluster, value:cluster});
+          }
+        }
+        console.log(cluserName)
+        dispatch(changeCluserName(cluserName));
+      }
     })
  }
 }

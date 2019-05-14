@@ -48,16 +48,18 @@ class UploadFile extends Component {
       this.setState({ visible: true })
       uploadFileAxios(this.state.vm, this.state.cluster, data)
         .then((res) => {
-          console.log(res)
-          if (res.data.meta.success) {
+          if(res){
             console.log(res)
-            this.setState({ visible: false, status: true })
-            Feedback.toast.success("文件上传成功");
-          }
-          else {
-            console.log(res)
-            this.setState({ visible: false })
-            Feedback.toast.error("文件上传失败");
+            if (res.data.meta.success) {
+              console.log(res)
+              this.setState({ visible: false, status: true })
+              Feedback.toast.success("文件上传成功");
+            }
+            else {
+              console.log(res)
+              this.setState({ visible: false })
+              Feedback.toast.error("文件上传失败");
+            }
           }
         })
         .catch(e => {
@@ -109,26 +111,28 @@ class UploadFile extends Component {
     var userName = localStorage.getItem('userName');
     findDetailByUserAxios(userName)
       .then((res) => {
-        if (res&&res.data.meta.success) {
-          console.log(res)
-          var clusterData, clusterNameArr = [], vmwareObj = {}, vmwarehostNameArr = []
-
-          clusterData = res.data.data
-          for (var i = 0; i < clusterData.length; i++) {
-            clusterNameArr.push(clusterData[i].clusterName)
-          }
-
-          for (var i = 0; i < clusterData.length; i++) {
-            vmwarehostNameArr[i] = []
-            for (var j = 0; j < clusterData[i].vms.length; j++) {
-              console.log(clusterData[i].vms[j].hostName)
-              vmwarehostNameArr[i].push(clusterData[i].vms[j].hostName)
+        if(res) {
+          if (res.data.meta.success) {
+            console.log(res)
+            var clusterData, clusterNameArr = [], vmwareObj = {}, vmwarehostNameArr = []
+  
+            clusterData = res.data.data
+            for (var i = 0; i < clusterData.length; i++) {
+              clusterNameArr.push(clusterData[i].clusterName)
             }
-            var str = clusterNameArr[i]
-            vmwareObj[str] = vmwarehostNameArr[i]
+  
+            for (var i = 0; i < clusterData.length; i++) {
+              vmwarehostNameArr[i] = []
+              for (var j = 0; j < clusterData[i].vms.length; j++) {
+                console.log(clusterData[i].vms[j].hostName)
+                vmwarehostNameArr[i].push(clusterData[i].vms[j].hostName)
+              }
+              var str = clusterNameArr[i]
+              vmwareObj[str] = vmwarehostNameArr[i]
+            }
+            console.log(clusterNameArr, vmwareObj)
+            this.setState({ clusterName: clusterNameArr, vmwareData: vmwareObj })
           }
-          console.log(clusterNameArr, vmwareObj)
-          this.setState({ clusterName: clusterNameArr, vmwareData: vmwareObj })
         }
         // else {
         //   Feedback.toast.error("获取集群失败")

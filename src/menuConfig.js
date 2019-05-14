@@ -1,9 +1,7 @@
 // 菜单配置
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
-const headerMenuConfig = [
-
-];
+const headerMenuConfig = [];
 
 const asideMenuConfig = [
   {
@@ -85,7 +83,8 @@ const asideMenuConfig = [
     zeroVisible: false,
     firstVisible: true,
     secondVisible: false,
-    children: [{
+    children: [
+      {
         name: '创建集群',
         path: '/VisInstall/createMV',
         zeroVisible: false,

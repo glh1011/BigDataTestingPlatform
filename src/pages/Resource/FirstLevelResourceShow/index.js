@@ -15,15 +15,18 @@ class FirstLevelResourceShow extends Component {
   }
   
   renderAddBtn = () => {
-    return (
-      <div style={styles.btnContainer}>
-      <Link to="/VisInstall/createMV">
-        <Button size="small" style={styles.batchBtn}>
-          <Icon type="add" />新建集群
-        </Button>
-      </Link>
-    </div>
-    )
+    const userLevel = localStorage.getItem('userLevel');
+    if(userLevel==1) {
+      return (
+        <div style={styles.btnContainer}>
+        <Link to="/VisInstall/createMV">
+          <Button size="small" style={styles.batchBtn}>
+            <Icon type="add" />新建集群
+          </Button>
+        </Link>
+      </div>
+      )
+    }  
   }
 
   render() {

@@ -40,11 +40,11 @@ export async function changePasswordAxios(position, newPassword, confirmPassword
 }
 
 //根据当前页码获取下级人员列表getSubUserList
-export async function getSubUserListAxios(userId, current, pageSize) {
+export async function getSubUserListAxios(userId, pageNum, pageSize) {
   const url = '/api/user/getSubUsers';
   const params = {
     userId,
-    current,
+    pageNum,
     pageSize
   };
   return fetch({

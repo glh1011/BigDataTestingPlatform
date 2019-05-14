@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { actionCreators } from '../store';
 import { withRouter } from 'react-router';
+import checkStrong from '../../../../utils/checkPwd'
 
 const { Row, Col } = Grid;
 
@@ -53,6 +54,22 @@ class UserForm extends Component {
         this.props.submitSubUser(value, this.props.history);
       }
     });
+  }
+
+  checkPwdStrong = (rule, values, callback) => {
+    if (!values) {
+      callback('请输入新密码');
+    } else if (values.length < 8) {
+        callback('密码必须大于8位,且为字母数字组合');
+    } else if (values.length >= 8 && values.length <= 16) {
+      if(checkStrong(values) === 1) {
+        callback('密码必须大于8位,且为字母数字组合');
+      }else{
+        callback('密码有效');
+      }
+    } else {
+      callback('密码必须小于16位');
+    }
   }
 
   render() {
@@ -148,7 +165,7 @@ class UserForm extends Component {
                     name="passwd"
                     required
                     max={64}
-                    message="必填"
+                    validator={this.checkPwdStrong}
                   >
                     <Input
                       style={{ width: '100%' }}

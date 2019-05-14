@@ -28,29 +28,41 @@ export default function checkStore(store) {
    passwd,
    timestamp
  */
-const EXPIRES_TIME = 3600 * 24; // 超过一天即为失效
-//const EXPIRES_TIME = 120;
+const EXPIRES_TIME = 1800; // 超过30分钟即为失效
+
 export function checkAuthState() {
   const nowStamp = Math.floor(new Date().getTime() / 1000);
 
   const USER = qs.parse(base.Base64.decode(sessionStorage.getItem('USER')));
-  if (!USER) {
+  // const USER = sessionStorage.getItem('USER');
+  console.log(sessionStorage.getItem('USER'));
+  console.log(USER);
+  //用户未登录
+  if (!sessionStorage.getItem('USER')) {
     sessionStorage.clear();
     return {
       isAuth: false,
     };
+    console.log('用户未登录');
   }
-  const { timestamp } = USER;
+  else{
+    const { timestamp } = USER;
+    //用户登录超出三十分钟
+    if ((nowStamp - timestamp > EXPIRES_TIME)) {
+      console.log('用户登录但超时');
+      sessionStorage.clear();
+      return {
+        isAuth: false,
+      };
+    }
+    else{
+      console.log('用户正常登录');
+      return {
+        isAuth: true,
+      };
+    }
+  }
 
-  if ((nowStamp - timestamp > EXPIRES_TIME)) {
-    sessionStorage.clear();
-    return {
-      isAuth: false,
-    };
-  }
-  return {
-    isAuth: true,
-  };
 }
 
 /**
@@ -58,8 +70,11 @@ export function checkAuthState() {
  */
 export function updateAuthState() {
   let USER = qs.parse(base.Base64.decode(sessionStorage.getItem('USER'))); // 解密
+  // let USER = sessionStorage.getItem('USER');
+  console.log(USER);
   USER.timestamp = Math.floor(new Date().getTime() / 1000);
-
+  console.log(USER);
   // save
   sessionStorage.setItem('USER', base.Base64.encode(qs.stringify(USER)));
+  // sessionStorage.setItem('USER', USER);
 }

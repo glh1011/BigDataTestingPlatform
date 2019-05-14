@@ -1,7 +1,7 @@
 /* eslint react/no-string-refs:0 */
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Input, Grid, Button } from '@icedesign/base';
+import { Input, Grid, Button, Feedback } from '@icedesign/base';
 import {
   FormBinderWrapper as IceFormBinderWrapper,
   FormBinder as IceFormBinder,
@@ -11,6 +11,7 @@ import './ChangePasswordForm.scss';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store';
 import { withRouter } from 'react-router';
+import checkStrong from '../../../../utils/checkPwd'
 
 const { Row, Col } = Grid;
 
@@ -19,6 +20,17 @@ class ChangePasswordForm extends Component {
   
   componentWillUnmount(){
     this.props.resetForm();
+  }
+  
+  handleSubmit = (inputValue, history) => {
+    this.formRef.validateAll((error, value) => {
+      if (!error || error.length === 0) {
+        this.props.resetPwd(inputValue, history)
+      }
+      else {
+        Feedback.toast.error("密码填写有误!");
+      }
+    });
   }
 
   checkConfirmPassword=(rule, values, callback) => {
@@ -31,6 +43,22 @@ class ChangePasswordForm extends Component {
     }
   }
 
+  checkPwdStrong = (rule, values, callback) => {
+    if (!values) {
+      callback('请输入新密码');
+    } else if (values.length < 8) {
+        callback('密码必须大于8位,且为字母数字组合');
+    } else if (values.length >= 8 && values.length <= 16) {
+      if(checkStrong(values) === 1) {
+        callback('密码必须大于8位,且为字母数字组合');
+      }else{
+        callback('密码有效');
+      }
+    } else {
+      callback('密码必须小于16位');
+    }
+  }
+
   render() {
     console.log(this.props.history);
     const { value, resetPwd, formChange, history } = this.props;
@@ -40,7 +68,9 @@ class ChangePasswordForm extends Component {
           <IceFormBinderWrapper
             value={value}
             onChange={formChange}
-            ref="form"
+            ref={(formRef) => {
+              this.formRef = formRef;
+            }}
           >
             <div style={styles.formContent}>
               <h2 style={styles.formTitle}>重置下级用户密码</h2>
@@ -53,6 +83,7 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="oldPasswd"
                     required
+                    message="必填"
                   >
                     <Input
                       htmlType="password"
@@ -77,6 +108,7 @@ class ChangePasswordForm extends Component {
                       htmlType="password"
                       size="large"
                       placeholder="请输入新密码"
+                      validator={this.checkPwdStrong}
                     />
                   </IceFormBinder>
                   <IceFormError name="passwd" />
@@ -110,7 +142,7 @@ class ChangePasswordForm extends Component {
               <Button
                 size="large"
                 type="primary"
-                onClick={()=>resetPwd(value, history)}
+                onClick={()=>this.handleSubmit(value, history)}
               >
                 提 交
               </Button>

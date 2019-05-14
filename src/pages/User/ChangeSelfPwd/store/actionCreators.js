@@ -20,16 +20,15 @@ export const modifyPwd = (value, history) => {
       parseInt(localStorage.getItem('userId')),
       value.oldPasswd
     ).then(function (response) {
-      if(response.data.meta.success){
-        //跳转回上一页
-        Feedback.toast.success('修改密码成功');
-        history.goBack();
-      }else{
-        Feedback.toast.error(response.data.meta.message);
+      if(response){
+        if(response.data.meta.success){
+          //跳转回上一页
+          Feedback.toast.success('修改密码成功');
+          history.goBack();
+        }else{
+          Feedback.toast.error(response.data.meta.message);
+        }
       }
     })
-    .catch(function (error) {
-      console.log("Oops!"+error);
-    });
   }
 }
