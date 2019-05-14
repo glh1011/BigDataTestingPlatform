@@ -33,7 +33,8 @@ export const getJumpList = (value) => {
   return (dispatch) => {
     toClouderaClusterAxios(value).then((res) => {
       if(res) {
-        console.log(res)
+        console.log("随便写点啥");
+        console.log(res);
         if(res.data){
           const j_password = res.data.data.param.j_password;
           const j_username = res.data.data.param.j_username;

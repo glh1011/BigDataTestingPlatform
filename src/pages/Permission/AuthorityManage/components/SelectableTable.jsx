@@ -104,7 +104,13 @@ export default class SelectableTable extends Component {
         data.forEach(function(item){
           item.id = item.permissionId;
           delete item.permissionId;
+          if(item.createTime != null){
+            var d = new Date(item.createTime);
+            var newCreateTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            item.createTime = newCreateTime;
+          }
         })
+        console.log(data);
         this.setState({
           dataSource: data,
           total: total,
@@ -194,16 +200,16 @@ export default class SelectableTable extends Component {
             }}
           >
             <Table.Column title="编号" dataIndex="id" width={50} />
-            <Table.Column title="名称" dataIndex="description" width={180} />
-            <Table.Column title="url" dataIndex="opName" width={200} />
+            <Table.Column title="名称" dataIndex="description" width={140} />
+            <Table.Column title="url" dataIndex="opName" width={190} />
             <Table.Column title="级别" dataIndex="opLevel" width={50} />
-            <Table.Column title="创建者" dataIndex="creator" width={100} />
-            <Table.Column title="创建时间" dataIndex="createTime" width={180} />
+            <Table.Column title="创建者" dataIndex="creator" width={70} />
+            <Table.Column title="创建时间" dataIndex="createTime" width={130} />
             <Table.Column
               title="操作"
               cell={this.renderOperator}
-              lock="right"
-              width={50}
+              lock="true"
+              width={90}
             />
           </Table>
           <div style={styles.pagination}>
