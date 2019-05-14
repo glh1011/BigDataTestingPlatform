@@ -11,6 +11,7 @@ import './ChangePasswordForm.scss';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store';
 import { withRouter } from 'react-router';
+import checkStrong from '../../../../utils/checkPwd'
 
 const { Row, Col } = Grid;
 
@@ -27,8 +28,7 @@ class ChangePasswordForm extends Component {
         this.props.resetPwd(inputValue, history)
       }
       else {
-        console.log(error);
-        Feedback.toast.error("密码不能为空!");
+        Feedback.toast.error("密码填写有误!");
       }
     });
   }
@@ -40,6 +40,22 @@ class ChangePasswordForm extends Component {
       callback('两次输入密码不一致');
     } else {
       callback();
+    }
+  }
+
+  checkPwdStrong = (rule, values, callback) => {
+    if (!values) {
+      callback('请输入新密码');
+    } else if (values.length < 8) {
+        callback('密码必须大于8位,且为字母数字组合');
+    } else if (values.length >= 8 && values.length <= 16) {
+      if(checkStrong(values) === 1) {
+        callback('密码必须大于8位,且为字母数字组合');
+      }else{
+        callback('密码有效');
+      }
+    } else {
+      callback('密码必须小于16位');
     }
   }
 
@@ -87,12 +103,12 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="passwd"
                     required
-                    message="必填"
                   >
                     <Input
                       htmlType="password"
                       size="large"
                       placeholder="请输入新密码"
+                      validator={this.checkPwdStrong}
                     />
                   </IceFormBinder>
                   <IceFormError name="passwd" />
@@ -107,7 +123,6 @@ class ChangePasswordForm extends Component {
                   <IceFormBinder
                     name="rePasswd"
                     required
-                    message="必填"
                     validator={this.checkConfirmPassword}
                   >
                     <Input

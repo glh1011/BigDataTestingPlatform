@@ -12,6 +12,7 @@ import {
 import {
   loginByusername,
 } from '../../../../api/login';
+import getUserIP from '../../../../utils/getIp'
 
 @withRouter
 export default class LoginFrom extends Component {
@@ -36,6 +37,10 @@ export default class LoginFrom extends Component {
         if (data) {
           console.log(data.data.data);
           localStorage.clear();
+          getUserIP((ip)=>{
+            console.log(ip);
+            localStorage.setItem('clientIp', ip);
+          });
           localStorage.setItem('userLevel',data.data.data.userLevel);
           localStorage.setItem('userId',data.data.data.userId);
           localStorage.setItem('userName',data.data.data.userName);

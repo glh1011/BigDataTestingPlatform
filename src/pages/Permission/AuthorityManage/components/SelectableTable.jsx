@@ -4,7 +4,8 @@ import IceContainer from '@icedesign/container';
 import { Link } from 'react-router-dom';
 import { 
   findAllPermissonAxios,
-  deletePermissionByIdAxios
+  deletePermissionByIdAxios,
+  getIp
  } from '../../../../api/permission';
 import { Feedback } from '@icedesign/base';
 import { withRouter } from 'react-router';

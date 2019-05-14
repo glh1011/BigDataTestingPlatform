@@ -72,3 +72,10 @@ export async function queryPermissionsAxios(id, pageNum, pageSize) {
     params
   });
 }
+
+export async function getIp() {
+  return fetch({
+    url: "http://pv.sohu.com/cityjson?ie=utf-8",
+    method: 'get',
+  });
+}
