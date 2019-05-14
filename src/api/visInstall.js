@@ -14,7 +14,9 @@ export async function installAxios(clusterName, virtualMachineRequests) {
 }
 
 export async function statusAxios(id) {
-  const params = { id };
+  const params = {
+    id
+  };
   return fetch({
     url: '/api/cluster/status',
     method: 'get',
@@ -25,6 +27,13 @@ export async function statusAxios(id) {
 export async function defaultAxios() {
   return fetch({
     url: '/api/cluster/default',
+    method: 'get',
+  });
+}
+
+export async function currentAxios() {
+  return fetch({
+    url: '/api/info/current',
     method: 'get',
   });
 }

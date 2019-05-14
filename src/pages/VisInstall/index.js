@@ -4,7 +4,8 @@ import React, {
 import MainData from "./components/MainData";
 import EditableTable from './components/EditableTable';
 import {
-  defaultAxios
+  defaultAxios,
+  currentAxios
 } from "../../api/visInstall";
 export default class VisInstall extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ export default class VisInstall extends Component {
           error: error
         })
       })
-    defaultAxios()
+    currentAxios()
       .then(function (response) {
         _this.setState({
           cpu: response.data.data.cpu,
