@@ -74,10 +74,14 @@ service.interceptors.response.use(res => {
   }
 
 }, error => {
-  console.log(error);
-  // 错误处理
-  Feedback.toast.error(error, `请求发生错误-${JSON.stringify(error)}`);
-  Promise.reject(error);
+  console.log(error.response);
+  if(error.response.status === 401) {
+    Feedback.toast.error(error.response.data.data);
+  }
+  // console.log(error);
+  // // 错误处理
+  // Feedback.toast.error(error, `请求发生错误-${JSON.stringify(error)}`);
+  // Promise.reject(error);
 });
 
 export default service;

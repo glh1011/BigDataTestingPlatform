@@ -32,7 +32,7 @@ export default class LoginFrom extends Component {
     password,
   }) => {
     return new Promise((resolve, reject) => {
-      Feedback.toast.loading({size:'large',content:'加载中...'});
+      Feedback.toast.prompt('加载中...');
       loginByusername(username, password).then(data => {
         if (data) {
           console.log(data.data.data);
@@ -62,9 +62,9 @@ export default class LoginFrom extends Component {
           }, 666);
           resolve();
         } 
-        else {
-          Feedback.toast.error({size:'large',content:'用户名或密码错误'});
-        }
+        // else {
+        //   Feedback.toast.error({size:'large',content:'用户名或密码错误'});
+        // }
       }).catch(error => {
         reject(error);
       });
