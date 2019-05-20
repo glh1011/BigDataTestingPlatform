@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Dialog, Balloon } from '@icedesign/base';
+import { Table, Pagination, Button, Dialog, Balloon, Feedback } from '@icedesign/base';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
 import { withRouter } from 'react-router';
@@ -186,6 +186,7 @@ const mapDispatch = (dispatch) => ({
   recycleCluster(clusterName, userName, current) {
     console.log('mapDispatch  ' + clusterName);
     console.log(userName);
+    Feedback.toast.loading("正在回收");
     dispatch(actionCreators.recycleCluster(clusterName, userName, current));
   }
 })

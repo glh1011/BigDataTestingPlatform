@@ -23,6 +23,7 @@ class CDHLog extends Component {
     console.log("1111111111111111111111111111")
     // this.subForm.submit();
     var param= setInterval(() => {
+      console.log(this.props.url);
      if(this.props.url){
        console.log(this.props.url.split('/j')[0])
         // this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/login"
@@ -65,6 +66,8 @@ class CDHLog extends Component {
     }
   }
 const mapStateToProps = (state) => {
+  console.log("log state================");
+  console.log(state);
   return {
     url: state.CDHLog.url,
     j_password: state.CDHLog.j_password,

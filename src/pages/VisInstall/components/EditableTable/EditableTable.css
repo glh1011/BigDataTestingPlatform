@@ -6,8 +6,14 @@
   display: none;
 }
 
+.next-dialog-body > div{
+  width: 100% !important;
+}
+
+
+
 .slider-img-wrapper img {
-  width: 100%;
+  width: 100% !important;
 }
 
 .progress-outer {

@@ -42,18 +42,6 @@ export const getAdmainResource = () => {
 			  }
 			}
 		)
-		// axios.get('/api/info/findAllAdminInfo?pageNum=1&pageSize=10').then((res)=>{
-		// 	if(res){
-		// 		if(res.data.meta.success){
-		// 			const result = res.data.data.list;
-		// 			console.log("adminResource:" + result);
-		// 			dispatch(changeAdminResource(result));
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error("获取资源池信息出错");
-		// 		}
-		// 	}
-		// });
 	}
 }
 
@@ -84,22 +72,6 @@ export const getFirstLevelResourceList = (pageNum) => {
 				}
 			}
 		) 
-   
-		// axios.get('/api/info/findAllFirstInfo?pageNum=' + pageNum + '&pageSize=10').then((res) => {		
-		// 	console.log(res);
-		// 	if(res){
-		// 		if(res.data.meta.success){
-		// 			const result = res.data.data.list;
-		// 			console.log(result);
-		// 			const total = res.data.data.pages;
-		// 			console.log(total);
-		// 			dispatch(changeFirstLevelResourceList(result, total));
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error("获取一级资源池列表出错");
-		// 		}	
-		// 	}
-		// });
 	}
 }
 
@@ -129,23 +101,6 @@ export const getFirstLevelUserWithoutResource = () => {
 				}
 			}
 		)
-		// axios.get('/api/allocation/findFirstWithoutResource').then(
-		// 	function (res) {
-		// 		if(res){
-		// 			console.log(res);
-		// 			if(res.data.meta.success){
-		// 				const result =[];
-		// 				res.data.data.map((item) => {
-		// 					result.push(item.userName);
-		// 				});
-		// 				console.log(result);
-		// 				dispatch(changeFirstLevelUser(result));
-		// 			}
-		// 			else{
-		// 				Feedback.toast.error("获取无资源池的一级用户失败");
-		// 			}
-		// 		}
-		// });
 	}
 }
 
@@ -178,29 +133,6 @@ export const submitAllocateForm = (username, totalCpu, totalMem, totalDisk, hist
 				}	
 			}
 		)
-		// const url = '/api/allocation/allocateResourceToFirst?totalCpu='+cpu+'&totalMem='+memory+'&totalDisk='+disk+'&username='+username;
-		// console.log(url);
-		// axios.post(url)
-		// 	.then(
-		// 		function (response) {
-		// 			if(response){
-		// 				console.log(response);
-		// 				if(response.data.meta.success){
-		// 					Feedback.toast.success("一级资源池分配成功");
-		// 					history.goBack();
-		// 				}
-		// 				else if(response.data.meta.message==='资源不够充足'){
-		// 					Feedback.toast.error(response.data.meta.message);
-		// 				}
-		// 				else{
-		// 					Feedback.toast.error("一级资源池分配失败");
-		// 				}	
-		// 			}
-		// 		}
-		// 	)
-		// 	.catch(function (error) {
-		// 		console.log("Oops!"+error);
-		// });
 	}		
 }
 
@@ -224,20 +156,6 @@ export const recycleResourcePool = (username, pageNum) => {
 			}	
 		)
 	}
-
-	// 	axios.post('/api/delete/deleteFirst?userName='+userName).then((res) => {
-	// 		console.log(res.data.meta.success);
-	// 		if(res){
-	// 			if(res.data.meta.success){
-	// 				Feedback.toast.success("一级资源池回收成功");
-	// 				dispatch(getAdmainResource());
-	// 				dispatch(getFirstLevelResourceList(pageNum));
-	// 			}
-	// 			else{
-	// 				Feedback.toast.error("一级资源池回收失败");
-	// 			}
-	// 		}
-	// 	})
 
 }
 
@@ -268,20 +186,6 @@ export const getFirstLevelResource = (username) => {
 			}
 		)
 	}
-		// axios.get('/api/info/findOneFirstInfo?username=' + username).then((res)=>{
-		// 	if(res){
-		// 		if(res.data.meta.success){
-		// 			const result = res.data.data;
-		// 			console.log(result);
-		// 			var a = [result];
-		// 			console.log(a);
-		// 			dispatch(changeFirstLevelResource(a));
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error("获取一级资源池信息出错");
-		// 		}
-		// 	}
-		// });
 }
 
 //一级用户获取表格数据，并修改state
@@ -310,21 +214,7 @@ export const getClusterList = (pageNum, username) => {
 				}	
 			}
 		)
-		// axios.get('/api/info/findAllClusterInfo?pageNum=' + pageNum + '&pageSize=10&username=' + username).then((res) => {
-		// 	if(res){
-		// 		console.log(res);
-		// 		if(res.data.meta.success){
-		// 			const result = res.data.data.list;
-		// 			console.log(result);
-		// 			const total = res.data.data.pages;
-		// 			console.log(total);
-		// 			dispatch(changeClusterList(result, total));
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error("获取集群列表失败");
-		// 		}
-		// 	}	
-		// });
+
 	}
 }
 
@@ -354,23 +244,6 @@ export const getUnboundSecondUser = (clusterName) => {
 				}
 			}
 		)
-		// axios.get('/api/allocation/findSecondWithoutConnect?clusterName=' + clusterName)
-		//   .then( (res) => {
-		// 		if(res){
-		// 			console.log(res);
-		// 			if(res.data.meta.success){
-		// 				const result =[];
-		// 				res.data.data.map((item) => {
-		// 					result.push(item.userName);
-		// 				});
-		// 				console.log(result);
-		// 				dispatch(changeUnboundSecondLevelUser(result));
-		// 			}
-		// 			else{
-		// 				Feedback.toast.error('获取未绑定二级用户失败');
-		// 			}
-		// 		}
-		// 	})
 	}
 }
 
@@ -391,26 +264,6 @@ export const submitAssignClusterUser = (users, clusterName, history) => {
 			}
 		)
   }
-	// const url = '/api/allocation/assignRole?clusterName='+ clusterName +'&users=' + users ;
-	// console.log(url);
-	// return (dispatch) => {
-  //   axios.post(url)
-  //   .then(function (response) {
-	// 		if(response){
-	// 			console.log(response.data.meta.success);
-	// 			if(response.data.meta.success){
-	// 				Feedback.toast.success('绑定集群成功！');
-	// 				history.goBack();
-	// 			}
-	// 			else{
-	// 				Feedback.toast.error('绑定集群失败！');
-	// 			}
-	// 		}
-  //   })
-  //   .catch(function (error) {
-  //   console.log(error);
-  //   });
-  // }
 }
 
 //一级用户查看与集群关联的二级用户
@@ -439,23 +292,6 @@ export const getBoundSecondUser = (clusterName) => {
 				}			
 			}
 		)
-		// axios.get('/api/allocation/findSecondConnect?clusterName=' + clusterName)
-		//   .then( (res) => {
-		// 		if(res){
-		// 			console.log(res);
-		// 			if(res.data.meta.success){
-		// 				const result =[];
-		// 				res.data.data.map((item) => {
-		// 					result.push(item.userName);
-		// 				});
-		// 				console.log(result);
-		// 				dispatch(changeBoundSecondLevelUser(result));
-		// 			}
-		// 			else{
-		// 				Feedback.toast.error('获取已绑定二级用户失败');
-		// 			}
-		// 		}
-		// 	})
 	}
 }
 
@@ -479,22 +315,6 @@ export const submitUnassignClusterUser = (users, clusterName, history) => {
 				}
 			}
 		)
-    // axios.post(url)
-    // .then(function (response) {
-		// 	if(response){
-		// 		console.log(response.data.meta.success);
-		// 		if(response.data.meta.success){
-		// 			Feedback.toast.success('解绑集群成功！');
-		// 			history.goBack();
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error('解绑集群失败！');
-		// 		}
-		// 	}
-    // })
-    // .catch(function (error) {
-    // console.log(error);
-    // });
   }
 }
 
@@ -508,8 +328,8 @@ export const recycleCluster = (clusterName, userName, pageNum) => {
 		recycleClusterAxios(clusterName).then(
 			(res) => {
 				if(res){
-					console.log(res);
 					if(res.data.meta.success){
+						Feedback.toast.loading("正在回收");
 						Feedback.toast.success("集群回收成功");
 						dispatch(getFirstLevelResource(userName));
 						dispatch(getClusterList(pageNum, userName));
@@ -520,18 +340,5 @@ export const recycleCluster = (clusterName, userName, pageNum) => {
 				}				
 			}
 		)
-		// axios.post('/api/delete/deleteCluster?clusterName='+clusterName).then((res) => {
-		// 	if(res){
-		// 		console.log(res);
-		// 		if(res.data.meta.success){
-		// 			Feedback.toast.success("集群回收成功");
-		// 			dispatch(getFirstLevelResource(userName));
-		// 			dispatch(getClusterList(pageNum, userName));
-		// 		}
-		// 		else{
-		// 			Feedback.toast.error("集群回收失败");
-		// 		}
-		// 	}
-		// })
 	}
 }
