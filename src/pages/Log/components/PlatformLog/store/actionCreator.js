@@ -20,6 +20,13 @@ const changeUrl = (url) => ({
    url
 })
 
+const setPostLogin = (url, j_password, j_username) => ({
+  type: constants.SETPOSTLOGIN,
+  url,
+  j_password,
+  j_username
+})
+
 export const changeUrlLog = () => {
   return (dispatch) => {
     toOpenStackAxios().then((res) => {
@@ -38,10 +45,8 @@ export const getJumpList = (value) => {
         if(res.data){
           const j_password = res.data.data.param.j_password;
           const j_username = res.data.data.param.j_username;
-          const url1=res.data.data.url
-          localStorage.setItem('url',url1);
-          localStorage.setItem('j_password',j_password);
-          localStorage.setItem('j_username',j_username)
+          const url1=res.data.data.url;
+          dispatch(setPostLogin(url1, j_password, j_username));
         }
       }
     })

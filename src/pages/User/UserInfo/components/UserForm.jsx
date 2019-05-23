@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux';
 import { actionCreators } from '../store/';
 import { withRouter } from 'react-router';
+import './input.scss'
 
 const { Row, Col } = Grid;
 

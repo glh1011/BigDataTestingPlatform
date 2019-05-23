@@ -5,10 +5,11 @@ import {
 import * as constants from './constants';
 import { Feedback } from '@icedesign/base';
 
-const getPermissions = (permissions, checkedArr) => ({
+const getPermissions = (permissions, checkedArr, allCheckedArr) => ({
   type: constants.GETPERMISSIONS,
   permissions,
-  checkedArr
+  checkedArr,
+  allCheckedArr
 })
 
 export const getInfo = () => {
@@ -20,12 +21,14 @@ export const getInfo = () => {
       console.log(permissions);
       //将结果中的选中值提取出来放进value数组
       let checkedArr = [];
+      let allCheckedArr = [];
       for(let key in permissions){
+        allCheckedArr.push(permissions[key].permission.opName);
         if(permissions[key].selected === true){
           checkedArr.push(permissions[key].permission.opName)
         }
       }
-      dispatch(getPermissions(permissions, checkedArr));
+      dispatch(getPermissions(permissions, checkedArr, allCheckedArr));
 })
 }}
 
@@ -58,4 +61,8 @@ export const selectCheckbox = (selectedItems) => ({
 
 export const clearCheckbox = () => ({
   type: constants.CLEARCHECKBOX,
+})
+
+export const allChecked = () => ({
+  type: constants.SELECTALL,
 })

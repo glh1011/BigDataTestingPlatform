@@ -6,7 +6,10 @@ const defaultState = {
    value:'',
    url:'',
    PlatformLog: [],
-   cluserName:[]
+   cluserName:[],
+   loginUrl: '',
+   loginUserName: '',
+   loginPassword: ''
 };
 
 export default(state=defaultState, action) => {
@@ -21,6 +24,11 @@ export default(state=defaultState, action) => {
       return newState;
     case constants.CHANGEURL:
       newState.url = action.url;
+      return newState;
+    case constants.SETPOSTLOGIN:
+      newState.loginUrl = action.url;
+      newState.loginPassword = action.j_password;
+      newState.loginUserName = action.j_username;
       return newState;
     default:
       return state;

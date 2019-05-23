@@ -54,11 +54,12 @@ export default class LoginFrom extends Component {
             sessionStorage.setItem('USER', base.Base64.encode(qs.stringify(USER))); // 加密
             // 登录成功后做对应的逻辑处理
             Feedback.toast.success({size:'large',content:'登录成功'});
-            if(data.data.data.userLevel != 2){
-              this.props.history.push('/userManagement/dashboard');
-            }else{
-              this.props.history.push('/Resource/ClusterResourceManage');
-            }
+            this.props.history.push('/welcome');
+            // if(data.data.data.userLevel != 2){
+            //   this.props.history.push('/userManagement/dashboard');
+            // }else{
+            //   this.props.history.push('/Resource/ClusterResourceManage');
+            // }
           }, 666);
           resolve();
         } 
@@ -144,6 +145,7 @@ export default class LoginFrom extends Component {
         formChange={this.formChange}
         handleSubmit={this.handleSubmit}
         links={links}
+        
       />
     );
   }

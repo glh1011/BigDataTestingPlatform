@@ -18,6 +18,7 @@ export default (state = defaultState, action) => {
     const newState = JSON.parse(JSON.stringify(state));
     newState.permissions = action.permissions;
     newState.checkedArr = action.checkedArr;
+    newState.allCheckedArr = action.allCheckedArr;
     return newState;
   }
   if(action.type == constants.SELECTCHECKBOX) {
@@ -27,6 +28,12 @@ export default (state = defaultState, action) => {
     return newState;
   }
   if(action.type == constants.CLEARCHECKBOX) {
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.permissions = [];
+    newState.checkedArr = [];
+    return newState;
+  }
+  if(action.type == constants.SELECTALL) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.permissions = [];
     newState.checkedArr = [];

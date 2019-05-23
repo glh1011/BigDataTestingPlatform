@@ -18,30 +18,53 @@ class CDHLog extends Component {
       this.iFrame = element;
     };
   }
-  componentDidMount() {
-    // console.log(this.props.url);
-    console.log("1111111111111111111111111111")
-    // this.subForm.submit();
+
+  displayLogIframe() {
     var param= setInterval(() => {
-      console.log(this.props.url);
-     if(this.props.url){
-       console.log(this.props.url.split('/j')[0])
+      if(this.props.url){
+        console.log(this.props.url.split('/j')[0])
         // this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/login"
-        this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search"
+        this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
         
-       console.log(this.iFrame.src)
-       window.clearInterval(param);
-     }
-   }, 1000);
-   window.addEventListener('message', (e) => {
-     console.log(e);
-     if (e.data === 'loaded') {
-      this.iFrame.contentWindow.postMessage(JSON.stringify({
-        username: this.props.j_username,
-        password: this.props.j_password
-      }), this.props.url.split('/j')[0]);
-     }
-   });
+        // console.log(this.iFrame.contentWindow.document);
+        // console.log(this.iFrame.contentWindow.document.getElementsByTagName("nav"));
+        // var nav = this.iFrame.contentWindow.document.getElementsByTagName("nav");
+        // nav.style.display = 'none';
+        // nav.style.visibility = 'hidden';
+        window.clearInterval(param);
+        console.log("输出iframe");
+        console.log(this.iFrame);
+        var i = this.iFrame;
+        i.onload=function(){
+          console.log(i.contentDocument)
+          console.log(i.contentWindow.document.getElementById("nav"));
+          if(i.contentWindow.document.getElementsByTagName("nav")) {
+            var nav = i.contentWindow.document.getElementsByTagName("nav");
+            nav.style.display = 'none';
+            nav.style.visibility = 'hidden';
+          }
+        }
+      }
+    }, 1000);
+    window.addEventListener('message', (e) => {
+      console.log(e);
+      if (e.data === 'loaded') {
+       this.iFrame.contentWindow.postMessage(JSON.stringify({
+         username: this.props.j_username,
+         password: this.props.j_password
+       }), this.props.url.split('/j')[0]);
+      }
+    });
+    
+  }
+
+  componentDidMount() {
+    this.displayLogIframe();
+ }
+
+  componentWillUpdate() {
+    console.log("页面组件刷新");
+    this.displayLogIframe();
  }
  
   render() {
@@ -69,9 +92,9 @@ const mapStateToProps = (state) => {
   console.log("log state================");
   console.log(state);
   return {
-    url: state.CDHLog.url,
-    j_password: state.CDHLog.j_password,
-    j_username: state.CDHLog.j_username,
+    url: state.PlatformLog.loginUrl,
+    j_password: state.PlatformLog.loginPassword,
+    j_username: state.PlatformLog.loginUserName,
   }
 }
 export default connect(mapStateToProps)(CDHLog)

@@ -54,6 +54,10 @@ class AuthForm extends Component {
     });
   };
 
+  pressEnter = (e) => {
+    this.handleSubmit(e);
+  }
+
   renderButton = (item) => {
     return (
       <Row
@@ -76,7 +80,7 @@ class AuthForm extends Component {
       <Row style={styles.formItem} key={item.label}>
         <Col style={styles.formItemCol}>
           <IceFormBinder {...item.formBinderProps}>
-            <CustomInput {...item.componentProps} />
+            <CustomInput {...item.componentProps} onPressEnter={this.pressEnter}/>
           </IceFormBinder>
         </Col>
         <Col>

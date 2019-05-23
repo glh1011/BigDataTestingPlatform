@@ -4,22 +4,26 @@
 
 import { getRouterData } from './utils/formatter';
 import { asideMenuConfig } from './menuConfig';
-import Dashboard from './pages/User/Dashboard';
-import LoginPanel from './pages/LoginPage/components/LoginPanel';
-import MainLayout from './layouts/BasicLayout/MainLayout';
-import UserInfo from './pages/User/UserInfo';
-import AuthorityManage from './pages/Permission/AuthorityManage';
 
+import LoginPanel from './pages/LoginPage/components/LoginPanel';
+
+import Welcome from './pages/Welcome';
+
+import MainLayout from './layouts/BasicLayout/MainLayout';
+import NormalLayout from './layouts/BasicLayout/NormalLayout';
+
+import AuthorityManage from './pages/Permission/AuthorityManage';
 import SelfAuthorities from './pages/Permission/SelfAuthorities';
 import AddAuthority from './pages/Permission/AddAuthority';
 import EditAuthority from './pages/Permission/EditAuthority';
+
+import Dashboard from './pages/User/Dashboard';
+import UserInfo from './pages/User/UserInfo';
 import AddSubUser from './pages/User/AddSubUser';
 import SubUserDetail from './pages/User/SubUserDetail';
 import ChangeSelfPwd from './pages/User/ChangeSelfPwd';
-
 import EditSubUser from './pages/User/EditSubUser';
 import ChangeSubUserPwd from './pages/User/ChangeSubUserPwd';
-import NormalLayout from './layouts/BasicLayout/NormalLayout';
 import EditSubUserPermission from './pages/User/EditSubUserPermission';
 
 import ResourcePoolShow from './pages/Resource/ResourcePoolShow';
@@ -43,6 +47,11 @@ import NotLogin from './components/NotLogin';
 
 
 const routerConfig = [
+  {
+    path: '/welcome',
+    layout: NormalLayout,
+    component: Welcome,
+  },
   {
     path: '/userManagement/dashboard',
     layout: NormalLayout,

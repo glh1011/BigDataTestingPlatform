@@ -10,6 +10,8 @@ class LiteTable extends Component {
       <div className="lite-table">
         <IceContainer>
           <span style={styles.formTitle}>个人权限</span>
+          </IceContainer>
+          <IceContainer>
           <div>
             {(this.props.tableData || []).map((item, index) => {
               return (
@@ -77,13 +79,14 @@ const styles = {
     lineHeight: '24px',
   },
   permissionItem: {
-    display: 'flex',
+    display: 'inline-block',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottom: '1px solid #fafafa',
     lineHeight: '45px',
     height: 45,
     paddingLeft: '20px',
+    width: '25%',
     textDecoration: 'none',
   },
   permissionName: {

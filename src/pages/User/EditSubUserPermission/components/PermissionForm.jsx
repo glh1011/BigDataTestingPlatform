@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import IceContainer from '@icedesign/container';
-import { Grid, Button,Checkbox } from '@icedesign/base';
+import { Grid, Button,Checkbox, Icon } from '@icedesign/base';
 // import { Checkbox } from '@alifd/next';
 import { withRouter } from 'react-router';
 import {
@@ -32,11 +32,32 @@ class PermissionForm extends Component {
     return (
       <div className="user-form">
         <IceContainer>
+          <span style={styles.formTitle}>权限信息</span>
+          <div style={styles.btnContainer}>
+            <Button
+              onClick={()=>this.props.selectAll(this.props.allChecked)}
+              size="small"
+              style={styles.batchBtn}
+              
+            >
+              <Icon type="success"/>全选
+            </Button>
+            <Button
+              onClick={()=>this.props.selectNone()}
+              size="small"
+              style={styles.batchBtn}
+            >
+              <Icon type="error"/>全不选
+            </Button>
+          </div>
+        </IceContainer>
+        
+        <IceContainer>
           <IceFormBinderWrapper
             ref="form"
           >
             <div style={styles.formContent}>
-              <h2 style={styles.formTitle}>权限信息</h2>
+              
               <div>
                 <CheckboxGroup value={value} onChange={onChange}>
                 {
@@ -95,11 +116,12 @@ class PermissionForm extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.PermissionForm.permissions);
+  console.log(state.PermissionForm);
   
   return {
     value: state.PermissionForm.checkedArr,
     dataSource: state.PermissionForm.permissions,
+    allChecked: state.PermissionForm.allCheckedArr
   }
 }
 
@@ -117,15 +139,31 @@ const mapDispatchToProps = (dispatch) => ({
   },
   checkboxReset() {
     dispatch(actionCreators.clearCheckbox());
+  },
+  selectAll(all) {
+    dispatch(actionCreators.selectCheckbox(all));
+  },
+  selectNone() {
+    dispatch(actionCreators.selectCheckbox([]));
   }
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PermissionForm);
 
 const styles = {
-  formContent: {
-    width: '100%',
-    position: 'relative',
+  formTitle: {
+    display: 'inline-block',
+    fontSize: '18px',
+    fontWeight: '500',
+    lineHeight: '24px',
+  },
+  btnContainer: {
+    float: 'right',
+  },
+  batchBtn: {
+    marginRight: '10px',
+    fontSize: '14px',
+    height: '26px',
   },
   formItem: {
     marginBottom: 25,
@@ -135,18 +173,14 @@ const styles = {
     lineHeight: '32px',
     textAlign: 'right',
   },
-  formTitle: {
-    margin: '0 0 20px',
-    paddingBottom: '10px',
-    borderBottom: '1px solid #eee',
-  },
   checkboxWrapper: {
     display: 'inline-block',
     borderBottom: '1px solid #fafafa',
     lineHeight: '45px',
     height: 45,
+    width: '25%',
     paddingLeft: '20px',
-    paddingRight: '20px',
+    // paddingRight: '20px',
     textDecoration: 'none',
   }
 };
