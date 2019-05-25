@@ -25,6 +25,7 @@ class CDHLog extends Component {
         console.log(this.props.url.split('/j')[0])
         // this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/login"
         this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
+        window.clearInterval(param);
       }
     }, 1000);
     window.addEventListener('message', (e) => {
