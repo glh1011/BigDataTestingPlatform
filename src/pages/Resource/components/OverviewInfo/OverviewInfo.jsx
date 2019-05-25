@@ -48,7 +48,6 @@ class OverviewInfo extends Component {
       this.getInfo(this.props, info);
       return (
         <Row wrap gutter={20} style={styles.row}>
-          <Col l="12">
             <IceContainer style={styles.container}>
               <ul style={styles.summary}>
                 <li style={styles.item}>
@@ -67,7 +66,6 @@ class OverviewInfo extends Component {
                 </li>
               </ul>
             </IceContainer>
-          </Col>
         </Row>
       );
     }
@@ -88,8 +86,9 @@ export default connect(mapState, null)(OverviewInfo);
 const styles = {
   row: {
     float: 'left',
-    marginLeft: '5%',
-    width: '26%',
+    marginLeft: '1%',
+    marginRight: '1%',
+    width: '30%',
     marginBottom: '2%',
     minWidth: 280,
   },
@@ -99,15 +98,20 @@ const styles = {
     width: 340,
     height: 150,
     borderRadius: 0,
+    width: '100%',
   },
   summary: {
-    marginLeft: '30%',
+    position: 'relative',
+    width: '200px',
+    left: '50%',
+    marginLeft: '-100px',
     padding: '10px',
   },
   item: {
     padding: '5px',
     height: '28px',
     lineHeight: '32px',
+    textAlign: 'center', 
   },
   label: {
     display: 'inline-block',

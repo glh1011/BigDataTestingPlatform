@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Pagination, Button, Dialog, Balloon, Feedback } from '@icedesign/base';
+import { Table, Pagination, Button, Dialog, Balloon, Feedback, Loading } from '@icedesign/base';
 import { connect } from 'react-redux';
 import { actionCreators } from '../../store';
 import { withRouter } from 'react-router';
@@ -9,13 +9,12 @@ import { Link } from 'react-router-dom';
 
 class Home extends Component {
   static displayName = 'Home';
-
-  handlePagination = (current) => {
-    this.setState({
-      current,
-    });
-  };
-
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     visible: false,
+  //   };
+  // }
   onRowClick = (record, index, e) => {
     localStorage.setItem('onRowClickClusterName', record.clusterName);
     console.log(record.clusterName);
@@ -132,28 +131,30 @@ class Home extends Component {
     console.log(clusterList);
     return (
       <div style={styles.tableContainer}>
-        <Table
-          dataSource={Array.from(clusterList)}
-          onSort={this.handleSort}
-          onRowClick={this.onRowClick}
-          onRowMouseEnter={this.onRowMouseEnter}
-          hasBorder={false}
-          className="custom-table"
-          style={styles.customTable}
-        >
-          <Table.Column width={100} title="集群ID" dataIndex="clusterId" cell={this.renderHint}/>
-          <Table.Column width={100} title="集群名称" dataIndex="clusterName" cell={this.renderHint}/>
-          <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu" cell={this.renderHint}/>
-          <Table.Column width={100} title="内存（GB）" dataIndex="totalMem" cell={this.renderHint}/>
-          <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk" cell={this.renderHint}/>
-          <Table.Column width={200} title="创建时间" dataIndex="createTime" cell={this.renderHint}/>
-          <Table.Column width={200} title="操作" cell={this.renderOperationButton} />
-        </Table>
-        <Pagination
-          style={styles.pagination}
-          onChange={this.props.onChange}
-          total={this.props.total}
-        />
+        <Loading visible={this.props.visible} shape="fusion-reactor" tip=" 正在回收，请耐心等待...">
+          <Table
+            dataSource={Array.from(clusterList)}
+            onSort={this.handleSort}
+            onRowClick={this.onRowClick}
+            onRowMouseEnter={this.onRowMouseEnter}
+            hasBorder={false}
+            className="custom-table"
+            style={styles.customTable}
+          >
+            <Table.Column width={100} title="集群ID" dataIndex="clusterId" cell={this.renderHint}/>
+            <Table.Column width={100} title="集群名称" dataIndex="clusterName" cell={this.renderHint}/>
+            <Table.Column width={100} title="CPU（个）" dataIndex="totalCpu" cell={this.renderHint}/>
+            <Table.Column width={100} title="内存（GB）" dataIndex="totalMem" cell={this.renderHint}/>
+            <Table.Column width={100} title="硬盘（GB）" dataIndex="totalDisk" cell={this.renderHint}/>
+            <Table.Column width={200} title="创建时间" dataIndex="createTime" cell={this.renderHint}/>
+            <Table.Column width={200} title="操作" cell={this.renderOperationButton} />
+          </Table>
+          <Pagination
+            style={styles.pagination}
+            onChange={this.props.onChange}
+            total={this.props.total}
+          />
+        </Loading>
       </div>
     );
   }
@@ -163,7 +164,8 @@ const mapState = (state) => {
   return {
     clusterList: state.Resource.clusterList,
     current: state.Resource.clusterListCurrent,
-    total: state.Resource.clusterListTotal
+    total: state.Resource.clusterListTotal,
+    visible: state.Resource.clusterTableLoadingVisible
   }
 }
 
@@ -186,7 +188,6 @@ const mapDispatch = (dispatch) => ({
   recycleCluster(clusterName, userName, current) {
     console.log('mapDispatch  ' + clusterName);
     console.log(userName);
-    Feedback.toast.loading("正在回收");
     dispatch(actionCreators.recycleCluster(clusterName, userName, current));
   }
 })
@@ -199,9 +200,9 @@ const styles = {
     paddingBottom: '10px',
   },
   customTable: {
-    width: '80%',
+    width: '90%',
     minWidth: '1000px',
-    marginLeft: '8%',
+    marginLeft: '4%',
     cursor:'pointer',
   },
   pagination: {

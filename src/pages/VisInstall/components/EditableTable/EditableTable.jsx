@@ -552,11 +552,12 @@ export default class EditableTable extends Component {
               title="创建集群"
               visible={this.state.visible}
               footer={this.state.dialog ? footer : false}
+              closable={false}
             >
               <div style={{ display: this.state.dialog ? "block" : "none" }}>
                 <img
                   src={require("./images/test1.jpg")}
-                  style={{ width: "1000px", height: "300px" }}
+                  // style={{ width: "1000px", height: "300px" }}
                 />
               </div>
               <span style={{ color: this.state.dialog ? "red" : "black" }}>
@@ -565,11 +566,11 @@ export default class EditableTable extends Component {
               <div
                 style={{
                   display: this.state.dialog ? "none" : "block",
-                  width: "1000px",
-                  height: "300px"
+                  // width: "1000px",
+                  // height: "300px"
                 }}
               >
-                <Slider autoplay autoplaySpeed={2000}>
+                <Slider autoplay autoplaySpeed={2000} adaptiveHeight={true}>
                   {itemNodes}
                 </Slider>
               </div>

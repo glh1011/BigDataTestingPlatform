@@ -158,9 +158,9 @@ const styles = {
     paddingBottom: '10px',
   },
   customTable: {
-    width: '80%',
+    width: '90%',
     minWidth: '1000px',
-    marginLeft: '8%',
+    marginLeft: '4%',
     cursor:'pointer',
   },
   pagination: {

@@ -57,7 +57,7 @@ class CustomPieChart extends Component {
         top: '10%',
       },
       tooltip: {
-        formatter: '{b} ({c})',
+        formatter: '{b}({c})',
       },
       series: [
         // CPU
@@ -87,13 +87,14 @@ class CustomPieChart extends Component {
           label: {
             normal: {
               show: true,
-              formatter: '{b} ({c})',
+              formatter: '{b}({c})',
+              align: 'right',
             },
           },
           labelLine: {
             normal: {
               show: false,
-              length: 10,
+              length: 2,
               length2: 10,
             },
           },
@@ -201,9 +202,9 @@ class CustomPieChart extends Component {
       this.getInfo(this.props, info);
       return (
         <div className="custom-pie-chart" style={styles.customPieChart}>
-          <IceContainer style={{borderRadius: 0,}}>
-            <ReactEcharts option={this.getOption(info)} />
-          </IceContainer>
+          {/* <IceContainer style={{borderRadius: 0, border:'1px solid #000'}}> */}
+            <ReactEcharts option={this.getOption(info)} style={{borderRadius: 0,width: '100%', }}/>
+          {/* </IceContainer> */}
         </div>
       );
     }
@@ -233,8 +234,9 @@ export default connect(mapState, mapDispatch)(CustomPieChart);
 const styles = {
   customPieChart: {
     float: 'left',
-    marginLeft: '5%',
-    width: '26%',
+    marginLeft: '1%',
+    marginRight: '1%',
+    width: '30%',
     height: '20%',
     minWidth: 300,
   }

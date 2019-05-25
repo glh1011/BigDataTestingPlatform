@@ -12,14 +12,13 @@ const defaultState = {
   firstLevelUser: [],
   unboundSecondUser: [],
   boundSecondUser: [],
+  clusterTableLoadingVisible: false 
 }
 
 export default (state = defaultState, action) => {
   console.log(action.type);
   if(action.type === constants.RESET_STATE) {
-    console.log(action.type);
     const newState = JSON.parse(JSON.stringify(state));
-    console.log(newState);
     newState.resourcePoolList = [];
     newState.clusterList = [];
     newState.resourceUseData = [];
@@ -27,40 +26,34 @@ export default (state = defaultState, action) => {
     newState.firstLevelUser = [];
     newState.unboundSecondUser = [];
     newState.boundSecondUser = [];
-    console.log(newState);
     return newState;
   }
   if(action.type ===  constants.CHANGE_FIRST_LEVEL_LIST) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.resourcePoolList = action.resourcePoolList;
     newState.resourcePoolListTotal = action.resourcePoolListTotal;
-    console.log(newState);
     return newState;
   }
   if(action.type === constants.CHANGE_ADMAIN_RESOURCE) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.resourceUseData = action.resourceUseData;
-    console.log(newState);
     return newState;
   }
   if(action.type ===  constants.CHANGE_CLUSTER_LIST) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.clusterList = action.clusterList;
     newState.clusterListTotal = action.clusterListTotal;
-    console.log(newState);
     return newState;
   }
   if(action.type === constants.CHANGE_FIRST_LEVEL_RESOURCE) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.resourceUseData = action.resourceUseData;
-    console.log(newState);
     return newState;
   }
   //分配一级资源部分,显示没有资源的一级用户
   if(action.type === constants.CHANGE_FIRST_LEVEL_USER){
     const newState = JSON.parse(JSON.stringify(state));
     newState.firstLevelUser = action.data;
-    console.log(newState.firstLevelUser);
     return newState;
   } 
   //分配一级资源部分,输入框中改变state改变
@@ -76,15 +69,20 @@ export default (state = defaultState, action) => {
   if(action.type ===   constants.CHANGE_UNBOUND_SECOND_LEVEL_USER){
     const newState = JSON.parse(JSON.stringify(state));
     newState.unboundSecondUser = action.unboundSecondUser;
-    console.log(newState.unboundSecondUser);
     return newState;
   } 
   if(action.type ===   constants.CHANGE_BOUND_SECOND_LEVEL_USER){
     const newState = JSON.parse(JSON.stringify(state));
     newState.boundSecondUser = action.boundSecondUser;
-    console.log(newState.boundSecondUser);
     return newState;
   } 
+
+  if(action.type === constants.UPDATE_CLUSTER_TABLE_LOADING_VISIBLE){
+    const newState = JSON.parse(JSON.stringify(state));
+    newState.clusterTableLoadingVisible = action.clusterTableLoadingVisible;
+    console.log(newState.clusterTableLoadingVisible);
+    return newState;
+  }
 
   return state;
 }

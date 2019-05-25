@@ -319,17 +319,24 @@ export const submitUnassignClusterUser = (users, clusterName, history) => {
 }
 
 //一级用户回收集群
+//更新LoadingVisible
+
+const updateClusterTableLoadingVisible = (clusterTableLoadingVisible) => ({
+	type: constants.UPDATE_CLUSTER_TABLE_LOADING_VISIBLE,
+	clusterTableLoadingVisible
+})
+
 export const recycleCluster = (clusterName, userName, pageNum) => {
 	// console.log(userName);
 	// let that = this;
 	// console.log('回收要开始啦');
 	return(dispatch) => {
-		Feedback.toast.loading("正在回收");
+    dispatch(updateClusterTableLoadingVisible(true));
 		recycleClusterAxios(clusterName).then(
 			(res) => {
 				if(res){
 					if(res.data.meta.success){
-						Feedback.toast.loading("正在回收");
+						dispatch(updateClusterTableLoadingVisible(false));
 						Feedback.toast.success("集群回收成功");
 						dispatch(getFirstLevelResource(userName));
 						dispatch(getClusterList(pageNum, userName));
