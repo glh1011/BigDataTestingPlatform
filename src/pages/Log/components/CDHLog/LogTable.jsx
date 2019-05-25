@@ -25,25 +25,6 @@ class CDHLog extends Component {
         console.log(this.props.url.split('/j')[0])
         // this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/login"
         this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
-        
-        // console.log(this.iFrame.contentWindow.document);
-        // console.log(this.iFrame.contentWindow.document.getElementsByTagName("nav"));
-        // var nav = this.iFrame.contentWindow.document.getElementsByTagName("nav");
-        // nav.style.display = 'none';
-        // nav.style.visibility = 'hidden';
-        window.clearInterval(param);
-        console.log("输出iframe");
-        console.log(this.iFrame);
-        var i = this.iFrame;
-        i.onload=function(){
-          console.log(i.contentDocument)
-          console.log(i.contentWindow.document.getElementById("nav"));
-          if(i.contentWindow.document.getElementsByTagName("nav")) {
-            var nav = i.contentWindow.document.getElementsByTagName("nav");
-            nav.style.display = 'none';
-            nav.style.visibility = 'hidden';
-          }
-        }
       }
     }, 1000);
     window.addEventListener('message', (e) => {
