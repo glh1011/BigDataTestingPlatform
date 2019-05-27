@@ -16,7 +16,6 @@ const defaultState = {
 }
 
 export default (state = defaultState, action) => {
-  console.log(action.type);
   if(action.type === constants.RESET_STATE) {
     const newState = JSON.parse(JSON.stringify(state));
     newState.resourcePoolList = [];

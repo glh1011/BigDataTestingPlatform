@@ -17,31 +17,25 @@ const service = axios.create({
 });
 
 getUserIP((ip)=>{
-  console.log(ip);
   localStorage.setItem('clientIp', ip);
 });
 
 // 请求处理
 service.interceptors.request.use(config => {
   config.headers['X-Real-IP'] = localStorage.getItem('clientIp');
-  //config.headers['X-Real-IP'] = "10.170.50.244";
-  console.log(config);
   if (config.method === 'post') {
     //config.data = JSON.stringify({ ...config.data });
     //config.params = qs.stringify({ ...config.params });
     if (config.headers) {
       // config.data = JSON.stringify({ ...config.data });
       //config.headers['Content-Type'] = config.header['Content-Type'];
-      console.log("has header");
     } else {
       //config.data = JSON.stringify({ ...config.data });
       //config.params = qs.stringify({ ...config.params });
-      console.log("has no header");
     }
   } else {
     config.params = { ...config.params };
   }
-  console.log('111');
   return config;
 }, error => {
   // 错误处理
@@ -51,13 +45,11 @@ service.interceptors.request.use(config => {
 
 // 响应处理
 service.interceptors.response.use(res => {
-  console.log('222');
   Feedback.toast.hide();
-  console.log(res);
   // 处理接口返回数据
   if (res.status === 200) {
     if (res.data.meta.code === '403'){
-      console.log(res.data.meta.code);
+      //console.log(res.data.meta.code);
       window.location.href = '/#/NotPermission';
     }
     else{

@@ -21,10 +21,12 @@ class CDHLog extends Component {
 
   displayLogIframe() {
     var param= setInterval(() => {
-      if(this.props.url){
-        console.log(this.props.url.split('/j')[0])
-        // this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/login"
-        this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
+      if(this.props.url || localStorage.getItem('CDHLoginUrl')){
+        if(this.props.url){
+          this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
+        } else {
+          this.iFrame.src = localStorage.getItem('CDHLoginUrl').split('/j')[0]+"/cmf/process/all/logs/search";
+        }
         window.clearInterval(param);
       }
     }, 1000);
@@ -41,11 +43,6 @@ class CDHLog extends Component {
   }
 
   componentDidMount() {
-    this.displayLogIframe();
- }
-
-  componentWillUpdate() {
-    console.log("页面组件刷新");
     this.displayLogIframe();
  }
  
@@ -71,7 +68,6 @@ class CDHLog extends Component {
     }
   }
 const mapStateToProps = (state) => {
-  console.log("log state================");
   console.log(state);
   return {
     url: state.PlatformLog.loginUrl,

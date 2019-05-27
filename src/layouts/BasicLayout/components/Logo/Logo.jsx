@@ -7,7 +7,7 @@ import './scss/light.scss';
 export default class Logo extends PureComponent {
   render() {
     return (
-      <div className="logo" style={{}}>
+      <div className='logo' style={{}}>
         <Link to="/" className="logo-text">
           BDILab
         </Link>

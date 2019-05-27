@@ -40,10 +40,9 @@ class MainRoutes extends Component {
   renderNormalRoute = (item, index) => {
     const Layout = item.layout;
     // 如果管理员已经登录
-    console.log(checkAuthState().isAuth);
+    // console.log(checkAuthState().isAuth);
     if (checkAuthState().isAuth) {
       // 登录过
-      console.log("登录过");
       return item.component ? (
         <Route
           key={index}
@@ -57,7 +56,6 @@ class MainRoutes extends Component {
       ) : null;
     }
     else{
-      console.log("没登录？");
       return <Route key={index} path="/" component={LoginPanel} />;
     }
     

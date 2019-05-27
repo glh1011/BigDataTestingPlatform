@@ -29,6 +29,9 @@ export default(state=defaultState, action) => {
       newState.loginUrl = action.url;
       newState.loginPassword = action.j_password;
       newState.loginUserName = action.j_username;
+      localStorage.setItem('CDHLoginUrl', action.url);
+      localStorage.setItem('CDHLoginPassword', action.j_password);
+      localStorage.setItem('CDHLoginUserName', action.j_username);
       return newState;
     default:
       return state;

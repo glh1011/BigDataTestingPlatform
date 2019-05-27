@@ -35,10 +35,8 @@ export default class LoginFrom extends Component {
       Feedback.toast.prompt('加载中...');
       loginByusername(username, password).then(data => {
         if (data) {
-          console.log(data.data.data);
           localStorage.clear();
           getUserIP((ip)=>{
-            console.log(ip);
             localStorage.setItem('clientIp', ip);
           });
           localStorage.setItem('userLevel',data.data.data.userLevel);

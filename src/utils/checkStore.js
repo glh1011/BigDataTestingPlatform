@@ -35,15 +35,12 @@ export function checkAuthState() {
 
   const USER = qs.parse(base.Base64.decode(sessionStorage.getItem('USER')));
   // const USER = sessionStorage.getItem('USER');
-  console.log(sessionStorage.getItem('USER'));
-  console.log(USER);
   //用户未登录
   if (!sessionStorage.getItem('USER')) {
     sessionStorage.clear();
     return {
       isAuth: false,
     };
-    console.log('用户未登录');
   }
   else{
     const { timestamp } = USER;
@@ -56,7 +53,6 @@ export function checkAuthState() {
       };
     }
     else{
-      console.log('用户正常登录');
       return {
         isAuth: true,
       };
@@ -71,9 +67,7 @@ export function checkAuthState() {
 export function updateAuthState() {
   let USER = qs.parse(base.Base64.decode(sessionStorage.getItem('USER'))); // 解密
   // let USER = sessionStorage.getItem('USER');
-  console.log(USER);
   USER.timestamp = Math.floor(new Date().getTime() / 1000);
-  console.log(USER);
   // save
   sessionStorage.setItem('USER', base.Base64.encode(qs.stringify(USER)));
   // sessionStorage.setItem('USER', USER);

@@ -10,11 +10,9 @@ const changeSubUserList = (subUsers, total) => ({
 
 export const getSubUserList = (current) => {
   var userId = parseInt(localStorage.getItem('userId'));
-  console.log(localStorage.getItem('userId'));
   var pageSize = 10;
   return (dispatch) => {
     getSubUserListAxios(userId, current, pageSize).then((res) => {
-      console.log(res);
       if(res){
         if(res.data.meta.success){
           const subUsers = res.data.data.list;

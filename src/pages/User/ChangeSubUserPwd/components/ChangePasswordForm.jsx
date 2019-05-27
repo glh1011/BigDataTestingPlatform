@@ -52,7 +52,7 @@ class ChangePasswordForm extends Component {
       if(checkStrong(values) === 1) {
         callback('密码必须大于8位,且为字母数字组合');
       }else{
-        callback('密码有效');
+        callback();
       }
     } else {
       callback('密码必须小于16位');

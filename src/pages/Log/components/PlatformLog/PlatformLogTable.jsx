@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import LogTable from './LogTable';
 
 export default class PlatformLogTable extends Component {
-  static displayName = 'PlatformLogTable';
-
-  static propTypes = {};
-
-  static defaultProps = {};
 
   constructor(props) {
     super(props);

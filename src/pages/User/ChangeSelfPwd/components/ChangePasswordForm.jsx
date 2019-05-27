@@ -24,11 +24,12 @@ class ChangePasswordForm extends Component {
   
   handleSubmit = (inputValue, history) => {
     this.formRef.validateAll((error, value) => {
+      console.log(error);
       if (!error || error.length === 0) {
         this.props.resetPwd(inputValue, history)
       }
       else {
-        Feedback.toast.error("密码填写有误!");
+        // Feedback.toast.error("密码填写有误!");
       }
     });
   }
@@ -52,7 +53,7 @@ class ChangePasswordForm extends Component {
       if(checkStrong(values) === 1) {
         callback('密码必须大于8位,且为字母数字组合');
       }else{
-        callback('密码有效');
+        callback();
       }
     } else {
       callback('密码必须小于16位');

@@ -49,7 +49,7 @@ class UserForm extends Component {
 
   handleSubmit = () => {
     this.formRef.validateAll((error, value) => {
-      console.log(value);
+      console.log(error);
       if (!error || error.length === 0) {
         this.props.submitSubUser(value, this.props.history);
       }
@@ -64,8 +64,9 @@ class UserForm extends Component {
     } else if (values.length >= 8 && values.length <= 16) {
       if(checkStrong(values) === 1) {
         callback('密码必须大于8位,且为字母数字组合');
+        console.log('aaaaaaaaaaaaaa');
       }else{
-        callback('密码有效');
+        callback();
       }
     } else {
       callback('密码必须小于16位');

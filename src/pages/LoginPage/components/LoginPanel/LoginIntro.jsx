@@ -17,7 +17,7 @@ export default class LoginIntro extends Component {
       <div style={styles.container}>
         <div style={styles.content}>
           <div style={styles.title}>大数据测试平台</div>
-          <p style={styles.description}>BDILab</p>
+          <p style={styles.description}>河钢数字</p>
         </div>
         <div style={styles.mask} />
       </div>
@@ -34,7 +34,7 @@ const styles = {
     position: 'relative',
     zIndex: '1',
     height: '100vh',
-    backgroundImage: `url(${require('./images/bg.jpg')})`,
+    backgroundImage: `url(${require('./images/bg1.jpg')})`,
     backgroundSize: 'cover',
   },
   content: {

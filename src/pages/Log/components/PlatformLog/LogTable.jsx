@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { Table, Pagination, Balloon, Icon, Button, Select, Feedback} from '@icedesign/base';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
-// import { Select,Form } from '@alifd/next';
-// const {AutoComplete} = Select;
 
 @withRouter
 class PlatformLog extends Component {
@@ -96,7 +93,6 @@ class PlatformLog extends Component {
   }
 }
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     dataSource: state.PlatformLog.PlatformLog,
     current: state.PlatformLog.current,

@@ -40,8 +40,6 @@ export const getJumpList = (value) => {
   return (dispatch) => {
     toClouderaClusterAxios(value).then((res) => {
       if(res) {
-        console.log("随便写点啥");
-        console.log(res);
         if(res.data){
           const j_password = res.data.data.param.j_password;
           const j_username = res.data.data.param.j_username;
@@ -59,18 +57,15 @@ export const getCluserName = (userName) => {
         const cluserName=[];
         if(res.data){
           const cluserNameSize = res.data.data.length;
-          console.log(cluserNameSize)
           for(let i=0;i<cluserNameSize;i++) {
             const cluster=res.data.data[i].clusterName
-            console.log(cluster)
             cluserName.push({label:cluster, value:cluster});
           }
         }
-        console.log(cluserName)
         dispatch(changeCluserName(cluserName));
       }
     })
- }
+  }
 }
 
 export const getAllLogList = (current) => {
