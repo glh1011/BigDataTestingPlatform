@@ -8,9 +8,9 @@ export default class Logo extends PureComponent {
   render() {
     return (
       <div className='logo' style={{}}>
-        <Link to="/" className="logo-text">
-          BDILab
-        </Link>
+        {/* <Link to="/" className="logo-text"> */}
+          <img src="../../../../../public/logo2.png" style={{width:"160px"}} />
+        {/* </Link> */}
       </div>
     );
   }

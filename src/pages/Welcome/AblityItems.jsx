@@ -16,13 +16,13 @@ export default class AblityItems extends Component {
             src={require('../../../public/welcome1.svg')}
             style={style.hyAbilityItemImgStyle}
           />
-          <h3 style={style.hyAbilityItemTitleStyle}>能力输出</h3>
+          <h3 style={style.hyAbilityItemTitleStyle}>登录成功</h3>
           <p style={style.hyAbilityItemSubtitleStyle}>
-            支付、实名、信用、理财、大数据
+            欢迎您使用大数据测评平台
           </p>
         </div>
 
-        <div className="hy-ability-item" style={style.hyAbilityItemStyle}>
+        {/* <div className="hy-ability-item" style={style.hyAbilityItemStyle}>
           <img
             alt=""
             src={require('../../../public/welcome2.svg')}
@@ -32,9 +32,9 @@ export default class AblityItems extends Component {
           <p style={style.hyAbilityItemSubtitleStyle}>
             物料、返佣、品牌支持、运营收益
           </p>
-        </div>
+        </div> */}
 
-        <div className="hy-ability-item" style={style.hyAbilityItemStyle}>
+        {/* <div className="hy-ability-item" style={style.hyAbilityItemStyle}>
           <img
             alt=""
             src={require('../../../public/welcome3.svg')}
@@ -44,7 +44,7 @@ export default class AblityItems extends Component {
           <p style={style.hyAbilityItemSubtitleStyle}>
             门禁停车、智能家居、生活服务
           </p>
-        </div>
+        </div> */}
       </div>
     );
   }
