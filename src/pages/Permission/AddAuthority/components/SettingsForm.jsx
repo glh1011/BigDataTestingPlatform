@@ -85,8 +85,8 @@ class SettingsForm extends Component {
                       placeholder="请选择..."
                       dataSource={[
                         { label: '系统管理员', value: '0' },
-                        { label: '用户管理员', value: '1' },
-                        { label: '普通用户', value: '2' },
+                        { label: '一级用户', value: '1' },
+                        { label: '二级用户', value: '2' },
                       ]}
                     />
                   </IceFormBinder>

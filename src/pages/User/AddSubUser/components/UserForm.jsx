@@ -25,7 +25,7 @@ class UserForm extends Component {
         size="large"
         placeholder="请选择..."
         dataSource={[
-          { label: '用户管理员', value: '1' },
+          { label: '一级用户', value: '1' },
         ]}
       ></Select>
       )
@@ -36,7 +36,7 @@ class UserForm extends Component {
         size="large"
         placeholder="请选择..."
         dataSource={[
-          { label: '普通用户', value: '2' },
+          { label: '二级用户', value: '2' },
         ]}
       ></Select>
       )

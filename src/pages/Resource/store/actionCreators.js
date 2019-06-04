@@ -202,7 +202,15 @@ export const getClusterList = (pageNum, username) => {
 				if(res){
 					console.log(res);
 					if(res.data.meta.success){
-						const result = res.data.data.list;
+						let list = res.data.data.list;
+						list.forEach(function(item){
+							if(item.createTime != null){
+								var d = new Date(item.createTime);
+								var newCreateTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+								item.createTime = newCreateTime;
+							}
+						})
+						const result = list;
 						console.log(result);
 						const total = res.data.data.pages;
 						console.log(total);

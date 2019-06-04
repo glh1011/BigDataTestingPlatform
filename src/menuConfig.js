@@ -1,13 +1,14 @@
 // 菜单配置
 // headerMenuConfig：头部导航配置
 // asideMenuConfig：侧边导航配置
-const headerMenuConfig = [];
+const headerMenuConfig = [
+];
 
 const asideMenuConfig = [
   {
     name: '用户管理',
     path: '/userManagement',
-    icon: 'home2',
+    icon: 'person',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -24,7 +25,7 @@ const asideMenuConfig = [
   {
     name: '权限管理',
     path: '/permissionManagement',
-    icon: 'home',
+    icon: 'activity',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -48,7 +49,7 @@ const asideMenuConfig = [
   {
     name: '资源管理',
     path: '/Resource',
-    icon: 'home',
+    icon: 'chart',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -79,7 +80,7 @@ const asideMenuConfig = [
   {
     name: '可视化安装',
     path: '/VisInstall',
-    icon: 'home',
+    icon: 'cascades',
     zeroVisible: false,
     firstVisible: true,
     secondVisible: false,
@@ -96,7 +97,7 @@ const asideMenuConfig = [
   {
     name: '日志管理',
     path: '/Log',
-    icon: 'home',
+    icon: 'copy',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -113,7 +114,7 @@ const asideMenuConfig = [
   {
     name: '上传文件',
     path: '/Upload',
-    icon: 'home',
+    icon: 'exchange',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
@@ -130,7 +131,7 @@ const asideMenuConfig = [
   {
     name: 'WebSSH',
     path: '/WebSSH',
-    icon: 'home',
+    icon: 'menu',
     zeroVisible: true,
     firstVisible: true,
     secondVisible: true,
