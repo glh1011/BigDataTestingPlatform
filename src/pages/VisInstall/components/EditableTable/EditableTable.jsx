@@ -554,16 +554,16 @@ export default class EditableTable extends Component {
               footer={this.state.dialog ? footer : false}
               closable={false}
             >
-              <div style={{ display: this.state.dialog ? "block" : "none" }}>
+              {/* <div style={{ display: this.state.dialog ? "block" : "none" }}>
                 <img
                   src={require("./images/test1.jpg")}
                   // style={{ width: "1000px", height: "300px" }}
                 />
-              </div>
-              <span style={{ color: this.state.dialog ? "red" : "black" }}>
+              </div> */}
+              {/* <span style={{ color: this.state.dialog ? "red" : "black" }}>
                 {this.state.dialogContent}
-              </span>
-              <div
+              </span> */}
+              {/* <div
                 style={{
                   display: this.state.dialog ? "none" : "block",
                   // width: "1000px",
@@ -573,7 +573,7 @@ export default class EditableTable extends Component {
                 <Slider autoplay autoplaySpeed={2000} adaptiveHeight={true}>
                   {itemNodes}
                 </Slider>
-              </div>
+              </div> */}
               <div
                 style={{
                   display: this.state.dialog ? "none" : "block",
