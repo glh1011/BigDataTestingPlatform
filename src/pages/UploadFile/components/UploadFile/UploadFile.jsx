@@ -16,7 +16,8 @@ class UploadFile extends Component {
       clusterName: [],
       vmwareData: {},
       visible: false,
-      status: true
+      status: true,
+      uploadDisabled: true
     };
 
     this.handleClusterChange = this.handleClusterChange.bind(this);
@@ -30,7 +31,10 @@ class UploadFile extends Component {
   }
 
   handleVmChange(value) {
-    this.setState({ vm: value });
+    this.setState({
+      vm: value,
+      uploadDisabled: false 
+    });
     console.log(this.state.cluster, value);
   }
 
@@ -43,13 +47,17 @@ class UploadFile extends Component {
 
   onSubmit = () => {
     console.log("上传文件");
-    var data = new FormData()
+    var data = new FormData();
+    console.log(data);
+    console.log(this.uploaderRef.state.fileList[0].originFileObj);
     if (this.uploaderRef.state.fileList[0]) {
+      console.log(this.uploaderRef.state.fileList[0].originFileObj);
+      data.append("name", this.uploaderRef.state.fileList[0].originFileObj.name);
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
-      this.setState({ visible: true })
+      this.setState({ visible: true });
       console.log(this.state.vm);
       console.log(this.state.cluster);
-      console.log(data);
+      console.log(data.get("file"));
       uploadFileAxios(this.state.vm, this.state.cluster, data)
         .then((res) => {
           if(res){
@@ -108,6 +116,9 @@ class UploadFile extends Component {
     }
     if (info.event && info.event.percent == 100) {
       this.setState({ status: false })
+    }
+    if (info.file.response && info.file.response.meta.code === 'success') {
+      Feedback.toast.success("文件上传成功");
     }
   }
 
@@ -172,6 +183,7 @@ class UploadFile extends Component {
 
 
               <Upload
+                disabled = {this.state.uploadDisabled}
                 timeout={60000}//一分钟
                 limit={1}
                 action={`/api/file/uploadFile?hostName=${this.state.vm}&clusterName=${this.state.cluster}`}
@@ -184,7 +196,7 @@ class UploadFile extends Component {
                 <Button size="large" type="normal" style={{ margin: '0 0 10px', width: "200px" }}>Upload</Button>
               </Upload>
               <br /><br />
-              <Button style={{ margin_right: "30%", margin_top: "60px" }} type="secondary" size="large" onClick={this.onSubmit} disabled={status}>Submit</Button>
+              {/* <Button style={{ margin_right: "30%", margin_top: "60px" }} type="secondary" size="large" onClick={this.onSubmit} disabled={status}>Submit</Button> */}
               {/* {this.fileStatus(status)} */}
             </Loading>
           </div>

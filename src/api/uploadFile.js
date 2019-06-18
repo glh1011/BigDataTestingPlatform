@@ -9,6 +9,9 @@ export async function uploadFileAxios(hostName, clusterName, data) {
   return fetch({
     url: '/api/file/uploadFile',
     method: 'post',
+    headers:{
+      "Content-type":"application/x-www-form-urlencoded"
+    },
     params,
     data
   });
