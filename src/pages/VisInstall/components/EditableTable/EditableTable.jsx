@@ -560,9 +560,9 @@ export default class EditableTable extends Component {
                   // style={{ width: "1000px", height: "300px" }}
                 />
               </div> */}
-              {/* <span style={{ color: this.state.dialog ? "red" : "black" }}>
+              <span style={{ color: this.state.dialog ? "red" : "black" }}>
                 {this.state.dialogContent}
-              </span> */}
+              </span>
               {/* <div
                 style={{
                   display: this.state.dialog ? "none" : "block",

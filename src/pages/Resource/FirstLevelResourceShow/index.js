@@ -61,7 +61,10 @@ class FirstLevelResourceShow extends Component {
   }
   componentDidMount(){
     console.log(localStorage);
-    const userName = localStorage.getItem('userName');
+    let userName = localStorage.getItem('userName');
+    if(localStorage.getItem('selectUserName')){
+      userName = localStorage.getItem('selectUserName')
+    }
     console.log(userName);
     this.props.showClusterList(this.props.current, userName);
     this.props.showFirstLevelResource(userName);

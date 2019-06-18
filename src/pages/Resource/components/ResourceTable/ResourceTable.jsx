@@ -29,7 +29,7 @@ class Home extends Component {
   
   //点击表格每一行出发的事件，record记录这一行绑定的数据
   onRowClick = (record, index, e) => {
-    localStorage.setItem('userName', record.username);
+    localStorage.setItem('selectUserName', record.username);
     console.log(this.props);
     this.props.history.push({
       pathname: '/Resource/FirstLevelResourceShow'

@@ -74,7 +74,16 @@ export const getAllLogList = (current) => {
     findAllAxios(current, pageSize).then((res) => {
       if(res){
         if(res.data.data){
-          const PlatformLog = res.data.data.list;
+          let list = res.data.data.list;
+						list.forEach(function(item){
+							if(item.operateTime != null){
+								var d = new Date(item.operateTime);
+								var newOperateTime = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+								item.operateTime = newOperateTime;
+							}
+						})
+					
+          const PlatformLog = list;
           const total = res.data.data.total;
           dispatch(changeLogList(PlatformLog, total));
         }

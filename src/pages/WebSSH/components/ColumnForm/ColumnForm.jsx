@@ -101,7 +101,7 @@ export default class ColumnForm extends Component {
                   </Button>
                 </Col>
               </Row>
-              <iframe id="wssh" style={{border:0,width:"100%",height:"360px",paddingBottom:"15px",display:this.state.display}} src="http://192.168.0.74:2222/"/>
+              <iframe id="wssh" style={{border:0,width:"100%",height:"360px",paddingBottom:"15px",display:this.state.display}} src="http://192.168.0.6:2222/"/>
             </div>
           </IceFormBinderWrapper>
         </IceContainer>

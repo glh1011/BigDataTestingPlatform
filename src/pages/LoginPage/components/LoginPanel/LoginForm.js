@@ -106,14 +106,14 @@ export default class LoginFrom extends Component {
           message: '必填',
         },
       },
-      {
-        label: '记住账号',
-        component: 'Checkbox',
-        componentProps: {},
-        formBinderProps: {
-          name: 'checkbox',
-        },
-      },
+      // {
+      //   label: '记住账号',
+      //   component: 'Checkbox',
+      //   componentProps: {},
+      //   formBinderProps: {
+      //     name: 'checkbox',
+      //   },
+      // },
       {
         label: '登录',
         component: 'Button',
@@ -132,7 +132,7 @@ export default class LoginFrom extends Component {
 
     const links = [
       // { to: '/register', text: '立即注册' },
-      { to: '/forgetpassword', text: '找回密码' },
+      // { to: '/forgetpassword', text: '找回密码' },
     ];
 
     return (

@@ -66,7 +66,7 @@ service.interceptors.response.use(res => {
   }
 
 }, error => {
-  console.log(error.response);
+  console.log(error);
   if(error.response.status === 401) {
     Feedback.toast.error(error.response.data.data);
   }

@@ -42,10 +42,14 @@ class UploadFile extends Component {
   };
 
   onSubmit = () => {
+    console.log("上传文件");
     var data = new FormData()
     if (this.uploaderRef.state.fileList[0]) {
       data.append("file", this.uploaderRef.state.fileList[0].originFileObj);
       this.setState({ visible: true })
+      console.log(this.state.vm);
+      console.log(this.state.cluster);
+      console.log(data);
       uploadFileAxios(this.state.vm, this.state.cluster, data)
         .then((res) => {
           if(res){
