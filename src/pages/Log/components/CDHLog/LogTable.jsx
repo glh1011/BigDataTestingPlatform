@@ -20,25 +20,38 @@ class CDHLog extends Component {
   }
 
   displayLogIframe() {
+    console.log("url之前");
     var param= setInterval(() => {
       if(this.props.url || localStorage.getItem('CDHLoginUrl')){
+        console.log("this.props.url"+this.props.url);
+        console.log("localStorage"+localStorage.getItem('CDHLoginUrl'));
         if(this.props.url){
-          this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
+          console.log("if");
+          //this.iFrame.src = this.props.url.split('/j')[0]+"/cmf/process/all/logs/search";
+          this.iFrame.src = "https:"+this.props.url.split(':')[1]+":447/cmf/process/all/logs/search";
+          console.log("获取到url"+this.iFrame.src);
         } else {
-          this.iFrame.src = localStorage.getItem('CDHLoginUrl').split('/j')[0]+"/cmf/process/all/logs/search";
+          console.log("else");
+          //this.iFrame.src = localStorage.getItem('CDHLoginUrl').split('/j')[0]+"/cmf/process/all/logs/search";
+          this.iFrame.src = "https:"+localStorage.getItem('CDHLoginUrl').split(':')[1]+":447/cmf/process/all/logs/search";
+          console.log("存储url"+this.iFrame.src);
         }
         window.clearInterval(param);
       }
     }, 1000);
+    console.log("addEventListener之外");
     window.addEventListener('message', (e) => {
       console.log(e);
+      console.log("postmessage---"+"https:"+this.props.url.split(':')[1]+":447");
       if (e.data === 'loaded') {
        this.iFrame.contentWindow.postMessage(JSON.stringify({
          username: this.props.j_username,
          password: this.props.j_password
-       }), this.props.url.split('/j')[0]);
+       }), "https:"+this.props.url.split(':')[1]+":447");
       }
     });
+    console.log("window");
+    console.log(window);
     
   }
 
@@ -52,7 +65,7 @@ class CDHLog extends Component {
         <div style={styles.IceContainer}>
           <a style={styles.formTitle}>CDH日志</a>
         </div>
-        <form id="subForm" action={this.props.url} method="post" target="showZip" ref={this.subFormRef}> 
+        <form id="subForm" action={"https:"+this.props.url.split(':')[1]+":447"} method="post" target="showZip" ref={this.subFormRef}> 
           <input type="hidden" name="j_username"  value={this.props.j_username} />
           <input type="hidden" name="j_password"  value={this.props.j_password} />
         </form>

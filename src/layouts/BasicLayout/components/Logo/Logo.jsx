@@ -6,7 +6,8 @@ import './scss/light.scss';
 export default class Logo extends PureComponent {
   render() {
     return (
-      <div style={styles.container}></div>
+      // <div style={styles.container}></div>
+      <div></div>
     );
   }
 }

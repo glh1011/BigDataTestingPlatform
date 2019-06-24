@@ -16,8 +16,8 @@ export default class LoginIntro extends Component {
     return (
       <div style={styles.container}>
         <div style={styles.content}>
-          <div style={styles.title}>大数据测试平台</div>
-          <p style={styles.description}>河钢数字</p>
+          <div style={styles.title}>大数据平台</div>
+          {/* <p style={styles.description}>河钢数字</p> */}
         </div>
         <div style={styles.mask} />
       </div>

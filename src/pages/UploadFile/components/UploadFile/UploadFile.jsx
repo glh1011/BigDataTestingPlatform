@@ -65,7 +65,7 @@ class UploadFile extends Component {
             if (res.data.meta.success) {
               console.log(res)
               this.setState({ visible: false, status: true })
-              Feedback.toast.success("文件上传成功");
+              //Feedback.toast.success("文件上传成功");
             }
             else {
               console.log(res)
@@ -111,13 +111,14 @@ class UploadFile extends Component {
   }
 
   onChange(info) {
+    console.log(info);
     if (info.file && info.file.status == 'removed') {
       this.setState({ status: true })
     }
     if (info.event && info.event.percent == 100) {
       this.setState({ status: false })
     }
-    if (info.file.response && info.file.response.meta.code === 'success') {
+    if (info.file.response && info.file.response.meta.code === 'success' && info.file.status != "removed") {
       Feedback.toast.success("文件上传成功");
     }
   }
