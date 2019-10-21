@@ -57,19 +57,28 @@ service.interceptors.response.use(res => {
       updateAuthState();
       return res;
     }//
-  } 
+  }
   else if (res.status === 504){
     //Feedback.toast.error('数据获取错误！请刷新页面');
   }
-  else if ( res.status === 401 ){
+  else if ( res.status === 401 ) {
     window.location.href = '/#/NotLogin';
   }
 
 }, error => {
   console.log(error);
-  if(error.response.status === 401) {
-    Feedback.toast.error(error.response.data.data);
+  if(error){
+    if(error.response){
+      if(error.response.status === 401) {
+        Feedback.toast.error(error.response.data.data);
+      }
+    } else {
+      Feedback.toast.error("登录失败");
+    }
+  } else {
+    Feedback.toast.error("登录失败");
   }
+
   // console.log(error);
   // // 错误处理
   // Feedback.toast.error(error, `请求发生错误-${JSON.stringify(error)}`);

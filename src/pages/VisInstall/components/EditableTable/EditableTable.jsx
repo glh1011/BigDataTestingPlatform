@@ -337,47 +337,52 @@ export default class EditableTable extends Component {
     return new Promise((resolve, reject) => {
       statusAxios(id)
         .then(response => {
-          if (response.data.data.status == "FAILED") {
-            this.setState({
-              visible: true,
-              dialogContent: response.data.data.message,
-              dialog: true
-            });
+          if(response.data.data) {
+            if (response.data.data.status == "FAILED") {
+              this.setState({
+                visible: true,
+                dialogContent: response.data.data.message,
+                dialog: true
+              });
 
-            resolve(true);
-          } else {
-            this.setState({
-              visible: true
-            });
-            if (
-              response.data.data.percent == "100" &&
-              response.data.data.status == "REDIRECT"
-            ) {
-              var form = document.createElement("form");
-              form.method = "post";
-
-              form.action = response.data.data.message.url;
-              var username = document.createElement("input");
-              username.type = "hidden";
-              username.name = "j_username";
-              username.value = response.data.data.message.param.j_username;
-              var password = document.createElement("input");
-              password.type = "hidden";
-              password.name = "j_password";
-              password.value = response.data.data.message.param.j_password;
-              form.appendChild(username);
-              form.appendChild(password);
-              document.getElementsByTagName("body")[0].append(form);
-              form.submit();
               resolve(true);
             } else {
-              this.setState(() => ({
-                percent: response.data.data.percent,
-                message: response.data.data.message
-              }));
-              resolve(false);
+              this.setState({
+                visible: true
+              });
+              if (
+                response.data.data.percent == "100" &&
+                response.data.data.status == "REDIRECT"
+              ) {
+                var form = document.createElement("form");
+                form.method = "post";
+
+                form.action = response.data.data.message.url;
+                var username = document.createElement("input");
+                username.type = "hidden";
+                username.name = "j_username";
+                username.value = response.data.data.message.param.j_username;
+                var password = document.createElement("input");
+                password.type = "hidden";
+                password.name = "j_password";
+                password.value = response.data.data.message.param.j_password;
+                form.appendChild(username);
+                form.appendChild(password);
+                document.getElementsByTagName("body")[0].append(form);
+                form.submit();
+                resolve(true);
+              } else {
+                this.setState(() => ({
+                  percent: response.data.data.percent,
+                  message: response.data.data.message
+                }));
+                resolve(false);
+              }
             }
+          } else {
+            resolve(false)
           }
+
         })
         .catch(function(error) {});
     });
